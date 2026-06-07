@@ -5,691 +5,289 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Gold Trading System</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-
-:root {
-–gold: #C9A84C;
-–gold-light: #F0D080;
-–gold-dark: #8B6914;
-–bg: #0F0E0A;
-–surface: #1A1810;
-–surface2: #242118;
-–border: #2E2B1F;
-–text: #F0EAD6;
-–muted: #7A7260;
-–green: #4CAF50;
-–red: #E05555;
-}
-
-- { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-font-family: ‘DM Sans’, sans-serif;
-background: var(–bg);
-color: var(–text);
-min-height: 100vh;
-}
+:root{--gold:#C8A96E;--gold2:#E8C98A;--gd:#8B6914;--bg:#0A0A08;--s1:#111110;--s2:#1A1A17;--s3:#222220;--b1:rgba(200,169,110,0.15);--b2:rgba(200,169,110,0.07);--tx:#F5F0E8;--mu:#6B6558;--mu2:#9A9080;--gr:#5CB87A;--rd:#D96B6B;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:2px;}
 
 /* LOGIN */
-.login-wrap {
-min-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-background: radial-gradient(ellipse at 50% 0%, #2a2310 0%, var(–bg) 70%);
-}
+.lp{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(200,169,110,0.1) 0%,transparent 70%),var(–bg);}
+.lc{width:100%;max-width:390px;background:linear-gradient(145deg,var(–s2),var(–s1));border:1px solid var(–b1);border-radius:20px;padding:44px 36px;position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);}
+.lc::before{content:’’;position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(–gold),transparent);}
+.ll{text-align:center;margin-bottom:30px;}
+.li{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,var(–gd),var(–gold));display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;box-shadow:0 8px 24px rgba(200,169,110,0.25);}
+.ll h1{font-family:‘Cormorant Garamond’,serif;font-size:1.75rem;font-weight:700;color:var(–tx);}
+.ll p{font-size:0.7rem;color:var(–mu);letter-spacing:0.1em;text-transform:uppercase;margin-top:3px;}
+.fld{margin-bottom:13px;}
+.fld label{display:block;font-size:0.68rem;font-weight:600;color:var(–mu2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;}
+.fld input{width:100%;padding:12px 15px;background:var(–s3);border:1px solid var(–b1);border-radius:9px;color:var(–tx);font-family:‘Inter’,sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.fld input:focus{border-color:rgba(200,169,110,0.45);box-shadow:0 0 0 3px rgba(200,169,110,0.07);}
+.bp{width:100%;padding:13px;margin-top:6px;background:linear-gradient(135deg,var(–gd),var(–gold));border:none;border-radius:9px;color:#0A0A08;font-family:‘Inter’,sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;letter-spacing:0.02em;transition:opacity 0.2s;box-shadow:0 4px 18px rgba(200,169,110,0.22);}
+.bp:hover{opacity:0.88;}
+.er{color:var(–rd);font-size:0.78rem;margin-top:9px;text-align:center;}
+.ch{margin-top:22px;padding:14px;background:rgba(200,169,110,0.04);border:1px solid var(–b2);border-radius:9px;font-size:0.73rem;color:var(–mu);line-height:2;}
+.ch strong{color:var(–gold);font-weight:500;}
+.ch code{font-size:0.7rem;background:var(–s3);color:var(–tx);padding:1px 5px;border-radius:3px;font-family:monospace;}
 
-.login-box {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 16px;
-padding: 48px 40px;
-width: 100%;
-max-width: 420px;
-text-align: center;
-}
+/* SHELL */
+.shell{display:flex;min-height:100vh;}
+.sb{width:210px;min-height:100vh;background:var(–s1);border-right:1px solid var(–b2);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;}
+.sl{padding:22px 18px;border-bottom:1px solid var(–b2);}
+.sli{width:34px;height:34px;border-radius:7px;background:linear-gradient(135deg,var(–gd),var(–gold));display:inline-flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:7px;}
+.sl h2{font-family:‘Cormorant Garamond’,serif;font-size:1.05rem;color:var(–tx);}
+.sl p{font-size:0.62rem;color:var(–mu);letter-spacing:0.06em;text-transform:uppercase;}
+.nav{flex:1;padding:14px 10px;}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:7px;color:var(–mu2);font-size:0.8rem;font-weight:500;cursor:pointer;transition:all 0.15s;margin-bottom:1px;border:none;background:none;width:100%;text-align:left;}
+.ni:hover{background:var(–s2);color:var(–tx);}
+.ni.on{background:rgba(200,169,110,0.1);color:var(–gold);}
+.nic{font-size:13px;width:18px;text-align:center;}
+.sf{padding:14px;border-top:1px solid var(–b2);}
+.uc{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:7px;background:var(–s2);margin-bottom:8px;}
+.av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(–gd),var(–gold));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0A0A08;flex-shrink:0;}
+.un{font-size:0.78rem;font-weight:500;color:var(–tx);}
+.ur{font-size:0.62rem;color:var(–mu);text-transform:capitalize;}
+.blo{width:100%;padding:8px;border-radius:7px;background:transparent;border:1px solid var(–b1);color:var(–mu2);font-family:‘Inter’,sans-serif;font-size:0.75rem;cursor:pointer;transition:all 0.15s;}
+.blo:hover{border-color:var(–rd);color:var(–rd);}
 
-.login-box h1 {
-font-family: ‘Playfair Display’, serif;
-font-size: 2rem;
-color: var(–gold);
-margin-bottom: 4px;
-}
+/* MAIN */
+.main{margin-left:210px;flex:1;padding:28px;}
+.ph{margin-bottom:24px;}
+.ph h1{font-family:‘Cormorant Garamond’,serif;font-size:1.75rem;font-weight:700;color:var(–tx);}
+.ph p{font-size:0.77rem;color:var(–mu);margin-top:3px;}
 
-.login-box h3 {
-font-size: 0.85rem;
-color: var(–muted);
-font-weight: 400;
-margin-bottom: 32px;
-letter-spacing: 0.05em;
-text-transform: uppercase;
-}
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:22px;}
+.sc{background:var(–s1);border:1px solid var(–b2);border-radius:11px;padding:18px 20px;position:relative;overflow:hidden;transition:border-color 0.2s;}
+.sc:hover{border-color:var(–b1);}
+.sc::after{content:’’;position:absolute;top:-10px;right:-10px;width:60px;height:60px;background:radial-gradient(circle,rgba(200,169,110,0.07),transparent 70%);}
+.sl2{font-size:0.66rem;font-weight:600;color:var(–mu);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:9px;}
+.sv{font-family:‘Cormorant Garamond’,serif;font-size:1.85rem;font-weight:700;color:var(–gold);line-height:1;}
+.sv.pos{color:var(–gr);}
+.sv.neg{color:var(–rd);}
 
-.login-box input {
-width: 100%;
-padding: 14px 16px;
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 8px;
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.95rem;
-margin-bottom: 12px;
-outline: none;
-transition: border-color 0.2s;
-}
+/* CARD */
+.card{background:var(–s1);border:1px solid var(–b2);border-radius:11px;padding:22px;margin-bottom:18px;}
+.ct{font-family:‘Cormorant Garamond’,serif;font-size:1.1rem;font-weight:600;color:var(–tx);margin-bottom:16px;display:flex;align-items:center;gap:7px;}
 
-.login-box input:focus { border-color: var(–gold); }
-
-.btn {
-background: var(–gold);
-color: #0F0E0A;
-border: none;
-border-radius: 8px;
-padding: 13px 24px;
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.95rem;
-font-weight: 600;
-cursor: pointer;
-transition: background 0.2s, transform 0.1s;
-}
-
-.btn:hover { background: var(–gold-light); }
-.btn:active { transform: scale(0.98); }
-.btn-full { width: 100%; margin-top: 4px; }
-
-.btn-sm {
-padding: 7px 14px;
-font-size: 0.8rem;
-border-radius: 6px;
-}
-
-.btn-outline {
-background: transparent;
-border: 1px solid var(–gold);
-color: var(–gold);
-}
-
-.btn-outline:hover { background: var(–gold); color: #0F0E0A; }
-
-.btn-danger {
-background: var(–red);
-color: #fff;
-}
-
-.btn-danger:hover { background: #c94444; }
-
-.error-msg {
-color: var(–red);
-font-size: 0.85rem;
-margin-top: 10px;
-}
-
-.login-hint {
-margin-top: 28px;
-padding: 16px;
-background: var(–surface2);
-border-radius: 8px;
-text-align: left;
-font-size: 0.8rem;
-color: var(–muted);
-line-height: 1.8;
-}
-
-.login-hint strong { color: var(–gold); }
-.login-hint code { color: var(–text); background: var(–border); padding: 1px 5px; border-radius: 3px; }
-
-/* APP LAYOUT */
-.app { display: flex; flex-direction: column; min-height: 100vh; }
-
-.header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 16px 28px;
-background: var(–surface);
-border-bottom: 1px solid var(–border);
-position: sticky;
-top: 0;
-z-index: 10;
-}
-
-.header h1 {
-font-family: ‘Playfair Display’, serif;
-font-size: 1.3rem;
-color: var(–gold);
-}
-
-.user-info {
-display: flex;
-align-items: center;
-gap: 14px;
-font-size: 0.85rem;
-color: var(–muted);
-}
-
-.tabs {
-display: flex;
-gap: 0;
-background: var(–surface);
-border-bottom: 1px solid var(–border);
-overflow-x: auto;
-padding: 0 20px;
-}
-
-.tab-btn {
-background: none;
-border: none;
-padding: 14px 20px;
-color: var(–muted);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.85rem;
-cursor: pointer;
-border-bottom: 2px solid transparent;
-transition: all 0.2s;
-white-space: nowrap;
-}
-
-.tab-btn:hover { color: var(–text); }
-.tab-btn.active { color: var(–gold); border-bottom-color: var(–gold); }
-
-.content { padding: 28px; max-width: 1100px; margin: 0 auto; width: 100%; }
-
-/* CARDS & GRIDS */
-.stats-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-gap: 16px;
-margin-bottom: 28px;
-}
-
-.stat-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 12px;
-padding: 20px 22px;
-}
-
-.stat-card h3 {
-font-size: 0.75rem;
-color: var(–muted);
-text-transform: uppercase;
-letter-spacing: 0.06em;
-margin-bottom: 10px;
-font-weight: 500;
-}
-
-.stat-value {
-font-family: ‘Playfair Display’, serif;
-font-size: 1.7rem;
-color: var(–gold);
-}
-
-.card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: 12px;
-padding: 24px;
-margin-bottom: 20px;
-}
-
-.card h2 {
-font-family: ‘Playfair Display’, serif;
-font-size: 1.15rem;
-color: var(–gold);
-margin-bottom: 18px;
-}
-
-.card h3 {
-font-size: 0.9rem;
-color: var(–text);
-margin-bottom: 14px;
-font-weight: 600;
-}
-
-/* FORM */
-.form-row {
-display: flex;
-gap: 12px;
-flex-wrap: wrap;
-align-items: flex-end;
-margin-bottom: 16px;
-}
-
-.form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 130px; }
-
-.form-group label { font-size: 0.78rem; color: var(–muted); text-transform: uppercase; letter-spacing: 0.04em; }
-
-.form-group input {
-padding: 11px 14px;
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 8px;
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 0.9rem;
-outline: none;
-transition: border-color 0.2s;
-}
-
-.form-group input:focus { border-color: var(–gold); }
+/* FORMS */
+.fg{display:grid;gap:12px;margin-bottom:14px;}
+.fg2{grid-template-columns:1fr 1fr;}
+.ff label{display:block;font-size:0.65rem;font-weight:600;color:var(–mu2);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:5px;}
+.ff input{width:100%;padding:10px 13px;background:var(–s2);border:1px solid var(–b1);border-radius:7px;color:var(–tx);font-family:‘Inter’,sans-serif;font-size:0.86rem;outline:none;transition:border-color 0.2s;}
+.ff input:focus{border-color:rgba(200,169,110,0.4);}
+.ba{padding:10px 20px;background:linear-gradient(135deg,var(–gd),var(–gold));border:none;border-radius:7px;color:#0A0A08;font-family:‘Inter’,sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;transition:opacity 0.15s;white-space:nowrap;}
+.ba:hover{opacity:0.88;}
+.ba.full{width:100%;margin-top:4px;}
+.bsm{padding:5px 12px;border-radius:5px;background:rgba(200,169,110,0.09);border:1px solid rgba(200,169,110,0.2);color:var(–gold);font-family:‘Inter’,sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer;transition:all 0.15s;}
+.bsm:hover{background:rgba(200,169,110,0.18);}
+.bap{padding:5px 12px;border-radius:5px;background:rgba(92,184,122,0.09);border:1px solid rgba(92,184,122,0.22);color:var(–gr);font-family:‘Inter’,sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer;transition:all 0.15s;}
+.bap:hover{background:rgba(92,184,122,0.18);}
 
 /* TABLE */
-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-th { text-align: left; padding: 10px 14px; color: var(–muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; border-bottom: 1px solid var(–border); }
-td { padding: 12px 14px; border-bottom: 1px solid var(–border); color: var(–text); }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: var(–surface2); }
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{padding:9px 13px;font-size:0.64rem;font-weight:600;color:var(–mu);letter-spacing:0.07em;text-transform:uppercase;text-align:left;border-bottom:1px solid var(–b2);}
+td{padding:12px 13px;font-size:0.82rem;border-bottom:1px solid rgba(255,255,255,0.025);color:var(–tx);}
+tr:last-child td{border-bottom:none;}
+tbody tr{transition:background 0.1s;}
+tbody tr:hover td{background:rgba(255,255,255,0.02);}
 
-/* BALANCE LIST */
-.balance-item {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 14px 0;
-border-bottom: 1px solid var(–border);
+/* BALANCE */
+.bi{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(–b2);}
+.bi:last-child{border-bottom:none;}
+.bl{display:flex;align-items:center;gap:11px;}
+.bav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(–gd),var(–gold));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0A0A08;}
+.bn{font-size:0.87rem;font-weight:500;}
+.bs{font-size:0.68rem;color:var(–mu);}
+.bamt{font-family:‘Cormorant Garamond’,serif;font-size:1.25rem;font-weight:600;color:var(–gold);}
+
+/* BADGE */
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:0.68rem;font-weight:600;}
+.bpnd{background:rgba(200,169,110,0.09);color:var(–gold);border:1px solid rgba(200,169,110,0.2);}
+.bapp{background:rgba(92,184,122,0.09);color:var(–gr);border:1px solid rgba(92,184,122,0.2);}
+
+.pos{color:var(–gr);}
+.neg{color:var(–rd);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.emp{text-align:center;padding:36px;color:var(–mu);font-size:0.82rem;}
+
+/* MOBILE */
+.mhdr{display:none;}
+@media(max-width:768px){
+.sb{transform:translateX(-100%);transition:transform 0.28s ease;}
+.sb.open{transform:translateX(0);}
+.main{margin-left:0;padding:18px;}
+.mhdr{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:var(–s1);border-bottom:1px solid var(–b2);position:sticky;top:0;z-index:50;}
+.mhdr h2{font-family:‘Cormorant Garamond’,serif;font-size:1.05rem;color:var(–gold);}
+.hbg{background:none;border:none;color:var(–tx);font-size:1.2rem;cursor:pointer;padding:4px;}
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99;display:none;}
+.ovl.show{display:block;}
+.fg2,.g2{grid-template-columns:1fr;}
+.sg{grid-template-columns:1fr 1fr;}
 }
-
-.balance-item:last-child { border-bottom: none; }
-.balance-name { font-weight: 500; }
-.balance-amount { font-family: ‘Playfair Display’, serif; font-size: 1.1rem; color: var(–gold); }
-
-.badge {
-display: inline-block;
-padding: 3px 10px;
-border-radius: 20px;
-font-size: 0.75rem;
-font-weight: 600;
-}
-
-.badge-pending { background: #2a2210; color: var(–gold); border: 1px solid var(–gold-dark); }
-.badge-approved { background: #0f2010; color: var(–green); border: 1px solid #2a5a2a; }
-
-.positive { color: var(–green); }
-.negative { color: var(–red); }
-
-.access-denied {
-text-align: center;
-padding: 40px;
-color: var(–muted);
-}
-
-.divider { border: none; border-top: 1px solid var(–border); margin: 20px 0; }
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
-
-.empty { text-align: center; color: var(–muted); padding: 30px; font-size: 0.88rem; }
+@media(min-width:769px){.mhdr{display:none;}.ovl{display:none!important;}}
 </style>
 
 </head>
 <body>
-
-<div id="app"></div>
-
+<div id="root"></div>
 <script>
-// ── DATA ────────────────────────────────────────────────────────────────
-const DEFAULT_DATA = {
-  goldPurchases: [],
-  goldSales: [],
-  expenses: [],
-  surveyRevenues: [],
-  withdrawalRequests: [],
-  shareholders: [
-    { id: 1, name: "Ahmed", password: "ahmed123", balance: 0 },
-    { id: 2, name: "Sara",  password: "sara123",  balance: 0 },
-    { id: 3, name: "Omar",  password: "omar123",  balance: 0 }
-  ],
-  companyCash: 0
+const DF={goldPurchases:[],goldSales:[],expenses:[],surveyRevenues:[],withdrawalRequests:[],shareholders:[{id:1,name:"Ahmed",password:"ahmed123",balance:0},{id:2,name:"Sara",password:"sara123",balance:0},{id:3,name:"Omar",password:"omar123",balance:0}],companyCash:0};
+function ld(){try{return JSON.parse(localStorage.getItem('gtd2'))||DF;}catch{return DF;}}
+function sv(d){localStorage.setItem('gtd2',JSON.stringify(d));}
+let data=ld(),user=null,tab='dashboard',sideOpen=false;
+
+const f$=n=>’$’+(parseFloat(n)||0).toFixed(2);
+const fg=n=>(parseFloat(n)||0).toFixed(2)+‘g’;
+const fd=iso=>new Date(iso).toLocaleDateString(‘en-GB’,{day:‘2-digit’,month:‘short’,year:‘2-digit’});
+const ini=n=>n.split(’ ‘).map(w=>w[0]).join(’’).toUpperCase().slice(0,2);
+const pnc=v=>v>=0?‘pos’:‘neg’;
+
+function st(){
+const b=data.goldPurchases.reduce((s,p)=>s+p.grams,0);
+const sol=data.goldSales.reduce((s,p)=>s+p.grams,0);
+const gv=data.goldPurchases.reduce((s,p)=>s+p.totalCost,0);
+const sr=data.goldSales.reduce((s,p)=>s+p.totalRevenue,0);
+const ex=data.expenses.reduce((s,e)=>s+e.amount,0);
+const sv2=data.surveyRevenues.reduce((s,r)=>s+r.amount,0);
+const gp=data.goldSales.reduce((s,p)=>s+p.profit,0);
+return{b,sol,inv:b-sol,gv,sr,ex,sv:sv2,gp,net:gp+sv2-ex};
+}
+
+function addBuy(g,r){const c=g*r;data.goldPurchases.push({id:Date.now(),date:new Date().toISOString(),grams:g,rate:r,totalCost:c,remainingGrams:g});data.companyCash-=c;sv(data);render();}
+function addSell(g,r){let rem=g,cb=0;data.goldPurchases.forEach(p=>{if(rem<=0||p.remainingGrams<=0)return;const t=Math.min(p.remainingGrams,rem);cb+=t*p.rate;p.remainingGrams-=t;rem-=t;});const rev=g*r,pf=rev-cb,ps=pf/3;data.goldSales.push({id:Date.now(),date:new Date().toISOString(),grams:g,sellRate:r,totalRevenue:rev,profit:pf,profitPerShareholder:ps});data.shareholders.forEach(s=>s.balance+=ps);data.companyCash+=rev;sv(data);render();}
+function addExp(desc,amt){const ps=amt/3;data.expenses.push({id:Date.now(),date:new Date().toISOString(),description:desc,amount:amt});data.shareholders.forEach(s=>s.balance-=ps);data.companyCash-=amt;sv(data);render();}
+function addSurv(amt){const ps=amt/3;data.surveyRevenues.push({id:Date.now(),date:new Date().toISOString(),amount:amt,dividendPerPerson:ps});data.shareholders.forEach(s=>s.balance+=ps);data.companyCash+=amt;sv(data);render();}
+function reqW(sid,amt){const sh=data.shareholders.find(s=>s.id===sid);if(!sh||sh.balance<amt){alert(‘Insufficient balance!’);return;}data.withdrawalRequests.push({id:Date.now(),date:new Date().toISOString(),shareholderId:sid,shareholderName:sh.name,amount:amt,status:‘pending’});sv(data);render();}
+function appW(rid){const r=data.withdrawalRequests.find(x=>x.id===rid);if(!r||r.status!==‘pending’)return;const sh=data.shareholders.find(s=>s.id===r.shareholderId);if(sh)sh.balance-=r.amount;r.status=‘approved’;data.companyCash-=r.amount;sv(data);render();}
+
+function render(){document.getElementById(‘root’).innerHTML=user?app():login();bind();}
+
+function login(){return`<div class="lp"><div class="lc"><div class="ll"><div class="li">💰</div><h1>Gold Trading System</h1><p>Shareholder & Dividend Platform</p></div><div class="fld"><label>Username</label><input id="un" type="text" placeholder="Enter your username"/></div><div class="fld"><label>Password</label><input id="pw" type="password" placeholder="Enter your password"/></div><button class="bp" id="lbtn">Sign In</button><div id="ler" class="er"></div><div class="ch"><strong>Access Credentials</strong><br/>👑 Admin &nbsp;<code>admin</code> / <code>admin123</code><br/>👤 Ahmed &nbsp;<code>ahmed</code> / <code>ahmed123</code><br/>👤 Sara &nbsp;&nbsp;<code>sara</code> / <code>sara123</code><br/>👤 Omar &nbsp;&nbsp;<code>omar</code> / <code>omar123</code></div></div></div>`;}
+
+const TABS=[{id:‘dashboard’,ic:‘◈’,lb:‘Dashboard’},{id:‘transactions’,ic:‘⇅’,lb:‘Transactions’},{id:‘shareholders’,ic:‘◉’,lb:‘Shareholders’},{id:‘withdrawals’,ic:‘◎’,lb:‘Withdrawals’},{id:‘reports’,ic:‘▦’,lb:‘Reports’}];
+
+function app(){
+const isA=user.role===‘admin’;
+const s=st();
+const nav=TABS.map(t=>`<button class="ni${tab===t.id?' on':''}" data-tab="${t.id}"><span class="nic">${t.ic}</span>${t.lb}</button>`).join(’’);
+const a=ini(user.name);
+const sidebar=`<div class="sb" id="sb"><div class="sl"><div class="sli">💰</div><h2>Gold Trading</h2><p>Management System</p></div><nav class="nav">${nav}</nav><div class="sf"><div class="uc"><div class="av">${a}</div><div><div class="un">${user.name}</div><div class="ur">${user.role}</div></div></div><button class="blo" id="lout">Sign Out</button></div></div>`;
+const mh=`<div class="mhdr"><button class="hbg" id="mbtn">☰</button><h2>💰 Gold Trading</h2><div class="av" style="width:30px;height:30px;">${a}</div></div>`;
+const ovl=`<div class="ovl" id="ovl"></div>`;
+let pg=’’;
+if(tab===‘dashboard’)pg=dash(s,isA);
+else if(tab===‘transactions’)pg=tx(isA);
+else if(tab===‘shareholders’)pg=sh(isA);
+else if(tab===‘withdrawals’)pg=wd(isA);
+else if(tab===‘reports’)pg=rp(s,isA);
+return`${ovl}${sidebar}${mh}<div class="main">${pg}</div>`;
+}
+
+function dash(s,isA){
+const rows=data.shareholders.map(x=>`<div class="bi"><div class="bl"><div class="bav">${ini(x.name)}</div><div><div class="bn">${x.name}</div><div class="bs">Shareholder</div></div></div><div style="display:flex;align-items:center;gap:10px"><div class="bamt">${f$(x.balance)}</div>${!isA&&user.shareholderId===x.id?`<button class="bsm" data-w="${x.id}">Withdraw</button>`:''}</div></div>`).join(’’);
+return`<div class="ph"><h1>Dashboard</h1><p>Overview of your gold trading operations</p></div>
+
+<div class="sg">
+<div class="sc"><div class="sl2">Company Cash</div><div class="sv">${f$(data.companyCash)}</div></div>
+<div class="sc"><div class="sl2">Gold Inventory</div><div class="sv">${fg(s.inv)}</div></div>
+<div class="sc"><div class="sl2">Gold Profit</div><div class="sv ${pnc(s.gp)}">${f$(s.gp)}</div></div>
+<div class="sc"><div class="sl2">Net Profit</div><div class="sv ${pnc(s.net)}">${f$(s.net)}</div></div>
+</div>
+<div class="card"><div class="ct">◉ Shareholder Balances</div>${rows}</div>`;}
+
+function tx(isA){
+if(!isA)return`<div class="ph"><h1>Transactions</h1></div><div class="card"><div class="emp">⚠️ Only Admin can record transactions.<br/><br/><span style="font-size:0.78rem;color:var(--mu)">Shareholders can view reports and request withdrawals.</span></div></div>`;
+return`<div class="ph"><h1>Transactions</h1><p>Record purchases, sales, expenses and revenue</p></div>
+
+<div class="g2">
+<div class="card"><div class="ct">↓ Buy Gold</div>
+<div class="fg fg2"><div class="ff"><label>Grams</label><input id="bg" type="number" placeholder="0.00"/></div><div class="ff"><label>Rate / gram ($)</label><input id="br" type="number" placeholder="0.00"/></div></div>
+<button class="ba full" id="abuy">Record Purchase</button></div>
+<div class="card"><div class="ct">↑ Sell Gold</div>
+<div class="fg fg2"><div class="ff"><label>Grams</label><input id="sg" type="number" placeholder="0.00"/></div><div class="ff"><label>Sell rate ($)</label><input id="sr2" type="number" placeholder="0.00"/></div></div>
+<button class="ba full" id="asell">Record Sale</button></div>
+<div class="card"><div class="ct">− Expense</div>
+<div class="fg"><div class="ff"><label>Description</label><input id="ed" type="text" placeholder="e.g. Office rent"/></div><div class="ff"><label>Amount ($)</label><input id="ea" type="number" placeholder="0.00"/></div></div>
+<button class="ba full" id="aexp">Add Expense</button></div>
+<div class="card"><div class="ct">+ Survey Revenue</div>
+<div class="fg"><div class="ff"><label>Total Amount ($)</label><input id="sa" type="number" placeholder="0.00"/></div></div>
+<button class="ba full" id="asurv">Add &amp; Distribute</button></div>
+</div>`;}
+
+function sh(isA){
+const rows=data.shareholders.map(x=>`<tr><td><div style="display:flex;align-items:center;gap:10px"><div class="bav" style="width:30px;height:30px;font-size:11px;">${ini(x.name)}</div>${x.name}</div></td><td class="${pnc(x.balance)}">${f$(x.balance)}</td>${!isA?`<td>${user.shareholderId===x.id?`<button class="bsm" data-w="${x.id}">Withdraw</button>`:’—’}</td>`:''}</tr>`).join(’’);
+return`<div class="ph"><h1>Shareholders</h1><p>Equity balances and withdrawal management</p></div>
+
+<div class="card"><div class="ct">◉ Shareholder Overview</div>
+<div class="tw"><table><thead><tr><th>Name</th><th>Balance</th>${!isA?'<th>Action</th>':''}</tr></thead><tbody>${rows}</tbody></table></div></div>`;}
+
+function wd(isA){
+const reqs=data.withdrawalRequests.filter(r=>isA||r.shareholderId===user.shareholderId);
+const rows=reqs.length===0?`<tr><td colspan="5" style="text-align:center;padding:36px;color:var(--mu)">No withdrawal requests yet</td></tr>`:reqs.map(r=>`<tr><td>${fd(r.date)}</td><td>${r.shareholderName}</td><td>${f$(r.amount)}</td><td><span class="bdg ${r.status==='pending'?'bpnd':'bapp'}">${r.status==='pending'?'⏳ Pending':'✓ Approved'}</span></td>${isA?`<td>${r.status===‘pending’?`<button class="bap" data-ap="${r.id}">Approve &amp; Pay</button>`:’—’}</td>`:''}</tr>`).join(’’);
+return`<div class="ph"><h1>Withdrawals</h1><p>Manage shareholder withdrawal requests</p></div>
+
+<div class="card"><div class="ct">◎ Withdrawal Requests</div>
+<div class="tw"><table><thead><tr><th>Date</th><th>Shareholder</th><th>Amount</th><th>Status</th>${isA?'<th>Action</th>':''}</tr></thead><tbody>${rows}</tbody></table></div></div>`;}
+
+function rp(s,isA){
+const sh=user.shareholderId?data.shareholders.find(x=>x.id===user.shareholderId):null;
+return`<div class="ph"><h1>Reports</h1><p>Financial performance overview</p></div>
+
+<div class="g2">
+<div class="card"><div class="ct">▦ Gold Trading</div>
+<table><tbody>
+<tr><td style="color:var(--mu)">Total Bought</td><td style="text-align:right">${fg(s.b)}</td></tr>
+<tr><td style="color:var(--mu)">Total Sold</td><td style="text-align:right">${fg(s.sol)}</td></tr>
+<tr><td style="color:var(--mu)">Inventory</td><td style="text-align:right">${fg(s.inv)}</td></tr>
+<tr><td style="color:var(--mu)">Purchase Value</td><td style="text-align:right">${f$(s.gv)}</td></tr>
+<tr><td style="color:var(--mu)">Sales Revenue</td><td style="text-align:right">${f$(s.sr)}</td></tr>
+<tr><td style="color:var(--mu)">Gold Profit</td><td style="text-align:right" class="${pnc(s.gp)}">${f$(s.gp)}</td></tr>
+</tbody></table></div>
+<div class="card"><div class="ct">▦ Revenue &amp; Expenses</div>
+<table><tbody>
+<tr><td style="color:var(--mu)">Survey Revenue</td><td style="text-align:right">${f$(s.sv)}</td></tr>
+<tr><td style="color:var(--mu)">Total Expenses</td><td style="text-align:right" class="neg">${f$(s.ex)}</td></tr>
+<tr><td style="color:var(--mu)">Company Cash</td><td style="text-align:right">${f$(data.companyCash)}</td></tr>
+<tr><td><strong>Net Profit</strong></td><td style="text-align:right"><strong class="${pnc(s.net)}">${f$(s.net)}</strong></td></tr>
+</tbody></table></div>
+${!isA&&sh?`<div class="card"><div class="ct">◉ Your Balance</div><div class="sv ${pnc(sh.balance)}" style="font-size:2.2rem;margin-bottom:18px">${f$(sh.balance)}</div><button class="ba" data-w="${sh.id}">Request Withdrawal</button></div>`:''}
+</div>`;}
+
+function bind(){
+const lb=document.getElementById(‘lbtn’);
+if(lb){
+const go=()=>{
+const un=document.getElementById(‘un’).value.trim(),pw=document.getElementById(‘pw’).value;
+if(un===‘admin’&&pw===‘admin123’){user={role:‘admin’,name:‘Admin’};tab=‘dashboard’;render();return;}
+const sh=data.shareholders.find(s=>s.name.toLowerCase()===un.toLowerCase()&&s.password===pw);
+if(sh){user={role:‘shareholder’,name:sh.name,shareholderId:sh.id};tab=‘dashboard’;render();return;}
+document.getElementById(‘ler’).textContent=‘Invalid username or password’;
 };
-
-function loadData() {
-  try { return JSON.parse(localStorage.getItem('goldTradingData')) || DEFAULT_DATA; }
-  catch { return DEFAULT_DATA; }
+lb.addEventListener(‘click’,go);
+document.getElementById(‘pw’).addEventListener(‘keydown’,e=>{if(e.key===‘Enter’)go();});
 }
-
-function saveData(d) { localStorage.setItem('goldTradingData', JSON.stringify(d)); }
-
-let data = loadData();
-let user = null;
-let activeTab = 'dashboard';
-
-// ── HELPERS ─────────────────────────────────────────────────────────────
-function fmt(n) { return '$' + (parseFloat(n) || 0).toFixed(2); }
-function fmtG(n) { return (parseFloat(n) || 0).toFixed(2) + 'g'; }
-function fmtDate(iso) { return new Date(iso).toLocaleDateString(); }
-
-function stats() {
-  const bought = data.goldPurchases.reduce((s, p) => s + p.grams, 0);
-  const sold   = data.goldSales.reduce((s, p) => s + p.grams, 0);
-  const goldVal = data.goldPurchases.reduce((s, p) => s + p.totalCost, 0);
-  const salesRev = data.goldSales.reduce((s, p) => s + p.totalRevenue, 0);
-  const expenses = data.expenses.reduce((s, e) => s + e.amount, 0);
-  const surveyRev = data.surveyRevenues.reduce((s, r) => s + r.amount, 0);
-  const goldProfit = data.goldSales.reduce((s, p) => s + p.profit, 0);
-  return { bought, sold, inventory: bought - sold, goldVal, salesRev, expenses, surveyRev, goldProfit, net: goldProfit + surveyRev - expenses };
+const lo=document.getElementById(‘lout’);
+if(lo)lo.addEventListener(‘click’,()=>{user=null;render();});
+document.querySelectorAll(’[data-tab]’).forEach(b=>b.addEventListener(‘click’,()=>{tab=b.dataset.tab;sideOpen=false;const s=document.getElementById(‘sb’),o=document.getElementById(‘ovl’);if(s)s.classList.remove(‘open’);if(o)o.classList.remove(‘show’);render();}));
+const mb=document.getElementById(‘mbtn’);
+if(mb)mb.addEventListener(‘click’,()=>{sideOpen=!sideOpen;document.getElementById(‘sb’).classList.toggle(‘open’,sideOpen);document.getElementById(‘ovl’).classList.toggle(‘show’,sideOpen);});
+const ov=document.getElementById(‘ovl’);
+if(ov)ov.addEventListener(‘click’,()=>{sideOpen=false;document.getElementById(‘sb’).classList.remove(‘open’);ov.classList.remove(‘show’);});
+const abuy=document.getElementById(‘abuy’);
+if(abuy)abuy.addEventListener(‘click’,()=>{const g=parseFloat(document.getElementById(‘bg’).value),r=parseFloat(document.getElementById(‘br’).value);if(!g||!r)return alert(‘Enter grams and rate’);addBuy(g,r);});
+const asell=document.getElementById(‘asell’);
+if(asell)asell.addEventListener(‘click’,()=>{const g=parseFloat(document.getElementById(‘sg’).value),r=parseFloat(document.getElementById(‘sr2’).value);if(!g||!r)return alert(‘Enter grams and rate’);addSell(g,r);});
+const aexp=document.getElementById(‘aexp’);
+if(aexp)aexp.addEventListener(‘click’,()=>{const d=document.getElementById(‘ed’).value.trim(),a=parseFloat(document.getElementById(‘ea’).value);if(!d||!a)return alert(‘Enter description and amount’);addExp(d,a);});
+const asurv=document.getElementById(‘asurv’);
+if(asurv)asurv.addEventListener(‘click’,()=>{const a=parseFloat(document.getElementById(‘sa’).value);if(!a)return alert(‘Enter amount’);addSurv(a);});
+document.querySelectorAll(’[data-w]’).forEach(b=>b.addEventListener(‘click’,()=>{const sid=parseInt(b.dataset.w);const sh=data.shareholders.find(s=>s.id===sid);const a=parseFloat(prompt(‘Withdraw amount\nBalance: ‘+f$(sh.balance)));if(isNaN(a)||a<=0)return;reqW(sid,a);}));
+document.querySelectorAll(’[data-ap]’).forEach(b=>b.addEventListener(‘click’,()=>{if(confirm(‘Approve and pay this withdrawal?’))appW(parseInt(b.dataset.ap));}));
 }
-
-// ── BUSINESS LOGIC ───────────────────────────────────────────────────────
-function addPurchase(grams, rate) {
-  const cost = grams * rate;
-  data.goldPurchases.push({ id: Date.now(), date: new Date().toISOString(), grams, rate, totalCost: cost, remainingGrams: grams });
-  data.companyCash -= cost;
-  saveData(data); render();
-}
-
-function addSale(grams, rate) {
-  let rem = grams, costBasis = 0;
-  data.goldPurchases.forEach(p => {
-    if (rem <= 0 || p.remainingGrams <= 0) return;
-    const take = Math.min(p.remainingGrams, rem);
-    costBasis += take * p.rate;
-    p.remainingGrams -= take;
-    rem -= take;
-  });
-  const rev = grams * rate;
-  const profit = rev - costBasis;
-  const perShare = profit / 3;
-  data.goldSales.push({ id: Date.now(), date: new Date().toISOString(), grams, sellRate: rate, totalRevenue: rev, profit, profitPerShareholder: perShare });
-  data.shareholders.forEach(s => s.balance += perShare);
-  data.companyCash += rev;
-  saveData(data); render();
-}
-
-function addExpense(desc, amount) {
-  const perShare = amount / 3;
-  data.expenses.push({ id: Date.now(), date: new Date().toISOString(), description: desc, amount });
-  data.shareholders.forEach(s => s.balance -= perShare);
-  data.companyCash -= amount;
-  saveData(data); render();
-}
-
-function addSurveyRevenue(amount) {
-  const perShare = amount / 3;
-  data.surveyRevenues.push({ id: Date.now(), date: new Date().toISOString(), amount, dividendPerPerson: perShare });
-  data.shareholders.forEach(s => s.balance += perShare);
-  data.companyCash += amount;
-  saveData(data); render();
-}
-
-function requestWithdrawal(shId, amount) {
-  const sh = data.shareholders.find(s => s.id === shId);
-  if (!sh || sh.balance < amount) { alert('Insufficient balance!'); return; }
-  data.withdrawalRequests.push({ id: Date.now(), date: new Date().toISOString(), shareholderId: shId, shareholderName: sh.name, amount, status: 'pending' });
-  saveData(data); render();
-}
-
-function approveWithdrawal(reqId) {
-  const req = data.withdrawalRequests.find(r => r.id === reqId);
-  if (!req || req.status !== 'pending') return;
-  const sh = data.shareholders.find(s => s.id === req.shareholderId);
-  if (sh) sh.balance -= req.amount;
-  req.status = 'approved';
-  data.companyCash -= req.amount;
-  saveData(data); render();
-}
-
-// ── RENDER ───────────────────────────────────────────────────────────────
-function render() {
-  document.getElementById('app').innerHTML = user ? renderApp() : renderLogin();
-  attachEvents();
-}
-
-function renderLogin() {
-  return `
-  <div class="login-wrap">
-    <div class="login-box">
-      <h1>💰 Gold Trading</h1>
-      <h3>Shareholder & Dividend Management</h3>
-      <input id="uname" type="text" placeholder="Username" />
-      <input id="upass" type="password" placeholder="Password" />
-      <button class="btn btn-full" id="loginBtn">Login</button>
-      <div id="loginErr" class="error-msg"></div>
-      <div class="login-hint">
-        <strong>Login Credentials</strong><br/>
-        👑 Admin: <code>admin</code> / <code>admin123</code><br/>
-        👤 Ahmed: <code>ahmed</code> / <code>ahmed123</code><br/>
-        👤 Sara: <code>sara</code> / <code>sara123</code><br/>
-        👤 Omar: <code>omar</code> / <code>omar123</code>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderApp() {
-  const isAdmin = user.role === 'admin';
-  const s = stats();
-  const tabs = ['dashboard','transactions','shareholders','withdrawals','reports'];
-  const tabLabels = { dashboard:'📊 Dashboard', transactions:'💸 Transactions', shareholders:'👥 Shareholders', withdrawals:'💰 Withdrawals', reports:'📈 Reports' };
-
-  return `
-  <div class="app">
-    <div class="header">
-      <h1>💰 Gold Trading System</h1>
-      <div class="user-info">
-        <span>👤 ${user.name} (${user.role})</span>
-        <button class="btn btn-sm btn-outline" id="logoutBtn">Logout</button>
-      </div>
-    </div>
-    <div class="tabs">
-      ${tabs.map(t => `<button class="tab-btn ${activeTab===t?'active':''}" data-tab="${t}">${tabLabels[t]}</button>`).join('')}
-    </div>
-    <div class="content">
-      ${activeTab === 'dashboard'     ? renderDashboard(s, isAdmin) : ''}
-      ${activeTab === 'transactions'  ? renderTransactions(isAdmin) : ''}
-      ${activeTab === 'shareholders'  ? renderShareholders(isAdmin) : ''}
-      ${activeTab === 'withdrawals'   ? renderWithdrawals(isAdmin) : ''}
-      ${activeTab === 'reports'       ? renderReports(s, isAdmin) : ''}
-    </div>
-  </div>`;
-}
-
-function renderDashboard(s, isAdmin) {
-  const posNeg = v => v >= 0 ? 'positive' : 'negative';
-  return `
-  <div class="stats-grid">
-    <div class="stat-card"><h3>Company Cash</h3><div class="stat-value">${fmt(data.companyCash)}</div></div>
-    <div class="stat-card"><h3>Gold Inventory</h3><div class="stat-value">${fmtG(s.inventory)}</div></div>
-    <div class="stat-card"><h3>Gold Profit</h3><div class="stat-value ${posNeg(s.goldProfit)}">${fmt(s.goldProfit)}</div></div>
-    <div class="stat-card"><h3>Net Profit</h3><div class="stat-value ${posNeg(s.net)}">${fmt(s.net)}</div></div>
-  </div>
-  <div class="card">
-    <h2>💰 Shareholder Balances</h2>
-    ${data.shareholders.map(sh => `
-      <div class="balance-item">
-        <span class="balance-name">${sh.name}</span>
-        <span class="balance-amount">${fmt(sh.balance)}</span>
-        ${!isAdmin && user.shareholderId === sh.id ? `<button class="btn btn-sm" data-withdraw="${sh.id}">Request Withdrawal</button>` : ''}
-      </div>`).join('')}
-  </div>`;
-}
-
-function renderTransactions(isAdmin) {
-  if (!isAdmin) return `<div class="card"><div class="access-denied"><p>⚠️ Only Admin can add transactions.</p><p style="margin-top:8px;font-size:0.85rem;">Shareholders can view reports and request withdrawals.</p></div></div>`;
-  return `
-  <div class="two-col">
-    <div class="card">
-      <h2>💰 Buy Gold</h2>
-      <div class="form-group"><label>Grams</label><input id="buyGrams" type="number" placeholder="0.00"/></div>
-      <div class="form-group" style="margin-top:12px"><label>Rate per gram ($)</label><input id="buyRate" type="number" placeholder="0.00"/></div>
-      <button class="btn" style="margin-top:16px;width:100%" id="addPurchaseBtn">Add Purchase</button>
-    </div>
-    <div class="card">
-      <h2>💵 Sell Gold</h2>
-      <div class="form-group"><label>Grams</label><input id="sellGrams" type="number" placeholder="0.00"/></div>
-      <div class="form-group" style="margin-top:12px"><label>Sell rate per gram ($)</label><input id="sellRate" type="number" placeholder="0.00"/></div>
-      <button class="btn" style="margin-top:16px;width:100%" id="addSaleBtn">Add Sale</button>
-    </div>
-    <div class="card">
-      <h2>📝 Add Expense</h2>
-      <div class="form-group"><label>Description</label><input id="expDesc" type="text" placeholder="e.g. Rent"/></div>
-      <div class="form-group" style="margin-top:12px"><label>Amount ($)</label><input id="expAmount" type="number" placeholder="0.00"/></div>
-      <button class="btn" style="margin-top:16px;width:100%" id="addExpBtn">Add Expense</button>
-    </div>
-    <div class="card">
-      <h2>📊 Survey Revenue</h2>
-      <div class="form-group"><label>Total Amount ($)</label><input id="surveyAmount" type="number" placeholder="0.00"/></div>
-      <button class="btn" style="margin-top:16px;width:100%" id="addSurveyBtn">Add & Distribute</button>
-    </div>
-  </div>`;
-}
-
-function renderShareholders(isAdmin) {
-  return `
-  <div class="card">
-    <h2>👥 Shareholder Details</h2>
-    <table>
-      <thead><tr><th>Name</th><th>Balance</th>${!isAdmin ? '<th>Action</th>' : ''}</tr></thead>
-      <tbody>
-        ${data.shareholders.map(sh => `
-          <tr>
-            <td>${sh.name}</td>
-            <td class="${sh.balance >= 0 ? 'positive' : 'negative'}">${fmt(sh.balance)}</td>
-            ${!isAdmin && user.shareholderId === sh.id ? `<td><button class="btn btn-sm" data-withdraw="${sh.id}">Request Withdrawal</button></td>` : (!isAdmin ? '<td>—</td>' : '')}
-          </tr>`).join('')}
-      </tbody>
-    </table>
-  </div>`;
-}
-
-function renderWithdrawals(isAdmin) {
-  const reqs = data.withdrawalRequests.filter(r => isAdmin || r.shareholderId === user.shareholderId);
-  return `
-  <div class="card">
-    <h2>💰 Withdrawal Requests</h2>
-    ${reqs.length === 0 ? '<div class="empty">No withdrawal requests yet.</div>' : `
-    <table>
-      <thead><tr><th>Date</th><th>Shareholder</th><th>Amount</th><th>Status</th>${isAdmin ? '<th>Action</th>' : ''}</tr></thead>
-      <tbody>
-        ${reqs.map(r => `
-          <tr>
-            <td>${fmtDate(r.date)}</td>
-            <td>${r.shareholderName}</td>
-            <td>${fmt(r.amount)}</td>
-            <td><span class="badge ${r.status === 'pending' ? 'badge-pending' : 'badge-approved'}">${r.status}</span></td>
-            ${isAdmin ? `<td>${r.status === 'pending' ? `<button class="btn btn-sm btn-danger" data-approve="${r.id}">Approve & Pay</button>` : '—'}</td>` : ''}
-          </tr>`).join('')}
-      </tbody>
-    </table>`}
-  </div>`;
-}
-
-function renderReports(s, isAdmin) {
-  const posNeg = v => v >= 0 ? 'positive' : 'negative';
-  const sh = user.shareholderId ? data.shareholders.find(x => x.id === user.shareholderId) : null;
-  return `
-  <div class="two-col">
-    <div class="card">
-      <h2>🏆 Gold Trading Summary</h2>
-      <table>
-        <tbody>
-          <tr><td>Total Bought</td><td>${fmtG(s.bought)}</td></tr>
-          <tr><td>Total Sold</td><td>${fmtG(s.sold)}</td></tr>
-          <tr><td>Current Inventory</td><td>${fmtG(s.inventory)}</td></tr>
-          <tr><td>Purchase Value</td><td>${fmt(s.goldVal)}</td></tr>
-          <tr><td>Sales Revenue</td><td>${fmt(s.salesRev)}</td></tr>
-          <tr><td>Gold Profit</td><td class="${posNeg(s.goldProfit)}">${fmt(s.goldProfit)}</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="card">
-      <h2>📊 Revenue & Expenses</h2>
-      <table>
-        <tbody>
-          <tr><td>Survey Revenue</td><td>${fmt(s.surveyRev)}</td></tr>
-          <tr><td>Total Expenses</td><td class="negative">${fmt(s.expenses)}</td></tr>
-          <tr><td><strong>Net Profit</strong></td><td class="${posNeg(s.net)}"><strong>${fmt(s.net)}</strong></td></tr>
-        </tbody>
-      </table>
-    </div>
-    ${!isAdmin && sh ? `
-    <div class="card">
-      <h2>👤 Your Balance</h2>
-      <div class="stat-value ${posNeg(sh.balance)}" style="font-size:2rem;margin-bottom:16px">${fmt(sh.balance)}</div>
-      <button class="btn" data-withdraw="${sh.id}">Request Withdrawal</button>
-    </div>` : ''}
-  </div>`;
-}
-
-// ── EVENTS ───────────────────────────────────────────────────────────────
-function attachEvents() {
-  // Login
-  const loginBtn = document.getElementById('loginBtn');
-  if (loginBtn) {
-    const doLogin = () => {
-      const un = document.getElementById('uname').value.trim();
-      const pw = document.getElementById('upass').value;
-      if (un === 'admin' && pw === 'admin123') { user = { role: 'admin', name: 'Admin' }; activeTab = 'dashboard'; render(); return; }
-      const sh = data.shareholders.find(s => s.name.toLowerCase() === un.toLowerCase() && s.password === pw);
-      if (sh) { user = { role: 'shareholder', name: sh.name, shareholderId: sh.id }; activeTab = 'dashboard'; render(); return; }
-      document.getElementById('loginErr').textContent = 'Invalid username or password';
-    };
-    loginBtn.addEventListener('click', doLogin);
-    document.getElementById('upass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
-  }
-
-  // Logout
-  const logoutBtn = document.getElementById('logoutBtn');
-  if (logoutBtn) logoutBtn.addEventListener('click', () => { user = null; render(); });
-
-  // Tabs
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => { activeTab = btn.dataset.tab; render(); });
-  });
-
-  // Transactions
-  const addPurchaseBtn = document.getElementById('addPurchaseBtn');
-  if (addPurchaseBtn) addPurchaseBtn.addEventListener('click', () => {
-    const g = parseFloat(document.getElementById('buyGrams').value);
-    const r = parseFloat(document.getElementById('buyRate').value);
-    if (!g || !r) { alert('Enter grams and rate'); return; }
-    addPurchase(g, r);
-  });
-
-  const addSaleBtn = document.getElementById('addSaleBtn');
-  if (addSaleBtn) addSaleBtn.addEventListener('click', () => {
-    const g = parseFloat(document.getElementById('sellGrams').value);
-    const r = parseFloat(document.getElementById('sellRate').value);
-    if (!g || !r) { alert('Enter grams and rate'); return; }
-    addSale(g, r);
-  });
-
-  const addExpBtn = document.getElementById('addExpBtn');
-  if (addExpBtn) addExpBtn.addEventListener('click', () => {
-    const desc = document.getElementById('expDesc').value.trim();
-    const amt = parseFloat(document.getElementById('expAmount').value);
-    if (!desc || !amt) { alert('Enter description and amount'); return; }
-    addExpense(desc, amt);
-  });
-
-  const addSurveyBtn = document.getElementById('addSurveyBtn');
-  if (addSurveyBtn) addSurveyBtn.addEventListener('click', () => {
-    const amt = parseFloat(document.getElementById('surveyAmount').value);
-    if (!amt) { alert('Enter amount'); return; }
-    addSurveyRevenue(amt);
-  });
-
-  // Withdrawal requests
-  document.querySelectorAll('[data-withdraw]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const shId = parseInt(btn.dataset.withdraw);
-      const sh = data.shareholders.find(s => s.id === shId);
-      const amt = parseFloat(prompt(`Enter amount to withdraw (Balance: ${fmt(sh.balance)}):`));
-      if (isNaN(amt) || amt <= 0) return;
-      requestWithdrawal(shId, amt);
-    });
-  });
-
-  // Approve withdrawals
-  document.querySelectorAll('[data-approve]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (confirm('Approve and pay this withdrawal?')) approveWithdrawal(parseInt(btn.dataset.approve));
-    });
-  });
-}
-
-// ── INIT ─────────────────────────────────────────────────────────────────
 render();
 </script>
 
