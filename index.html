@@ -1,295 +1,438 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Gold Trading System</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#C8A96E;--gold2:#E8C98A;--gd:#8B6914;--bg:#0A0A08;--s1:#111110;--s2:#1A1A17;--s3:#222220;--b1:rgba(200,169,110,0.15);--b2:rgba(200,169,110,0.07);--tx:#F5F0E8;--mu:#6B6558;--mu2:#9A9080;--gr:#5CB87A;--rd:#D96B6B;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased;}
-::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:2px;}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Georgia, serif; background: #0a0a08; color: #f0ead6; min-height: 100vh; }
 
 /* LOGIN */
-.lp{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
-background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(200,169,110,0.1) 0%,transparent 70%),var(–bg);}
-.lc{width:100%;max-width:390px;background:linear-gradient(145deg,var(–s2),var(–s1));border:1px solid var(–b1);border-radius:20px;padding:44px 36px;position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,0.5);}
-.lc::before{content:’’;position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(–gold),transparent);}
-.ll{text-align:center;margin-bottom:30px;}
-.li{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,var(–gd),var(–gold));display:inline-flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;box-shadow:0 8px 24px rgba(200,169,110,0.25);}
-.ll h1{font-family:‘Cormorant Garamond’,serif;font-size:1.75rem;font-weight:700;color:var(–tx);}
-.ll p{font-size:0.7rem;color:var(–mu);letter-spacing:0.1em;text-transform:uppercase;margin-top:3px;}
-.fld{margin-bottom:13px;}
-.fld label{display:block;font-size:0.68rem;font-weight:600;color:var(–mu2);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:5px;}
-.fld input{width:100%;padding:12px 15px;background:var(–s3);border:1px solid var(–b1);border-radius:9px;color:var(–tx);font-family:‘Inter’,sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
-.fld input:focus{border-color:rgba(200,169,110,0.45);box-shadow:0 0 0 3px rgba(200,169,110,0.07);}
-.bp{width:100%;padding:13px;margin-top:6px;background:linear-gradient(135deg,var(–gd),var(–gold));border:none;border-radius:9px;color:#0A0A08;font-family:‘Inter’,sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;letter-spacing:0.02em;transition:opacity 0.2s;box-shadow:0 4px 18px rgba(200,169,110,0.22);}
-.bp:hover{opacity:0.88;}
-.er{color:var(–rd);font-size:0.78rem;margin-top:9px;text-align:center;}
-.ch{margin-top:22px;padding:14px;background:rgba(200,169,110,0.04);border:1px solid var(–b2);border-radius:9px;font-size:0.73rem;color:var(–mu);line-height:2;}
-.ch strong{color:var(–gold);font-weight:500;}
-.ch code{font-size:0.7rem;background:var(–s3);color:var(–tx);padding:1px 5px;border-radius:3px;font-family:monospace;}
+.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a08; padding: 20px; }
+.login-box { background: #1a1a17; border: 1px solid rgba(200,169,110,0.3); border-radius: 16px; padding: 40px 36px; width: 100%; max-width: 380px; }
+.login-box h1 { font-size: 1.6rem; color: #c8a96e; text-align: center; margin-bottom: 4px; }
+.login-box h3 { font-size: 0.75rem; color: #6b6558; text-align: center; margin-bottom: 28px; font-weight: normal; letter-spacing: 0.08em; text-transform: uppercase; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 0.72rem; color: #9a9080; margin-bottom: 5px; font-family: Arial, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+.field input { width: 100%; padding: 12px 14px; background: #222220; border: 1px solid rgba(200,169,110,0.2); border-radius: 8px; color: #f0ead6; font-size: 0.9rem; font-family: Arial, sans-serif; outline: none; }
+.field input:focus { border-color: rgba(200,169,110,0.5); }
+.btn-gold { width: 100%; padding: 13px; background: linear-gradient(135deg, #8b6914, #c8a96e); border: none; border-radius: 8px; color: #0a0a08; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-top: 6px; font-family: Arial, sans-serif; }
+.btn-gold:hover { opacity: 0.9; }
+.err { color: #d96b6b; font-size: 0.8rem; text-align: center; margin-top: 8px; font-family: Arial, sans-serif; }
+.creds { margin-top: 20px; background: rgba(200,169,110,0.05); border: 1px solid rgba(200,169,110,0.1); border-radius: 8px; padding: 14px; font-family: Arial, sans-serif; font-size: 0.73rem; color: #6b6558; line-height: 2; }
+.creds strong { color: #c8a96e; }
+.creds code { background: #222; color: #f0ead6; padding: 1px 5px; border-radius: 3px; font-size: 0.7rem; }
 
-/* SHELL */
-.shell{display:flex;min-height:100vh;}
-.sb{width:210px;min-height:100vh;background:var(–s1);border-right:1px solid var(–b2);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;}
-.sl{padding:22px 18px;border-bottom:1px solid var(–b2);}
-.sli{width:34px;height:34px;border-radius:7px;background:linear-gradient(135deg,var(–gd),var(–gold));display:inline-flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:7px;}
-.sl h2{font-family:‘Cormorant Garamond’,serif;font-size:1.05rem;color:var(–tx);}
-.sl p{font-size:0.62rem;color:var(–mu);letter-spacing:0.06em;text-transform:uppercase;}
-.nav{flex:1;padding:14px 10px;}
-.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:7px;color:var(–mu2);font-size:0.8rem;font-weight:500;cursor:pointer;transition:all 0.15s;margin-bottom:1px;border:none;background:none;width:100%;text-align:left;}
-.ni:hover{background:var(–s2);color:var(–tx);}
-.ni.on{background:rgba(200,169,110,0.1);color:var(–gold);}
-.nic{font-size:13px;width:18px;text-align:center;}
-.sf{padding:14px;border-top:1px solid var(–b2);}
-.uc{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:7px;background:var(–s2);margin-bottom:8px;}
-.av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(–gd),var(–gold));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0A0A08;flex-shrink:0;}
-.un{font-size:0.78rem;font-weight:500;color:var(–tx);}
-.ur{font-size:0.62rem;color:var(–mu);text-transform:capitalize;}
-.blo{width:100%;padding:8px;border-radius:7px;background:transparent;border:1px solid var(–b1);color:var(–mu2);font-family:‘Inter’,sans-serif;font-size:0.75rem;cursor:pointer;transition:all 0.15s;}
-.blo:hover{border-color:var(–rd);color:var(–rd);}
+/* LAYOUT */
+.app { display: flex; min-height: 100vh; }
+.sidebar { width: 200px; background: #111110; border-right: 1px solid rgba(200,169,110,0.1); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 10; }
+.sidebar-top { padding: 20px 16px; border-bottom: 1px solid rgba(200,169,110,0.1); }
+.sidebar-top h2 { color: #c8a96e; font-size: 1rem; }
+.sidebar-top p { color: #6b6558; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; font-family: Arial, sans-serif; }
+.nav { flex: 1; padding: 12px 10px; }
+.nav-btn { display: flex; align-items: center; gap: 9px; width: 100%; padding: 9px 11px; border: none; background: none; color: #9a9080; font-size: 0.82rem; font-family: Arial, sans-serif; cursor: pointer; border-radius: 7px; text-align: left; margin-bottom: 2px; transition: all 0.15s; }
+.nav-btn:hover { background: #1a1a17; color: #f0ead6; }
+.nav-btn.active { background: rgba(200,169,110,0.12); color: #c8a96e; }
+.sidebar-bottom { padding: 14px; border-top: 1px solid rgba(200,169,110,0.1); }
+.user-box { background: #1a1a17; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
+.user-box .uname { font-size: 0.82rem; color: #f0ead6; font-family: Arial, sans-serif; }
+.user-box .urole { font-size: 0.65rem; color: #6b6558; font-family: Arial, sans-serif; text-transform: capitalize; }
+.btn-logout { width: 100%; padding: 8px; background: none; border: 1px solid rgba(200,169,110,0.2); border-radius: 7px; color: #9a9080; font-family: Arial, sans-serif; font-size: 0.75rem; cursor: pointer; }
+.btn-logout:hover { border-color: #d96b6b; color: #d96b6b; }
 
-/* MAIN */
-.main{margin-left:210px;flex:1;padding:28px;}
-.ph{margin-bottom:24px;}
-.ph h1{font-family:‘Cormorant Garamond’,serif;font-size:1.75rem;font-weight:700;color:var(–tx);}
-.ph p{font-size:0.77rem;color:var(–mu);margin-top:3px;}
+/* CONTENT */
+.content { margin-left: 200px; flex: 1; padding: 28px; }
+.page-title { margin-bottom: 22px; }
+.page-title h1 { font-size: 1.6rem; color: #f0ead6; }
+.page-title p { font-size: 0.77rem; color: #6b6558; margin-top: 3px; font-family: Arial, sans-serif; }
 
 /* STATS */
-.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:14px;margin-bottom:22px;}
-.sc{background:var(–s1);border:1px solid var(–b2);border-radius:11px;padding:18px 20px;position:relative;overflow:hidden;transition:border-color 0.2s;}
-.sc:hover{border-color:var(–b1);}
-.sc::after{content:’’;position:absolute;top:-10px;right:-10px;width:60px;height:60px;background:radial-gradient(circle,rgba(200,169,110,0.07),transparent 70%);}
-.sl2{font-size:0.66rem;font-weight:600;color:var(–mu);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:9px;}
-.sv{font-family:‘Cormorant Garamond’,serif;font-size:1.85rem;font-weight:700;color:var(–gold);line-height:1;}
-.sv.pos{color:var(–gr);}
-.sv.neg{color:var(–rd);}
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.stat-card { background: #111110; border: 1px solid rgba(200,169,110,0.12); border-radius: 10px; padding: 18px 20px; }
+.stat-card .label { font-size: 0.67rem; color: #6b6558; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; font-family: Arial, sans-serif; }
+.stat-card .value { font-size: 1.7rem; color: #c8a96e; font-weight: bold; }
+.stat-card .value.green { color: #5cb87a; }
+.stat-card .value.red { color: #d96b6b; }
 
 /* CARD */
-.card{background:var(–s1);border:1px solid var(–b2);border-radius:11px;padding:22px;margin-bottom:18px;}
-.ct{font-family:‘Cormorant Garamond’,serif;font-size:1.1rem;font-weight:600;color:var(–tx);margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+.card { background: #111110; border: 1px solid rgba(200,169,110,0.12); border-radius: 10px; padding: 22px; margin-bottom: 18px; }
+.card-title { font-size: 1.05rem; color: #f0ead6; margin-bottom: 16px; }
 
-/* FORMS */
-.fg{display:grid;gap:12px;margin-bottom:14px;}
-.fg2{grid-template-columns:1fr 1fr;}
-.ff label{display:block;font-size:0.65rem;font-weight:600;color:var(–mu2);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:5px;}
-.ff input{width:100%;padding:10px 13px;background:var(–s2);border:1px solid var(–b1);border-radius:7px;color:var(–tx);font-family:‘Inter’,sans-serif;font-size:0.86rem;outline:none;transition:border-color 0.2s;}
-.ff input:focus{border-color:rgba(200,169,110,0.4);}
-.ba{padding:10px 20px;background:linear-gradient(135deg,var(–gd),var(–gold));border:none;border-radius:7px;color:#0A0A08;font-family:‘Inter’,sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;transition:opacity 0.15s;white-space:nowrap;}
-.ba:hover{opacity:0.88;}
-.ba.full{width:100%;margin-top:4px;}
-.bsm{padding:5px 12px;border-radius:5px;background:rgba(200,169,110,0.09);border:1px solid rgba(200,169,110,0.2);color:var(–gold);font-family:‘Inter’,sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer;transition:all 0.15s;}
-.bsm:hover{background:rgba(200,169,110,0.18);}
-.bap{padding:5px 12px;border-radius:5px;background:rgba(92,184,122,0.09);border:1px solid rgba(92,184,122,0.22);color:var(–gr);font-family:‘Inter’,sans-serif;font-size:0.72rem;font-weight:500;cursor:pointer;transition:all 0.15s;}
-.bap:hover{background:rgba(92,184,122,0.18);}
+/* BALANCE LIST */
+.bal-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.bal-item:last-child { border-bottom: none; }
+.bal-left { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #8b6914, #c8a96e); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #0a0a08; font-family: Arial, sans-serif; }
+.bal-name { font-size: 0.88rem; font-family: Arial, sans-serif; }
+.bal-sub { font-size: 0.68rem; color: #6b6558; font-family: Arial, sans-serif; }
+.bal-right { display: flex; align-items: center; gap: 10px; }
+.bal-amount { font-size: 1.2rem; color: #c8a96e; font-weight: bold; }
+
+/* BUTTONS */
+.btn-sm { padding: 6px 13px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.22); color: #c8a96e; border-radius: 6px; font-family: Arial, sans-serif; font-size: 0.73rem; cursor: pointer; }
+.btn-sm:hover { background: rgba(200,169,110,0.2); }
+.btn-approve { padding: 6px 13px; background: rgba(92,184,122,0.1); border: 1px solid rgba(92,184,122,0.22); color: #5cb87a; border-radius: 6px; font-family: Arial, sans-serif; font-size: 0.73rem; cursor: pointer; }
+.btn-approve:hover { background: rgba(92,184,122,0.2); }
+.btn-action { padding: 11px 20px; background: linear-gradient(135deg, #8b6914, #c8a96e); border: none; border-radius: 8px; color: #0a0a08; font-weight: bold; font-family: Arial, sans-serif; font-size: 0.82rem; cursor: pointer; width: 100%; margin-top: 6px; }
+.btn-action:hover { opacity: 0.9; }
+
+/* FORM */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 0.68rem; color: #9a9080; margin-bottom: 5px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
+.form-group input { width: 100%; padding: 10px 12px; background: #1a1a17; border: 1px solid rgba(200,169,110,0.18); border-radius: 7px; color: #f0ead6; font-family: Arial, sans-serif; font-size: 0.87rem; outline: none; }
+.form-group input:focus { border-color: rgba(200,169,110,0.4); }
 
 /* TABLE */
-.tw{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;}
-th{padding:9px 13px;font-size:0.64rem;font-weight:600;color:var(–mu);letter-spacing:0.07em;text-transform:uppercase;text-align:left;border-bottom:1px solid var(–b2);}
-td{padding:12px 13px;font-size:0.82rem;border-bottom:1px solid rgba(255,255,255,0.025);color:var(–tx);}
-tr:last-child td{border-bottom:none;}
-tbody tr{transition:background 0.1s;}
-tbody tr:hover td{background:rgba(255,255,255,0.02);}
-
-/* BALANCE */
-.bi{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(–b2);}
-.bi:last-child{border-bottom:none;}
-.bl{display:flex;align-items:center;gap:11px;}
-.bav{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(–gd),var(–gold));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0A0A08;}
-.bn{font-size:0.87rem;font-weight:500;}
-.bs{font-size:0.68rem;color:var(–mu);}
-.bamt{font-family:‘Cormorant Garamond’,serif;font-size:1.25rem;font-weight:600;color:var(–gold);}
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; }
+th { padding: 9px 13px; font-size: 0.65rem; color: #6b6558; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: normal; }
+td { padding: 12px 13px; font-size: 0.83rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
 
 /* BADGE */
-.bdg{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:0.68rem;font-weight:600;}
-.bpnd{background:rgba(200,169,110,0.09);color:var(–gold);border:1px solid rgba(200,169,110,0.2);}
-.bapp{background:rgba(92,184,122,0.09);color:var(–gr);border:1px solid rgba(92,184,122,0.2);}
+.badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 0.7rem; font-family: Arial, sans-serif; font-weight: bold; }
+.badge-pending { background: rgba(200,169,110,0.1); color: #c8a96e; border: 1px solid rgba(200,169,110,0.2); }
+.badge-approved { background: rgba(92,184,122,0.1); color: #5cb87a; border: 1px solid rgba(92,184,122,0.2); }
 
-.pos{color:var(–gr);}
-.neg{color:var(–rd);}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-.emp{text-align:center;padding:36px;color:var(–mu);font-size:0.82rem;}
+.green { color: #5cb87a; }
+.red { color: #d96b6b; }
+.muted { color: #6b6558; }
+.empty { text-align: center; padding: 36px; color: #6b6558; font-family: Arial, sans-serif; font-size: 0.83rem; }
 
 /* MOBILE */
-.mhdr{display:none;}
-@media(max-width:768px){
-.sb{transform:translateX(-100%);transition:transform 0.28s ease;}
-.sb.open{transform:translateX(0);}
-.main{margin-left:0;padding:18px;}
-.mhdr{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;background:var(–s1);border-bottom:1px solid var(–b2);position:sticky;top:0;z-index:50;}
-.mhdr h2{font-family:‘Cormorant Garamond’,serif;font-size:1.05rem;color:var(–gold);}
-.hbg{background:none;border:none;color:var(–tx);font-size:1.2rem;cursor:pointer;padding:4px;}
-.ovl{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99;display:none;}
-.ovl.show{display:block;}
-.fg2,.g2{grid-template-columns:1fr;}
-.sg{grid-template-columns:1fr 1fr;}
+.mobile-bar { display: none; }
+@media(max-width: 768px) {
+  .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
+  .sidebar.open { transform: translateX(0); }
+  .content { margin-left: 0; padding: 16px; }
+  .mobile-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #111110; border-bottom: 1px solid rgba(200,169,110,0.1); position: sticky; top: 0; z-index: 5; }
+  .mobile-bar h2 { color: #c8a96e; font-size: 1rem; }
+  .hamburger { background: none; border: none; color: #f0ead6; font-size: 1.3rem; cursor: pointer; }
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9; display: none; }
+  .overlay.show { display: block; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .grid2 { grid-template-columns: 1fr; }
 }
-@media(min-width:769px){.mhdr{display:none;}.ovl{display:none!important;}}
+@media(min-width: 769px) { .mobile-bar { display: none; } .overlay { display: none !important; } }
 </style>
-
 </head>
 <body>
-<div id="root"></div>
+<div id="app"></div>
 <script>
-const DF={goldPurchases:[],goldSales:[],expenses:[],surveyRevenues:[],withdrawalRequests:[],shareholders:[{id:1,name:"Ahmed",password:"ahmed123",balance:0},{id:2,name:"Sara",password:"sara123",balance:0},{id:3,name:"Omar",password:"omar123",balance:0}],companyCash:0};
-function ld(){try{return JSON.parse(localStorage.getItem('gtd2'))||DF;}catch{return DF;}}
-function sv(d){localStorage.setItem('gtd2',JSON.stringify(d));}
-let data=ld(),user=null,tab='dashboard',sideOpen=false;
-
-const f$=n=>’$’+(parseFloat(n)||0).toFixed(2);
-const fg=n=>(parseFloat(n)||0).toFixed(2)+‘g’;
-const fd=iso=>new Date(iso).toLocaleDateString(‘en-GB’,{day:‘2-digit’,month:‘short’,year:‘2-digit’});
-const ini=n=>n.split(’ ‘).map(w=>w[0]).join(’’).toUpperCase().slice(0,2);
-const pnc=v=>v>=0?‘pos’:‘neg’;
-
-function st(){
-const b=data.goldPurchases.reduce((s,p)=>s+p.grams,0);
-const sol=data.goldSales.reduce((s,p)=>s+p.grams,0);
-const gv=data.goldPurchases.reduce((s,p)=>s+p.totalCost,0);
-const sr=data.goldSales.reduce((s,p)=>s+p.totalRevenue,0);
-const ex=data.expenses.reduce((s,e)=>s+e.amount,0);
-const sv2=data.surveyRevenues.reduce((s,r)=>s+r.amount,0);
-const gp=data.goldSales.reduce((s,p)=>s+p.profit,0);
-return{b,sol,inv:b-sol,gv,sr,ex,sv:sv2,gp,net:gp+sv2-ex};
-}
-
-function addBuy(g,r){const c=g*r;data.goldPurchases.push({id:Date.now(),date:new Date().toISOString(),grams:g,rate:r,totalCost:c,remainingGrams:g});data.companyCash-=c;sv(data);render();}
-function addSell(g,r){let rem=g,cb=0;data.goldPurchases.forEach(p=>{if(rem<=0||p.remainingGrams<=0)return;const t=Math.min(p.remainingGrams,rem);cb+=t*p.rate;p.remainingGrams-=t;rem-=t;});const rev=g*r,pf=rev-cb,ps=pf/3;data.goldSales.push({id:Date.now(),date:new Date().toISOString(),grams:g,sellRate:r,totalRevenue:rev,profit:pf,profitPerShareholder:ps});data.shareholders.forEach(s=>s.balance+=ps);data.companyCash+=rev;sv(data);render();}
-function addExp(desc,amt){const ps=amt/3;data.expenses.push({id:Date.now(),date:new Date().toISOString(),description:desc,amount:amt});data.shareholders.forEach(s=>s.balance-=ps);data.companyCash-=amt;sv(data);render();}
-function addSurv(amt){const ps=amt/3;data.surveyRevenues.push({id:Date.now(),date:new Date().toISOString(),amount:amt,dividendPerPerson:ps});data.shareholders.forEach(s=>s.balance+=ps);data.companyCash+=amt;sv(data);render();}
-function reqW(sid,amt){const sh=data.shareholders.find(s=>s.id===sid);if(!sh||sh.balance<amt){alert(‘Insufficient balance!’);return;}data.withdrawalRequests.push({id:Date.now(),date:new Date().toISOString(),shareholderId:sid,shareholderName:sh.name,amount:amt,status:‘pending’});sv(data);render();}
-function appW(rid){const r=data.withdrawalRequests.find(x=>x.id===rid);if(!r||r.status!==‘pending’)return;const sh=data.shareholders.find(s=>s.id===r.shareholderId);if(sh)sh.balance-=r.amount;r.status=‘approved’;data.companyCash-=r.amount;sv(data);render();}
-
-function render(){document.getElementById(‘root’).innerHTML=user?app():login();bind();}
-
-function login(){return`<div class="lp"><div class="lc"><div class="ll"><div class="li">💰</div><h1>Gold Trading System</h1><p>Shareholder & Dividend Platform</p></div><div class="fld"><label>Username</label><input id="un" type="text" placeholder="Enter your username"/></div><div class="fld"><label>Password</label><input id="pw" type="password" placeholder="Enter your password"/></div><button class="bp" id="lbtn">Sign In</button><div id="ler" class="er"></div><div class="ch"><strong>Access Credentials</strong><br/>👑 Admin &nbsp;<code>admin</code> / <code>admin123</code><br/>👤 Ahmed &nbsp;<code>ahmed</code> / <code>ahmed123</code><br/>👤 Sara &nbsp;&nbsp;<code>sara</code> / <code>sara123</code><br/>👤 Omar &nbsp;&nbsp;<code>omar</code> / <code>omar123</code></div></div></div>`;}
-
-const TABS=[{id:‘dashboard’,ic:‘◈’,lb:‘Dashboard’},{id:‘transactions’,ic:‘⇅’,lb:‘Transactions’},{id:‘shareholders’,ic:‘◉’,lb:‘Shareholders’},{id:‘withdrawals’,ic:‘◎’,lb:‘Withdrawals’},{id:‘reports’,ic:‘▦’,lb:‘Reports’}];
-
-function app(){
-const isA=user.role===‘admin’;
-const s=st();
-const nav=TABS.map(t=>`<button class="ni${tab===t.id?' on':''}" data-tab="${t.id}"><span class="nic">${t.ic}</span>${t.lb}</button>`).join(’’);
-const a=ini(user.name);
-const sidebar=`<div class="sb" id="sb"><div class="sl"><div class="sli">💰</div><h2>Gold Trading</h2><p>Management System</p></div><nav class="nav">${nav}</nav><div class="sf"><div class="uc"><div class="av">${a}</div><div><div class="un">${user.name}</div><div class="ur">${user.role}</div></div></div><button class="blo" id="lout">Sign Out</button></div></div>`;
-const mh=`<div class="mhdr"><button class="hbg" id="mbtn">☰</button><h2>💰 Gold Trading</h2><div class="av" style="width:30px;height:30px;">${a}</div></div>`;
-const ovl=`<div class="ovl" id="ovl"></div>`;
-let pg=’’;
-if(tab===‘dashboard’)pg=dash(s,isA);
-else if(tab===‘transactions’)pg=tx(isA);
-else if(tab===‘shareholders’)pg=sh(isA);
-else if(tab===‘withdrawals’)pg=wd(isA);
-else if(tab===‘reports’)pg=rp(s,isA);
-return`${ovl}${sidebar}${mh}<div class="main">${pg}</div>`;
-}
-
-function dash(s,isA){
-const rows=data.shareholders.map(x=>`<div class="bi"><div class="bl"><div class="bav">${ini(x.name)}</div><div><div class="bn">${x.name}</div><div class="bs">Shareholder</div></div></div><div style="display:flex;align-items:center;gap:10px"><div class="bamt">${f$(x.balance)}</div>${!isA&&user.shareholderId===x.id?`<button class="bsm" data-w="${x.id}">Withdraw</button>`:''}</div></div>`).join(’’);
-return`<div class="ph"><h1>Dashboard</h1><p>Overview of your gold trading operations</p></div>
-
-<div class="sg">
-<div class="sc"><div class="sl2">Company Cash</div><div class="sv">${f$(data.companyCash)}</div></div>
-<div class="sc"><div class="sl2">Gold Inventory</div><div class="sv">${fg(s.inv)}</div></div>
-<div class="sc"><div class="sl2">Gold Profit</div><div class="sv ${pnc(s.gp)}">${f$(s.gp)}</div></div>
-<div class="sc"><div class="sl2">Net Profit</div><div class="sv ${pnc(s.net)}">${f$(s.net)}</div></div>
-</div>
-<div class="card"><div class="ct">◉ Shareholder Balances</div>${rows}</div>`;}
-
-function tx(isA){
-if(!isA)return`<div class="ph"><h1>Transactions</h1></div><div class="card"><div class="emp">⚠️ Only Admin can record transactions.<br/><br/><span style="font-size:0.78rem;color:var(--mu)">Shareholders can view reports and request withdrawals.</span></div></div>`;
-return`<div class="ph"><h1>Transactions</h1><p>Record purchases, sales, expenses and revenue</p></div>
-
-<div class="g2">
-<div class="card"><div class="ct">↓ Buy Gold</div>
-<div class="fg fg2"><div class="ff"><label>Grams</label><input id="bg" type="number" placeholder="0.00"/></div><div class="ff"><label>Rate / gram ($)</label><input id="br" type="number" placeholder="0.00"/></div></div>
-<button class="ba full" id="abuy">Record Purchase</button></div>
-<div class="card"><div class="ct">↑ Sell Gold</div>
-<div class="fg fg2"><div class="ff"><label>Grams</label><input id="sg" type="number" placeholder="0.00"/></div><div class="ff"><label>Sell rate ($)</label><input id="sr2" type="number" placeholder="0.00"/></div></div>
-<button class="ba full" id="asell">Record Sale</button></div>
-<div class="card"><div class="ct">− Expense</div>
-<div class="fg"><div class="ff"><label>Description</label><input id="ed" type="text" placeholder="e.g. Office rent"/></div><div class="ff"><label>Amount ($)</label><input id="ea" type="number" placeholder="0.00"/></div></div>
-<button class="ba full" id="aexp">Add Expense</button></div>
-<div class="card"><div class="ct">+ Survey Revenue</div>
-<div class="fg"><div class="ff"><label>Total Amount ($)</label><input id="sa" type="number" placeholder="0.00"/></div></div>
-<button class="ba full" id="asurv">Add &amp; Distribute</button></div>
-</div>`;}
-
-function sh(isA){
-const rows=data.shareholders.map(x=>`<tr><td><div style="display:flex;align-items:center;gap:10px"><div class="bav" style="width:30px;height:30px;font-size:11px;">${ini(x.name)}</div>${x.name}</div></td><td class="${pnc(x.balance)}">${f$(x.balance)}</td>${!isA?`<td>${user.shareholderId===x.id?`<button class="bsm" data-w="${x.id}">Withdraw</button>`:’—’}</td>`:''}</tr>`).join(’’);
-return`<div class="ph"><h1>Shareholders</h1><p>Equity balances and withdrawal management</p></div>
-
-<div class="card"><div class="ct">◉ Shareholder Overview</div>
-<div class="tw"><table><thead><tr><th>Name</th><th>Balance</th>${!isA?'<th>Action</th>':''}</tr></thead><tbody>${rows}</tbody></table></div></div>`;}
-
-function wd(isA){
-const reqs=data.withdrawalRequests.filter(r=>isA||r.shareholderId===user.shareholderId);
-const rows=reqs.length===0?`<tr><td colspan="5" style="text-align:center;padding:36px;color:var(--mu)">No withdrawal requests yet</td></tr>`:reqs.map(r=>`<tr><td>${fd(r.date)}</td><td>${r.shareholderName}</td><td>${f$(r.amount)}</td><td><span class="bdg ${r.status==='pending'?'bpnd':'bapp'}">${r.status==='pending'?'⏳ Pending':'✓ Approved'}</span></td>${isA?`<td>${r.status===‘pending’?`<button class="bap" data-ap="${r.id}">Approve &amp; Pay</button>`:’—’}</td>`:''}</tr>`).join(’’);
-return`<div class="ph"><h1>Withdrawals</h1><p>Manage shareholder withdrawal requests</p></div>
-
-<div class="card"><div class="ct">◎ Withdrawal Requests</div>
-<div class="tw"><table><thead><tr><th>Date</th><th>Shareholder</th><th>Amount</th><th>Status</th>${isA?'<th>Action</th>':''}</tr></thead><tbody>${rows}</tbody></table></div></div>`;}
-
-function rp(s,isA){
-const sh=user.shareholderId?data.shareholders.find(x=>x.id===user.shareholderId):null;
-return`<div class="ph"><h1>Reports</h1><p>Financial performance overview</p></div>
-
-<div class="g2">
-<div class="card"><div class="ct">▦ Gold Trading</div>
-<table><tbody>
-<tr><td style="color:var(--mu)">Total Bought</td><td style="text-align:right">${fg(s.b)}</td></tr>
-<tr><td style="color:var(--mu)">Total Sold</td><td style="text-align:right">${fg(s.sol)}</td></tr>
-<tr><td style="color:var(--mu)">Inventory</td><td style="text-align:right">${fg(s.inv)}</td></tr>
-<tr><td style="color:var(--mu)">Purchase Value</td><td style="text-align:right">${f$(s.gv)}</td></tr>
-<tr><td style="color:var(--mu)">Sales Revenue</td><td style="text-align:right">${f$(s.sr)}</td></tr>
-<tr><td style="color:var(--mu)">Gold Profit</td><td style="text-align:right" class="${pnc(s.gp)}">${f$(s.gp)}</td></tr>
-</tbody></table></div>
-<div class="card"><div class="ct">▦ Revenue &amp; Expenses</div>
-<table><tbody>
-<tr><td style="color:var(--mu)">Survey Revenue</td><td style="text-align:right">${f$(s.sv)}</td></tr>
-<tr><td style="color:var(--mu)">Total Expenses</td><td style="text-align:right" class="neg">${f$(s.ex)}</td></tr>
-<tr><td style="color:var(--mu)">Company Cash</td><td style="text-align:right">${f$(data.companyCash)}</td></tr>
-<tr><td><strong>Net Profit</strong></td><td style="text-align:right"><strong class="${pnc(s.net)}">${f$(s.net)}</strong></td></tr>
-</tbody></table></div>
-${!isA&&sh?`<div class="card"><div class="ct">◉ Your Balance</div><div class="sv ${pnc(sh.balance)}" style="font-size:2.2rem;margin-bottom:18px">${f$(sh.balance)}</div><button class="ba" data-w="${sh.id}">Request Withdrawal</button></div>`:''}
-</div>`;}
-
-function bind(){
-const lb=document.getElementById(‘lbtn’);
-if(lb){
-const go=()=>{
-const un=document.getElementById(‘un’).value.trim(),pw=document.getElementById(‘pw’).value;
-if(un===‘admin’&&pw===‘admin123’){user={role:‘admin’,name:‘Admin’};tab=‘dashboard’;render();return;}
-const sh=data.shareholders.find(s=>s.name.toLowerCase()===un.toLowerCase()&&s.password===pw);
-if(sh){user={role:‘shareholder’,name:sh.name,shareholderId:sh.id};tab=‘dashboard’;render();return;}
-document.getElementById(‘ler’).textContent=‘Invalid username or password’;
+var DF = {
+  goldPurchases: [], goldSales: [], expenses: [], surveyRevenues: [],
+  withdrawalRequests: [],
+  shareholders: [
+    {id:1, name:"Ahmed", password:"ahmed123", balance:0},
+    {id:2, name:"Sara",  password:"sara123",  balance:0},
+    {id:3, name:"Omar",  password:"omar123",  balance:0}
+  ],
+  companyCash: 0
 };
-lb.addEventListener(‘click’,go);
-document.getElementById(‘pw’).addEventListener(‘keydown’,e=>{if(e.key===‘Enter’)go();});
+
+function loadData() { try { return JSON.parse(localStorage.getItem('gtd3')) || DF; } catch(e) { return DF; } }
+function saveData(d) { localStorage.setItem('gtd3', JSON.stringify(d)); }
+
+var data = loadData();
+var user = null;
+var tab = 'dashboard';
+var sideOpen = false;
+
+function f$(n) { return '$' + (parseFloat(n)||0).toFixed(2); }
+function fg(n) { return (parseFloat(n)||0).toFixed(2) + 'g'; }
+function fd(iso) { return new Date(iso).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'2-digit'}); }
+function ini(n) { return n.slice(0,2).toUpperCase(); }
+function pc(v) { return v >= 0 ? 'green' : 'red'; }
+
+function getStats() {
+  var b = data.goldPurchases.reduce(function(s,p){return s+p.grams;}, 0);
+  var sol = data.goldSales.reduce(function(s,p){return s+p.grams;}, 0);
+  var gv = data.goldPurchases.reduce(function(s,p){return s+p.totalCost;}, 0);
+  var sr = data.goldSales.reduce(function(s,p){return s+p.totalRevenue;}, 0);
+  var ex = data.expenses.reduce(function(s,e){return s+e.amount;}, 0);
+  var sv = data.surveyRevenues.reduce(function(s,r){return s+r.amount;}, 0);
+  var gp = data.goldSales.reduce(function(s,p){return s+p.profit;}, 0);
+  return {b:b, sol:sol, inv:b-sol, gv:gv, sr:sr, ex:ex, sv:sv, gp:gp, net:gp+sv-ex};
 }
-const lo=document.getElementById(‘lout’);
-if(lo)lo.addEventListener(‘click’,()=>{user=null;render();});
-document.querySelectorAll(’[data-tab]’).forEach(b=>b.addEventListener(‘click’,()=>{tab=b.dataset.tab;sideOpen=false;const s=document.getElementById(‘sb’),o=document.getElementById(‘ovl’);if(s)s.classList.remove(‘open’);if(o)o.classList.remove(‘show’);render();}));
-const mb=document.getElementById(‘mbtn’);
-if(mb)mb.addEventListener(‘click’,()=>{sideOpen=!sideOpen;document.getElementById(‘sb’).classList.toggle(‘open’,sideOpen);document.getElementById(‘ovl’).classList.toggle(‘show’,sideOpen);});
-const ov=document.getElementById(‘ovl’);
-if(ov)ov.addEventListener(‘click’,()=>{sideOpen=false;document.getElementById(‘sb’).classList.remove(‘open’);ov.classList.remove(‘show’);});
-const abuy=document.getElementById(‘abuy’);
-if(abuy)abuy.addEventListener(‘click’,()=>{const g=parseFloat(document.getElementById(‘bg’).value),r=parseFloat(document.getElementById(‘br’).value);if(!g||!r)return alert(‘Enter grams and rate’);addBuy(g,r);});
-const asell=document.getElementById(‘asell’);
-if(asell)asell.addEventListener(‘click’,()=>{const g=parseFloat(document.getElementById(‘sg’).value),r=parseFloat(document.getElementById(‘sr2’).value);if(!g||!r)return alert(‘Enter grams and rate’);addSell(g,r);});
-const aexp=document.getElementById(‘aexp’);
-if(aexp)aexp.addEventListener(‘click’,()=>{const d=document.getElementById(‘ed’).value.trim(),a=parseFloat(document.getElementById(‘ea’).value);if(!d||!a)return alert(‘Enter description and amount’);addExp(d,a);});
-const asurv=document.getElementById(‘asurv’);
-if(asurv)asurv.addEventListener(‘click’,()=>{const a=parseFloat(document.getElementById(‘sa’).value);if(!a)return alert(‘Enter amount’);addSurv(a);});
-document.querySelectorAll(’[data-w]’).forEach(b=>b.addEventListener(‘click’,()=>{const sid=parseInt(b.dataset.w);const sh=data.shareholders.find(s=>s.id===sid);const a=parseFloat(prompt(‘Withdraw amount\nBalance: ‘+f$(sh.balance)));if(isNaN(a)||a<=0)return;reqW(sid,a);}));
-document.querySelectorAll(’[data-ap]’).forEach(b=>b.addEventListener(‘click’,()=>{if(confirm(‘Approve and pay this withdrawal?’))appW(parseInt(b.dataset.ap));}));
+
+function addBuy(g,r) {
+  var c = g*r;
+  data.goldPurchases.push({id:Date.now(), date:new Date().toISOString(), grams:g, rate:r, totalCost:c, remainingGrams:g});
+  data.companyCash -= c;
+  saveData(data); render();
 }
+function addSell(g,r) {
+  var rem=g, cb=0;
+  data.goldPurchases.forEach(function(p) {
+    if(rem<=0||p.remainingGrams<=0) return;
+    var t=Math.min(p.remainingGrams,rem); cb+=t*p.rate; p.remainingGrams-=t; rem-=t;
+  });
+  var rev=g*r, pf=rev-cb, ps=pf/3;
+  data.goldSales.push({id:Date.now(), date:new Date().toISOString(), grams:g, sellRate:r, totalRevenue:rev, profit:pf, profitPerShareholder:ps});
+  data.shareholders.forEach(function(s){s.balance+=ps;});
+  data.companyCash+=rev;
+  saveData(data); render();
+}
+function addExp(desc,amt) {
+  var ps=amt/3;
+  data.expenses.push({id:Date.now(), date:new Date().toISOString(), description:desc, amount:amt});
+  data.shareholders.forEach(function(s){s.balance-=ps;});
+  data.companyCash-=amt;
+  saveData(data); render();
+}
+function addSurv(amt) {
+  var ps=amt/3;
+  data.surveyRevenues.push({id:Date.now(), date:new Date().toISOString(), amount:amt, dividendPerPerson:ps});
+  data.shareholders.forEach(function(s){s.balance+=ps;});
+  data.companyCash+=amt;
+  saveData(data); render();
+}
+function reqW(sid,amt) {
+  var sh=data.shareholders.find(function(s){return s.id===sid;});
+  if(!sh||sh.balance<amt){alert('Insufficient balance!');return;}
+  data.withdrawalRequests.push({id:Date.now(), date:new Date().toISOString(), shareholderId:sid, shareholderName:sh.name, amount:amt, status:'pending'});
+  saveData(data); render();
+}
+function appW(rid) {
+  var r=data.withdrawalRequests.find(function(x){return x.id===rid;});
+  if(!r||r.status!=='pending') return;
+  var sh=data.shareholders.find(function(s){return s.id===r.shareholderId;});
+  if(sh) sh.balance-=r.amount;
+  r.status='approved'; data.companyCash-=r.amount;
+  saveData(data); render();
+}
+
+function render() {
+  document.getElementById('app').innerHTML = user ? appHTML() : loginHTML();
+  bindEvents();
+}
+
+function loginHTML() {
+  return '<div class="login-page"><div class="login-box">' +
+    '<h1>💰 Gold Trading</h1>' +
+    '<h3>Shareholder &amp; Dividend System</h3>' +
+    '<div class="field"><label>Username</label><input id="un" type="text" placeholder="Enter username"/></div>' +
+    '<div class="field"><label>Password</label><input id="pw" type="password" placeholder="Enter password"/></div>' +
+    '<button class="btn-gold" id="lbtn">Sign In</button>' +
+    '<div id="ler" class="err"></div>' +
+    '<div class="creds"><strong>Login Credentials</strong><br/>' +
+    '&#128081; Admin &nbsp;<code>admin</code> / <code>admin123</code><br/>' +
+    '&#128100; Ahmed &nbsp;<code>ahmed</code> / <code>ahmed123</code><br/>' +
+    '&#128100; Sara &nbsp;&nbsp;<code>sara</code> / <code>sara123</code><br/>' +
+    '&#128100; Omar &nbsp;&nbsp;<code>omar</code> / <code>omar123</code>' +
+    '</div></div></div>';
+}
+
+function appHTML() {
+  var isA = user.role === 'admin';
+  var s = getStats();
+  var tabs = [
+    {id:'dashboard', label:'&#9632; Dashboard'},
+    {id:'transactions', label:'&#8597; Transactions'},
+    {id:'shareholders', label:'&#9679; Shareholders'},
+    {id:'withdrawals', label:'&#9675; Withdrawals'},
+    {id:'reports', label:'&#9632; Reports'}
+  ];
+  var nav = tabs.map(function(t) {
+    return '<button class="nav-btn' + (tab===t.id?' active':'') + '" data-tab="' + t.id + '">' + t.label + '</button>';
+  }).join('');
+  var a = ini(user.name);
+  var sidebar = '<div class="sidebar" id="sb">' +
+    '<div class="sidebar-top"><h2>&#x1F4B0; Gold Trading</h2><p>Management System</p></div>' +
+    '<nav class="nav">' + nav + '</nav>' +
+    '<div class="sidebar-bottom">' +
+    '<div class="user-box"><div class="uname">' + user.name + '</div><div class="urole">' + user.role + '</div></div>' +
+    '<button class="btn-logout" id="lout">Sign Out</button>' +
+    '</div></div>';
+  var mbar = '<div class="mobile-bar"><button class="hamburger" id="mbtn">&#9776;</button>' +
+    '<h2>&#x1F4B0; Gold Trading</h2><div style="width:24px"></div></div>';
+  var ovl = '<div class="overlay" id="ovl"></div>';
+  var pg = '';
+  if(tab==='dashboard') pg = dashHTML(s,isA);
+  else if(tab==='transactions') pg = txHTML(isA);
+  else if(tab==='shareholders') pg = shHTML(isA);
+  else if(tab==='withdrawals') pg = wdHTML(isA);
+  else if(tab==='reports') pg = rpHTML(s,isA);
+  return ovl + sidebar + mbar + '<div class="content">' + pg + '</div>';
+}
+
+function dashHTML(s,isA) {
+  var rows = data.shareholders.map(function(x) {
+    return '<div class="bal-item">' +
+      '<div class="bal-left"><div class="avatar">' + ini(x.name) + '</div>' +
+      '<div><div class="bal-name">' + x.name + '</div><div class="bal-sub">Shareholder</div></div></div>' +
+      '<div class="bal-right"><div class="bal-amount">' + f$(x.balance) + '</div>' +
+      (!isA && user.shareholderId===x.id ? '<button class="btn-sm" data-w="'+x.id+'">Withdraw</button>' : '') +
+      '</div></div>';
+  }).join('');
+  return '<div class="page-title"><h1>Dashboard</h1><p>Overview of your gold trading operations</p></div>' +
+    '<div class="stats">' +
+    '<div class="stat-card"><div class="label">Company Cash</div><div class="value">' + f$(data.companyCash) + '</div></div>' +
+    '<div class="stat-card"><div class="label">Gold Inventory</div><div class="value">' + fg(s.inv) + '</div></div>' +
+    '<div class="stat-card"><div class="label">Gold Profit</div><div class="value ' + pc(s.gp) + '">' + f$(s.gp) + '</div></div>' +
+    '<div class="stat-card"><div class="label">Net Profit</div><div class="value ' + pc(s.net) + '">' + f$(s.net) + '</div></div>' +
+    '</div>' +
+    '<div class="card"><div class="card-title">Shareholder Balances</div>' + rows + '</div>';
+}
+
+function txHTML(isA) {
+  if(!isA) return '<div class="page-title"><h1>Transactions</h1></div><div class="card"><div class="empty">&#9888;&#65039; Only Admin can record transactions.<br/><br/>Shareholders can view reports and request withdrawals.</div></div>';
+  return '<div class="page-title"><h1>Transactions</h1><p>Record purchases, sales, expenses and revenue</p></div>' +
+    '<div class="grid2">' +
+    '<div class="card"><div class="card-title">&#x2193; Buy Gold</div>' +
+    '<div class="form-group"><label>Grams</label><input id="bg" type="number" placeholder="0.00"/></div>' +
+    '<div class="form-group"><label>Rate per gram ($)</label><input id="br" type="number" placeholder="0.00"/></div>' +
+    '<button class="btn-action" id="abuy">Record Purchase</button></div>' +
+    '<div class="card"><div class="card-title">&#x2191; Sell Gold</div>' +
+    '<div class="form-group"><label>Grams</label><input id="sg" type="number" placeholder="0.00"/></div>' +
+    '<div class="form-group"><label>Sell rate ($)</label><input id="sr2" type="number" placeholder="0.00"/></div>' +
+    '<button class="btn-action" id="asell">Record Sale</button></div>' +
+    '<div class="card"><div class="card-title">&#x2212; Add Expense</div>' +
+    '<div class="form-group"><label>Description</label><input id="ed" type="text" placeholder="e.g. Office rent"/></div>' +
+    '<div class="form-group"><label>Amount ($)</label><input id="ea" type="number" placeholder="0.00"/></div>' +
+    '<button class="btn-action" id="aexp">Add Expense</button></div>' +
+    '<div class="card"><div class="card-title">&#x2B; Survey Revenue</div>' +
+    '<div class="form-group"><label>Total Amount ($)</label><input id="sa" type="number" placeholder="0.00"/></div>' +
+    '<button class="btn-action" id="asurv">Add &amp; Distribute</button></div>' +
+    '</div>';
+}
+
+function shHTML(isA) {
+  var rows = data.shareholders.map(function(x) {
+    return '<tr><td><div style="display:flex;align-items:center;gap:10px">' +
+      '<div class="avatar" style="width:30px;height:30px;font-size:11px;">' + ini(x.name) + '</div>' + x.name +
+      '</div></td><td class="' + pc(x.balance) + '">' + f$(x.balance) + '</td>' +
+      (!isA ? '<td>' + (user.shareholderId===x.id ? '<button class="btn-sm" data-w="'+x.id+'">Withdraw</button>' : '&#8212;') + '</td>' : '') +
+      '</tr>';
+  }).join('');
+  return '<div class="page-title"><h1>Shareholders</h1><p>Equity balances and management</p></div>' +
+    '<div class="card"><div class="card-title">Shareholder Overview</div>' +
+    '<div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Balance</th>' + (!isA?'<th>Action</th>':'') + '</tr></thead>' +
+    '<tbody>' + rows + '</tbody></table></div></div>';
+}
+
+function wdHTML(isA) {
+  var reqs = data.withdrawalRequests.filter(function(r){ return isA || r.shareholderId===user.shareholderId; });
+  var rows = reqs.length===0
+    ? '<tr><td colspan="5" style="text-align:center;padding:36px;color:#6b6558;">No withdrawal requests yet</td></tr>'
+    : reqs.map(function(r) {
+        return '<tr><td>' + fd(r.date) + '</td><td>' + r.shareholderName + '</td><td>' + f$(r.amount) + '</td>' +
+          '<td><span class="badge ' + (r.status==='pending'?'badge-pending':'badge-approved') + '">' +
+          (r.status==='pending'?'Pending':'Approved') + '</span></td>' +
+          (isA ? '<td>' + (r.status==='pending'?'<button class="btn-approve" data-ap="'+r.id+'">Approve &amp; Pay</button>':'&#8212;') + '</td>' : '') +
+          '</tr>';
+      }).join('');
+  return '<div class="page-title"><h1>Withdrawals</h1><p>Manage shareholder withdrawal requests</p></div>' +
+    '<div class="card"><div class="card-title">Withdrawal Requests</div>' +
+    '<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Shareholder</th><th>Amount</th><th>Status</th>' +
+    (isA?'<th>Action</th>':'') + '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+}
+
+function rpHTML(s,isA) {
+  var sh = user.shareholderId ? data.shareholders.find(function(x){return x.id===user.shareholderId;}) : null;
+  return '<div class="page-title"><h1>Reports</h1><p>Financial performance overview</p></div>' +
+    '<div class="grid2">' +
+    '<div class="card"><div class="card-title">Gold Trading Summary</div><table><tbody>' +
+    '<tr><td class="muted">Total Bought</td><td style="text-align:right">' + fg(s.b) + '</td></tr>' +
+    '<tr><td class="muted">Total Sold</td><td style="text-align:right">' + fg(s.sol) + '</td></tr>' +
+    '<tr><td class="muted">Inventory</td><td style="text-align:right">' + fg(s.inv) + '</td></tr>' +
+    '<tr><td class="muted">Purchase Value</td><td style="text-align:right">' + f$(s.gv) + '</td></tr>' +
+    '<tr><td class="muted">Sales Revenue</td><td style="text-align:right">' + f$(s.sr) + '</td></tr>' +
+    '<tr><td class="muted">Gold Profit</td><td style="text-align:right" class="' + pc(s.gp) + '">' + f$(s.gp) + '</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="card"><div class="card-title">Revenue &amp; Expenses</div><table><tbody>' +
+    '<tr><td class="muted">Survey Revenue</td><td style="text-align:right">' + f$(s.sv) + '</td></tr>' +
+    '<tr><td class="muted">Total Expenses</td><td style="text-align:right" class="red">' + f$(s.ex) + '</td></tr>' +
+    '<tr><td class="muted">Company Cash</td><td style="text-align:right">' + f$(data.companyCash) + '</td></tr>' +
+    '<tr><td><strong>Net Profit</strong></td><td style="text-align:right"><strong class="' + pc(s.net) + '">' + f$(s.net) + '</strong></td></tr>' +
+    '</tbody></table></div>' +
+    (!isA && sh ? '<div class="card"><div class="card-title">Your Balance</div>' +
+    '<div class="value ' + pc(sh.balance) + '" style="font-size:2rem;margin-bottom:16px">' + f$(sh.balance) + '</div>' +
+    '<button class="btn-action" style="width:auto;padding:10px 20px" data-w="' + sh.id + '">Request Withdrawal</button></div>' : '') +
+    '</div>';
+}
+
+function bindEvents() {
+  var lb = document.getElementById('lbtn');
+  if(lb) {
+    function doLogin() {
+      var un = document.getElementById('un').value.trim();
+      var pw = document.getElementById('pw').value;
+      if(un==='admin' && pw==='admin123') { user={role:'admin',name:'Admin'}; tab='dashboard'; render(); return; }
+      var sh = data.shareholders.find(function(s){ return s.name.toLowerCase()===un.toLowerCase() && s.password===pw; });
+      if(sh) { user={role:'shareholder',name:sh.name,shareholderId:sh.id}; tab='dashboard'; render(); return; }
+      document.getElementById('ler').textContent = 'Invalid username or password';
+    }
+    lb.addEventListener('click', doLogin);
+    document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+  }
+
+  var lo = document.getElementById('lout');
+  if(lo) lo.addEventListener('click', function(){ user=null; render(); });
+
+  document.querySelectorAll('[data-tab]').forEach(function(b) {
+    b.addEventListener('click', function() {
+      tab = b.dataset.tab; sideOpen=false;
+      var s=document.getElementById('sb'), o=document.getElementById('ovl');
+      if(s) s.classList.remove('open');
+      if(o) o.classList.remove('show');
+      render();
+    });
+  });
+
+  var mb = document.getElementById('mbtn');
+  if(mb) mb.addEventListener('click', function(){
+    sideOpen=!sideOpen;
+    document.getElementById('sb').classList.toggle('open',sideOpen);
+    document.getElementById('ovl').classList.toggle('show',sideOpen);
+  });
+  var ov = document.getElementById('ovl');
+  if(ov) ov.addEventListener('click', function(){
+    sideOpen=false;
+    document.getElementById('sb').classList.remove('open');
+    ov.classList.remove('show');
+  });
+
+  var ab = document.getElementById('abuy');
+  if(ab) ab.addEventListener('click', function(){
+    var g=parseFloat(document.getElementById('bg').value), r=parseFloat(document.getElementById('br').value);
+    if(!g||!r) return alert('Enter grams and rate'); addBuy(g,r);
+  });
+  var as = document.getElementById('asell');
+  if(as) as.addEventListener('click', function(){
+    var g=parseFloat(document.getElementById('sg').value), r=parseFloat(document.getElementById('sr2').value);
+    if(!g||!r) return alert('Enter grams and rate'); addSell(g,r);
+  });
+  var ae = document.getElementById('aexp');
+  if(ae) ae.addEventListener('click', function(){
+    var d=document.getElementById('ed').value.trim(), a=parseFloat(document.getElementById('ea').value);
+    if(!d||!a) return alert('Enter description and amount'); addExp(d,a);
+  });
+  var av = document.getElementById('asurv');
+  if(av) av.addEventListener('click', function(){
+    var a=parseFloat(document.getElementById('sa').value);
+    if(!a) return alert('Enter amount'); addSurv(a);
+  });
+
+  document.querySelectorAll('[data-w]').forEach(function(b) {
+    b.addEventListener('click', function(){
+      var sid=parseInt(b.dataset.w);
+      var sh=data.shareholders.find(function(s){return s.id===sid;});
+      var a=parseFloat(prompt('Withdraw amount\nCurrent balance: ' + f$(sh.balance)));
+      if(isNaN(a)||a<=0) return; reqW(sid,a);
+    });
+  });
+  document.querySelectorAll('[data-ap]').forEach(function(b) {
+    b.addEventListener('click', function(){
+      if(confirm('Approve and pay this withdrawal?')) appW(parseInt(b.dataset.ap));
+    });
+  });
+}
+
 render();
 </script>
-
 </body>
 </html>
