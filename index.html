@@ -1,438 +1,784 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Gold Trading System</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Georgia, serif; background: #0a0a08; color: #f0ead6; min-height: 100vh; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Gold Trade Pro | Mashiin • Sales Reps • Dual Currency</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* LOGIN */
-.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0a0a08; padding: 20px; }
-.login-box { background: #1a1a17; border: 1px solid rgba(200,169,110,0.3); border-radius: 16px; padding: 40px 36px; width: 100%; max-width: 380px; }
-.login-box h1 { font-size: 1.6rem; color: #c8a96e; text-align: center; margin-bottom: 4px; }
-.login-box h3 { font-size: 0.75rem; color: #6b6558; text-align: center; margin-bottom: 28px; font-weight: normal; letter-spacing: 0.08em; text-transform: uppercase; }
-.field { margin-bottom: 14px; }
-.field label { display: block; font-size: 0.72rem; color: #9a9080; margin-bottom: 5px; font-family: Arial, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
-.field input { width: 100%; padding: 12px 14px; background: #222220; border: 1px solid rgba(200,169,110,0.2); border-radius: 8px; color: #f0ead6; font-size: 0.9rem; font-family: Arial, sans-serif; outline: none; }
-.field input:focus { border-color: rgba(200,169,110,0.5); }
-.btn-gold { width: 100%; padding: 13px; background: linear-gradient(135deg, #8b6914, #c8a96e); border: none; border-radius: 8px; color: #0a0a08; font-size: 0.9rem; font-weight: bold; cursor: pointer; margin-top: 6px; font-family: Arial, sans-serif; }
-.btn-gold:hover { opacity: 0.9; }
-.err { color: #d96b6b; font-size: 0.8rem; text-align: center; margin-top: 8px; font-family: Arial, sans-serif; }
-.creds { margin-top: 20px; background: rgba(200,169,110,0.05); border: 1px solid rgba(200,169,110,0.1); border-radius: 8px; padding: 14px; font-family: Arial, sans-serif; font-size: 0.73rem; color: #6b6558; line-height: 2; }
-.creds strong { color: #c8a96e; }
-.creds code { background: #222; color: #f0ead6; padding: 1px 5px; border-radius: 3px; font-size: 0.7rem; }
+    body {
+      background: #0c0b08;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: #ece3cf;
+    }
 
-/* LAYOUT */
-.app { display: flex; min-height: 100vh; }
-.sidebar { width: 200px; background: #111110; border-right: 1px solid rgba(200,169,110,0.1); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 10; }
-.sidebar-top { padding: 20px 16px; border-bottom: 1px solid rgba(200,169,110,0.1); }
-.sidebar-top h2 { color: #c8a96e; font-size: 1rem; }
-.sidebar-top p { color: #6b6558; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; font-family: Arial, sans-serif; }
-.nav { flex: 1; padding: 12px 10px; }
-.nav-btn { display: flex; align-items: center; gap: 9px; width: 100%; padding: 9px 11px; border: none; background: none; color: #9a9080; font-size: 0.82rem; font-family: Arial, sans-serif; cursor: pointer; border-radius: 7px; text-align: left; margin-bottom: 2px; transition: all 0.15s; }
-.nav-btn:hover { background: #1a1a17; color: #f0ead6; }
-.nav-btn.active { background: rgba(200,169,110,0.12); color: #c8a96e; }
-.sidebar-bottom { padding: 14px; border-top: 1px solid rgba(200,169,110,0.1); }
-.user-box { background: #1a1a17; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
-.user-box .uname { font-size: 0.82rem; color: #f0ead6; font-family: Arial, sans-serif; }
-.user-box .urole { font-size: 0.65rem; color: #6b6558; font-family: Arial, sans-serif; text-transform: capitalize; }
-.btn-logout { width: 100%; padding: 8px; background: none; border: 1px solid rgba(200,169,110,0.2); border-radius: 7px; color: #9a9080; font-family: Arial, sans-serif; font-size: 0.75rem; cursor: pointer; }
-.btn-logout:hover { border-color: #d96b6b; color: #d96b6b; }
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 30% 40%, #131210, #020202);
+      padding: 1.5rem;
+    }
 
-/* CONTENT */
-.content { margin-left: 200px; flex: 1; padding: 28px; }
-.page-title { margin-bottom: 22px; }
-.page-title h1 { font-size: 1.6rem; color: #f0ead6; }
-.page-title p { font-size: 0.77rem; color: #6b6558; margin-top: 3px; font-family: Arial, sans-serif; }
+    .login-card {
+      background: #131210e6;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(218, 185, 105, 0.4);
+      border-radius: 2rem;
+      padding: 2rem 2rem 2rem 2rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 25px 40px -12px black;
+    }
 
-/* STATS */
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-.stat-card { background: #111110; border: 1px solid rgba(200,169,110,0.12); border-radius: 10px; padding: 18px 20px; }
-.stat-card .label { font-size: 0.67rem; color: #6b6558; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; font-family: Arial, sans-serif; }
-.stat-card .value { font-size: 1.7rem; color: #c8a96e; font-weight: bold; }
-.stat-card .value.green { color: #5cb87a; }
-.stat-card .value.red { color: #d96b6b; }
+    .login-card h1 {
+      font-size: 1.9rem;
+      color: #e2bc6e;
+      text-align: center;
+      font-weight: 600;
+    }
 
-/* CARD */
-.card { background: #111110; border: 1px solid rgba(200,169,110,0.12); border-radius: 10px; padding: 22px; margin-bottom: 18px; }
-.card-title { font-size: 1.05rem; color: #f0ead6; margin-bottom: 16px; }
+    .login-card h3 {
+      font-size: 0.7rem;
+      text-align: center;
+      color: #a59268;
+      letter-spacing: 0.15em;
+      margin-bottom: 28px;
+      margin-top: 6px;
+    }
 
-/* BALANCE LIST */
-.bal-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-.bal-item:last-child { border-bottom: none; }
-.bal-left { display: flex; align-items: center; gap: 10px; }
-.avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #8b6914, #c8a96e); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #0a0a08; font-family: Arial, sans-serif; }
-.bal-name { font-size: 0.88rem; font-family: Arial, sans-serif; }
-.bal-sub { font-size: 0.68rem; color: #6b6558; font-family: Arial, sans-serif; }
-.bal-right { display: flex; align-items: center; gap: 10px; }
-.bal-amount { font-size: 1.2rem; color: #c8a96e; font-weight: bold; }
+    .field {
+      margin-bottom: 1.1rem;
+    }
 
-/* BUTTONS */
-.btn-sm { padding: 6px 13px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.22); color: #c8a96e; border-radius: 6px; font-family: Arial, sans-serif; font-size: 0.73rem; cursor: pointer; }
-.btn-sm:hover { background: rgba(200,169,110,0.2); }
-.btn-approve { padding: 6px 13px; background: rgba(92,184,122,0.1); border: 1px solid rgba(92,184,122,0.22); color: #5cb87a; border-radius: 6px; font-family: Arial, sans-serif; font-size: 0.73rem; cursor: pointer; }
-.btn-approve:hover { background: rgba(92,184,122,0.2); }
-.btn-action { padding: 11px 20px; background: linear-gradient(135deg, #8b6914, #c8a96e); border: none; border-radius: 8px; color: #0a0a08; font-weight: bold; font-family: Arial, sans-serif; font-size: 0.82rem; cursor: pointer; width: 100%; margin-top: 6px; }
-.btn-action:hover { opacity: 0.9; }
+    .field label {
+      display: block;
+      font-size: 0.7rem;
+      color: #cdbc8f;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
 
-/* FORM */
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-.form-group { margin-bottom: 12px; }
-.form-group label { display: block; font-size: 0.68rem; color: #9a9080; margin-bottom: 5px; font-family: Arial, sans-serif; text-transform: uppercase; letter-spacing: 0.06em; }
-.form-group input { width: 100%; padding: 10px 12px; background: #1a1a17; border: 1px solid rgba(200,169,110,0.18); border-radius: 7px; color: #f0ead6; font-family: Arial, sans-serif; font-size: 0.87rem; outline: none; }
-.form-group input:focus { border-color: rgba(200,169,110,0.4); }
+    .field input {
+      width: 100%;
+      background: #1f1e1a;
+      border: 1px solid #3a3528;
+      padding: 12px 18px;
+      border-radius: 40px;
+      color: #f7efdb;
+      font-size: 0.9rem;
+      outline: none;
+    }
 
-/* TABLE */
-.tbl-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; }
-th { padding: 9px 13px; font-size: 0.65rem; color: #6b6558; text-transform: uppercase; letter-spacing: 0.06em; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: normal; }
-td { padding: 12px 13px; font-size: 0.83rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(255,255,255,0.02); }
+    .field input:focus {
+      border-color: #e2bc6e;
+    }
 
-/* BADGE */
-.badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 0.7rem; font-family: Arial, sans-serif; font-weight: bold; }
-.badge-pending { background: rgba(200,169,110,0.1); color: #c8a96e; border: 1px solid rgba(200,169,110,0.2); }
-.badge-approved { background: rgba(92,184,122,0.1); color: #5cb87a; border: 1px solid rgba(92,184,122,0.2); }
+    .btn-gold {
+      width: 100%;
+      background: linear-gradient(135deg, #a8822c, #e0b867);
+      border: none;
+      padding: 13px;
+      border-radius: 40px;
+      font-weight: bold;
+      color: #0c0b07;
+      font-size: 0.9rem;
+      cursor: pointer;
+      margin-top: 8px;
+    }
 
-.green { color: #5cb87a; }
-.red { color: #d96b6b; }
-.muted { color: #6b6558; }
-.empty { text-align: center; padding: 36px; color: #6b6558; font-family: Arial, sans-serif; font-size: 0.83rem; }
+    .error-msg {
+      color: #f5a67b;
+      text-align: center;
+      font-size: 0.75rem;
+      margin-top: 12px;
+    }
 
-/* MOBILE */
-.mobile-bar { display: none; }
-@media(max-width: 768px) {
-  .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
-  .sidebar.open { transform: translateX(0); }
-  .content { margin-left: 0; padding: 16px; }
-  .mobile-bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #111110; border-bottom: 1px solid rgba(200,169,110,0.1); position: sticky; top: 0; z-index: 5; }
-  .mobile-bar h2 { color: #c8a96e; font-size: 1rem; }
-  .hamburger { background: none; border: none; color: #f0ead6; font-size: 1.3rem; cursor: pointer; }
-  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9; display: none; }
-  .overlay.show { display: block; }
-  .stats { grid-template-columns: 1fr 1fr; }
-  .grid2 { grid-template-columns: 1fr; }
-}
-@media(min-width: 769px) { .mobile-bar { display: none; } .overlay { display: none !important; } }
-</style>
+    /* APP LAYOUT */
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 270px;
+      background: #0e0e0b;
+      border-right: 1px solid #2a261d;
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-area {
+      padding: 28px 22px;
+      border-bottom: 1px solid #2f2b20;
+    }
+
+    .logo-area h2 {
+      color: #e8c87a;
+      font-size: 1.3rem;
+    }
+
+    .logo-area p {
+      font-size: 0.6rem;
+      color: #8f8260;
+      margin-top: 6px;
+    }
+
+    .nav-menu {
+      flex: 1;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #cbbf97;
+      border-radius: 34px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .nav-btn.active, .nav-btn:hover {
+      background: #25231c;
+      color: #f5de9c;
+    }
+
+    .user-section {
+      padding: 20px;
+      border-top: 1px solid #2b271f;
+    }
+
+    .user-badge {
+      background: #191814;
+      border-radius: 28px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+    }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .user-role {
+      font-size: 0.65rem;
+      color: #ad9d74;
+      text-transform: capitalize;
+    }
+
+    .btn-outline {
+      width: 100%;
+      background: none;
+      border: 1px solid #5f553b;
+      padding: 8px;
+      border-radius: 40px;
+      color: #dcceaa;
+      cursor: pointer;
+      font-size: 0.7rem;
+    }
+
+    .content-main {
+      margin-left: 270px;
+      padding: 28px 32px;
+      flex: 1;
+    }
+
+    /* CARDS & STATS */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: #12120f;
+      border: 1px solid #2b271f;
+      border-radius: 28px;
+      padding: 1.2rem;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: #a3946b;
+    }
+
+    .stat-value {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #e9cf8b;
+    }
+
+    .card {
+      background: #11110e;
+      border: 1px solid #2b281f;
+      border-radius: 26px;
+      padding: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      border-left: 3px solid #e0b867;
+      padding-left: 12px;
+      margin-bottom: 20px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-size: 0.7rem;
+      color: #c7b584;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      background: #1e1d18;
+      border: 1px solid #3f392b;
+      padding: 10px 14px;
+      border-radius: 36px;
+      color: #f2e7cf;
+      font-size: 0.85rem;
+    }
+
+    .btn-action {
+      background: linear-gradient(100deg, #9e7d30, #d6ae5a);
+      border: none;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: bold;
+      color: #0c0a04;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .btn-sm {
+      background: #2a271f;
+      border: 1px solid #7a6b47;
+      padding: 5px 15px;
+      border-radius: 30px;
+      color: #f0daa0;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+
+    .badge {
+      background: #2f2c21;
+      padding: 3px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+    }
+
+    .badge-success {
+      background: #1e3a2a;
+      color: #9bdba0;
+    }
+
+    .badge-pending {
+      background: #4a3e24;
+      color: #f5cf87;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 6px 12px 0;
+      color: #b8a76c;
+      font-size: 0.7rem;
+    }
+
+    td {
+      padding: 10px 6px 10px 0;
+      border-bottom: 1px solid #2f2b1f;
+      font-size: 0.8rem;
+    }
+
+    .muted {
+      color: #8e8160;
+    }
+
+    .green {
+      color: #91cf8b;
+    }
+
+    .red {
+      color: #e69474;
+    }
+
+    .mobile-header {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: 0.2s;
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .content-main {
+        margin-left: 0;
+        padding: 18px;
+      }
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        padding: 14px 18px;
+        background: #0e0e0b;
+        position: sticky;
+        top: 0;
+        z-index: 15;
+      }
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+      .overlay-mob {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 18;
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="root"></div>
+
 <script>
-var DF = {
-  goldPurchases: [], goldSales: [], expenses: [], surveyRevenues: [],
-  withdrawalRequests: [],
-  shareholders: [
-    {id:1, name:"Ahmed", password:"ahmed123", balance:0},
-    {id:2, name:"Sara",  password:"sara123",  balance:0},
-    {id:3, name:"Omar",  password:"omar123",  balance:0}
-  ],
-  companyCash: 0
-};
+  // ---------- DATA MODEL ----------
+  const defaultState = {
+    companyCashZMW: 25000.0,    // starting ZMW capital
+    companyCashUSD: 0.0,         // USD from gold sales (not converted)
+    exchangeRate: 26.5,          // 1 USD = X ZMW (default, can be changed)
+    exchangeLogs: [],            // { id, date, fromCurr, toCurr, amount, rate, result }
+    
+    goldPurchases: [],           // { id, date, grams, ratePerGram, grossAmount, mashiinFee, transportFee, netPaid, salesRep, remainingGrams }
+    goldSales: [],               // { id, date, gramsSold, sellRateUSD, revenueUSD, costBasisUSD, profitUSD, conversionDecision, usdKept, zmwConverted }
+    expenses: [],                // { id, date, description, amountZMW }
+    surveyRevenues: [],          // { id, date, amountZMW, customerName, profitByCustomer }
+    withdrawalRequests: [],      // { id, date, shareholderId, shareholderName, amountZMW, status }
+    
+    // Shareholders (only ZMW balances)
+    shareholders: [
+      { id: 1, name: "Yuusuf", password: "yuusuf123", balanceZMW: 0.0, role: "shareholder" },
+      { id: 2, name: "Abdirisak", password: "abdirisak123", balanceZMW: 0.0, role: "shareholder" },
+      { id: 3, name: "Ahmed", password: "ahmed123", balanceZMW: 0.0, role: "shareholder" }
+    ],
+    // Manager (Samatar) special role
+    manager: { name: "Samatar", password: "samatar123", role: "manager" },
+    // Sales reps list (for dropdown, not login)
+    salesReps: ["Samatar", "Yuusuf", "Abdirisak", "Jamal"],
+    // default mashiin/transport values
+    defaultMashiin: 750,
+    defaultTransport: 150
+  };
 
-function loadData() { try { return JSON.parse(localStorage.getItem('gtd3')) || DF; } catch(e) { return DF; } }
-function saveData(d) { localStorage.setItem('gtd3', JSON.stringify(d)); }
+  // load / save
+  let appState = JSON.parse(localStorage.getItem('gold_trade_pro')) || JSON.parse(JSON.stringify(defaultState));
+  let currentUser = null;
+  let activeTab = "dashboard";
+  let mobileOpen = false;
 
-var data = loadData();
-var user = null;
-var tab = 'dashboard';
-var sideOpen = false;
-
-function f$(n) { return '$' + (parseFloat(n)||0).toFixed(2); }
-function fg(n) { return (parseFloat(n)||0).toFixed(2) + 'g'; }
-function fd(iso) { return new Date(iso).toLocaleDateString('en-GB', {day:'2-digit', month:'short', year:'2-digit'}); }
-function ini(n) { return n.slice(0,2).toUpperCase(); }
-function pc(v) { return v >= 0 ? 'green' : 'red'; }
-
-function getStats() {
-  var b = data.goldPurchases.reduce(function(s,p){return s+p.grams;}, 0);
-  var sol = data.goldSales.reduce(function(s,p){return s+p.grams;}, 0);
-  var gv = data.goldPurchases.reduce(function(s,p){return s+p.totalCost;}, 0);
-  var sr = data.goldSales.reduce(function(s,p){return s+p.totalRevenue;}, 0);
-  var ex = data.expenses.reduce(function(s,e){return s+e.amount;}, 0);
-  var sv = data.surveyRevenues.reduce(function(s,r){return s+r.amount;}, 0);
-  var gp = data.goldSales.reduce(function(s,p){return s+p.profit;}, 0);
-  return {b:b, sol:sol, inv:b-sol, gv:gv, sr:sr, ex:ex, sv:sv, gp:gp, net:gp+sv-ex};
-}
-
-function addBuy(g,r) {
-  var c = g*r;
-  data.goldPurchases.push({id:Date.now(), date:new Date().toISOString(), grams:g, rate:r, totalCost:c, remainingGrams:g});
-  data.companyCash -= c;
-  saveData(data); render();
-}
-function addSell(g,r) {
-  var rem=g, cb=0;
-  data.goldPurchases.forEach(function(p) {
-    if(rem<=0||p.remainingGrams<=0) return;
-    var t=Math.min(p.remainingGrams,rem); cb+=t*p.rate; p.remainingGrams-=t; rem-=t;
-  });
-  var rev=g*r, pf=rev-cb, ps=pf/3;
-  data.goldSales.push({id:Date.now(), date:new Date().toISOString(), grams:g, sellRate:r, totalRevenue:rev, profit:pf, profitPerShareholder:ps});
-  data.shareholders.forEach(function(s){s.balance+=ps;});
-  data.companyCash+=rev;
-  saveData(data); render();
-}
-function addExp(desc,amt) {
-  var ps=amt/3;
-  data.expenses.push({id:Date.now(), date:new Date().toISOString(), description:desc, amount:amt});
-  data.shareholders.forEach(function(s){s.balance-=ps;});
-  data.companyCash-=amt;
-  saveData(data); render();
-}
-function addSurv(amt) {
-  var ps=amt/3;
-  data.surveyRevenues.push({id:Date.now(), date:new Date().toISOString(), amount:amt, dividendPerPerson:ps});
-  data.shareholders.forEach(function(s){s.balance+=ps;});
-  data.companyCash+=amt;
-  saveData(data); render();
-}
-function reqW(sid,amt) {
-  var sh=data.shareholders.find(function(s){return s.id===sid;});
-  if(!sh||sh.balance<amt){alert('Insufficient balance!');return;}
-  data.withdrawalRequests.push({id:Date.now(), date:new Date().toISOString(), shareholderId:sid, shareholderName:sh.name, amount:amt, status:'pending'});
-  saveData(data); render();
-}
-function appW(rid) {
-  var r=data.withdrawalRequests.find(function(x){return x.id===rid;});
-  if(!r||r.status!=='pending') return;
-  var sh=data.shareholders.find(function(s){return s.id===r.shareholderId;});
-  if(sh) sh.balance-=r.amount;
-  r.status='approved'; data.companyCash-=r.amount;
-  saveData(data); render();
-}
-
-function render() {
-  document.getElementById('app').innerHTML = user ? appHTML() : loginHTML();
-  bindEvents();
-}
-
-function loginHTML() {
-  return '<div class="login-page"><div class="login-box">' +
-    '<h1>💰 Gold Trading</h1>' +
-    '<h3>Shareholder &amp; Dividend System</h3>' +
-    '<div class="field"><label>Username</label><input id="un" type="text" placeholder="Enter username"/></div>' +
-    '<div class="field"><label>Password</label><input id="pw" type="password" placeholder="Enter password"/></div>' +
-    '<button class="btn-gold" id="lbtn">Sign In</button>' +
-    '<div id="ler" class="err"></div>' +
-    '<div class="creds"><strong>Login Credentials</strong><br/>' +
-    '&#128081; Admin &nbsp;<code>admin</code> / <code>admin123</code><br/>' +
-    '&#128100; Ahmed &nbsp;<code>ahmed</code> / <code>ahmed123</code><br/>' +
-    '&#128100; Sara &nbsp;&nbsp;<code>sara</code> / <code>sara123</code><br/>' +
-    '&#128100; Omar &nbsp;&nbsp;<code>omar</code> / <code>omar123</code>' +
-    '</div></div></div>';
-}
-
-function appHTML() {
-  var isA = user.role === 'admin';
-  var s = getStats();
-  var tabs = [
-    {id:'dashboard', label:'&#9632; Dashboard'},
-    {id:'transactions', label:'&#8597; Transactions'},
-    {id:'shareholders', label:'&#9679; Shareholders'},
-    {id:'withdrawals', label:'&#9675; Withdrawals'},
-    {id:'reports', label:'&#9632; Reports'}
-  ];
-  var nav = tabs.map(function(t) {
-    return '<button class="nav-btn' + (tab===t.id?' active':'') + '" data-tab="' + t.id + '">' + t.label + '</button>';
-  }).join('');
-  var a = ini(user.name);
-  var sidebar = '<div class="sidebar" id="sb">' +
-    '<div class="sidebar-top"><h2>&#x1F4B0; Gold Trading</h2><p>Management System</p></div>' +
-    '<nav class="nav">' + nav + '</nav>' +
-    '<div class="sidebar-bottom">' +
-    '<div class="user-box"><div class="uname">' + user.name + '</div><div class="urole">' + user.role + '</div></div>' +
-    '<button class="btn-logout" id="lout">Sign Out</button>' +
-    '</div></div>';
-  var mbar = '<div class="mobile-bar"><button class="hamburger" id="mbtn">&#9776;</button>' +
-    '<h2>&#x1F4B0; Gold Trading</h2><div style="width:24px"></div></div>';
-  var ovl = '<div class="overlay" id="ovl"></div>';
-  var pg = '';
-  if(tab==='dashboard') pg = dashHTML(s,isA);
-  else if(tab==='transactions') pg = txHTML(isA);
-  else if(tab==='shareholders') pg = shHTML(isA);
-  else if(tab==='withdrawals') pg = wdHTML(isA);
-  else if(tab==='reports') pg = rpHTML(s,isA);
-  return ovl + sidebar + mbar + '<div class="content">' + pg + '</div>';
-}
-
-function dashHTML(s,isA) {
-  var rows = data.shareholders.map(function(x) {
-    return '<div class="bal-item">' +
-      '<div class="bal-left"><div class="avatar">' + ini(x.name) + '</div>' +
-      '<div><div class="bal-name">' + x.name + '</div><div class="bal-sub">Shareholder</div></div></div>' +
-      '<div class="bal-right"><div class="bal-amount">' + f$(x.balance) + '</div>' +
-      (!isA && user.shareholderId===x.id ? '<button class="btn-sm" data-w="'+x.id+'">Withdraw</button>' : '') +
-      '</div></div>';
-  }).join('');
-  return '<div class="page-title"><h1>Dashboard</h1><p>Overview of your gold trading operations</p></div>' +
-    '<div class="stats">' +
-    '<div class="stat-card"><div class="label">Company Cash</div><div class="value">' + f$(data.companyCash) + '</div></div>' +
-    '<div class="stat-card"><div class="label">Gold Inventory</div><div class="value">' + fg(s.inv) + '</div></div>' +
-    '<div class="stat-card"><div class="label">Gold Profit</div><div class="value ' + pc(s.gp) + '">' + f$(s.gp) + '</div></div>' +
-    '<div class="stat-card"><div class="label">Net Profit</div><div class="value ' + pc(s.net) + '">' + f$(s.net) + '</div></div>' +
-    '</div>' +
-    '<div class="card"><div class="card-title">Shareholder Balances</div>' + rows + '</div>';
-}
-
-function txHTML(isA) {
-  if(!isA) return '<div class="page-title"><h1>Transactions</h1></div><div class="card"><div class="empty">&#9888;&#65039; Only Admin can record transactions.<br/><br/>Shareholders can view reports and request withdrawals.</div></div>';
-  return '<div class="page-title"><h1>Transactions</h1><p>Record purchases, sales, expenses and revenue</p></div>' +
-    '<div class="grid2">' +
-    '<div class="card"><div class="card-title">&#x2193; Buy Gold</div>' +
-    '<div class="form-group"><label>Grams</label><input id="bg" type="number" placeholder="0.00"/></div>' +
-    '<div class="form-group"><label>Rate per gram ($)</label><input id="br" type="number" placeholder="0.00"/></div>' +
-    '<button class="btn-action" id="abuy">Record Purchase</button></div>' +
-    '<div class="card"><div class="card-title">&#x2191; Sell Gold</div>' +
-    '<div class="form-group"><label>Grams</label><input id="sg" type="number" placeholder="0.00"/></div>' +
-    '<div class="form-group"><label>Sell rate ($)</label><input id="sr2" type="number" placeholder="0.00"/></div>' +
-    '<button class="btn-action" id="asell">Record Sale</button></div>' +
-    '<div class="card"><div class="card-title">&#x2212; Add Expense</div>' +
-    '<div class="form-group"><label>Description</label><input id="ed" type="text" placeholder="e.g. Office rent"/></div>' +
-    '<div class="form-group"><label>Amount ($)</label><input id="ea" type="number" placeholder="0.00"/></div>' +
-    '<button class="btn-action" id="aexp">Add Expense</button></div>' +
-    '<div class="card"><div class="card-title">&#x2B; Survey Revenue</div>' +
-    '<div class="form-group"><label>Total Amount ($)</label><input id="sa" type="number" placeholder="0.00"/></div>' +
-    '<button class="btn-action" id="asurv">Add &amp; Distribute</button></div>' +
-    '</div>';
-}
-
-function shHTML(isA) {
-  var rows = data.shareholders.map(function(x) {
-    return '<tr><td><div style="display:flex;align-items:center;gap:10px">' +
-      '<div class="avatar" style="width:30px;height:30px;font-size:11px;">' + ini(x.name) + '</div>' + x.name +
-      '</div></td><td class="' + pc(x.balance) + '">' + f$(x.balance) + '</td>' +
-      (!isA ? '<td>' + (user.shareholderId===x.id ? '<button class="btn-sm" data-w="'+x.id+'">Withdraw</button>' : '&#8212;') + '</td>' : '') +
-      '</tr>';
-  }).join('');
-  return '<div class="page-title"><h1>Shareholders</h1><p>Equity balances and management</p></div>' +
-    '<div class="card"><div class="card-title">Shareholder Overview</div>' +
-    '<div class="tbl-wrap"><table><thead><tr><th>Name</th><th>Balance</th>' + (!isA?'<th>Action</th>':'') + '</tr></thead>' +
-    '<tbody>' + rows + '</tbody></table></div></div>';
-}
-
-function wdHTML(isA) {
-  var reqs = data.withdrawalRequests.filter(function(r){ return isA || r.shareholderId===user.shareholderId; });
-  var rows = reqs.length===0
-    ? '<tr><td colspan="5" style="text-align:center;padding:36px;color:#6b6558;">No withdrawal requests yet</td></tr>'
-    : reqs.map(function(r) {
-        return '<tr><td>' + fd(r.date) + '</td><td>' + r.shareholderName + '</td><td>' + f$(r.amount) + '</td>' +
-          '<td><span class="badge ' + (r.status==='pending'?'badge-pending':'badge-approved') + '">' +
-          (r.status==='pending'?'Pending':'Approved') + '</span></td>' +
-          (isA ? '<td>' + (r.status==='pending'?'<button class="btn-approve" data-ap="'+r.id+'">Approve &amp; Pay</button>':'&#8212;') + '</td>' : '') +
-          '</tr>';
-      }).join('');
-  return '<div class="page-title"><h1>Withdrawals</h1><p>Manage shareholder withdrawal requests</p></div>' +
-    '<div class="card"><div class="card-title">Withdrawal Requests</div>' +
-    '<div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Shareholder</th><th>Amount</th><th>Status</th>' +
-    (isA?'<th>Action</th>':'') + '</tr></thead><tbody>' + rows + '</tbody></table></div></div>';
-}
-
-function rpHTML(s,isA) {
-  var sh = user.shareholderId ? data.shareholders.find(function(x){return x.id===user.shareholderId;}) : null;
-  return '<div class="page-title"><h1>Reports</h1><p>Financial performance overview</p></div>' +
-    '<div class="grid2">' +
-    '<div class="card"><div class="card-title">Gold Trading Summary</div><table><tbody>' +
-    '<tr><td class="muted">Total Bought</td><td style="text-align:right">' + fg(s.b) + '</td></tr>' +
-    '<tr><td class="muted">Total Sold</td><td style="text-align:right">' + fg(s.sol) + '</td></tr>' +
-    '<tr><td class="muted">Inventory</td><td style="text-align:right">' + fg(s.inv) + '</td></tr>' +
-    '<tr><td class="muted">Purchase Value</td><td style="text-align:right">' + f$(s.gv) + '</td></tr>' +
-    '<tr><td class="muted">Sales Revenue</td><td style="text-align:right">' + f$(s.sr) + '</td></tr>' +
-    '<tr><td class="muted">Gold Profit</td><td style="text-align:right" class="' + pc(s.gp) + '">' + f$(s.gp) + '</td></tr>' +
-    '</tbody></table></div>' +
-    '<div class="card"><div class="card-title">Revenue &amp; Expenses</div><table><tbody>' +
-    '<tr><td class="muted">Survey Revenue</td><td style="text-align:right">' + f$(s.sv) + '</td></tr>' +
-    '<tr><td class="muted">Total Expenses</td><td style="text-align:right" class="red">' + f$(s.ex) + '</td></tr>' +
-    '<tr><td class="muted">Company Cash</td><td style="text-align:right">' + f$(data.companyCash) + '</td></tr>' +
-    '<tr><td><strong>Net Profit</strong></td><td style="text-align:right"><strong class="' + pc(s.net) + '">' + f$(s.net) + '</strong></td></tr>' +
-    '</tbody></table></div>' +
-    (!isA && sh ? '<div class="card"><div class="card-title">Your Balance</div>' +
-    '<div class="value ' + pc(sh.balance) + '" style="font-size:2rem;margin-bottom:16px">' + f$(sh.balance) + '</div>' +
-    '<button class="btn-action" style="width:auto;padding:10px 20px" data-w="' + sh.id + '">Request Withdrawal</button></div>' : '') +
-    '</div>';
-}
-
-function bindEvents() {
-  var lb = document.getElementById('lbtn');
-  if(lb) {
-    function doLogin() {
-      var un = document.getElementById('un').value.trim();
-      var pw = document.getElementById('pw').value;
-      if(un==='admin' && pw==='admin123') { user={role:'admin',name:'Admin'}; tab='dashboard'; render(); return; }
-      var sh = data.shareholders.find(function(s){ return s.name.toLowerCase()===un.toLowerCase() && s.password===pw; });
-      if(sh) { user={role:'shareholder',name:sh.name,shareholderId:sh.id}; tab='dashboard'; render(); return; }
-      document.getElementById('ler').textContent = 'Invalid username or password';
-    }
-    lb.addEventListener('click', doLogin);
-    document.getElementById('pw').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+  function persist() {
+    localStorage.setItem('gold_trade_pro', JSON.stringify(appState));
   }
 
-  var lo = document.getElementById('lout');
-  if(lo) lo.addEventListener('click', function(){ user=null; render(); });
+  // helpers
+  const formatZMW = (val) => 'K' + (parseFloat(val)||0).toFixed(2);
+  const formatUSD = (val) => '$' + (parseFloat(val)||0).toFixed(2);
+  const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
 
-  document.querySelectorAll('[data-tab]').forEach(function(b) {
-    b.addEventListener('click', function() {
-      tab = b.dataset.tab; sideOpen=false;
-      var s=document.getElementById('sb'), o=document.getElementById('ovl');
-      if(s) s.classList.remove('open');
-      if(o) o.classList.remove('show');
-      render();
+  // stats
+  function computeStats() {
+    let totalBought = appState.goldPurchases.reduce((s,p)=> s + p.grams, 0);
+    let totalSold = appState.goldSales.reduce((s,sale)=> s + sale.gramsSold, 0);
+    let inventory = totalBought - totalSold;
+    let totalMashiinCollected = appState.goldPurchases.reduce((s,p)=> s + (p.mashiinFee || 0), 0);
+    let totalTransportCollected = appState.goldPurchases.reduce((s,p)=> s + (p.transportFee || 0), 0);
+    let salesRepStats = {};
+    appState.goldPurchases.forEach(p => {
+      if (!salesRepStats[p.salesRep]) salesRepStats[p.salesRep] = { count:0, totalGrams:0, totalMashiin:0 };
+      salesRepStats[p.salesRep].count++;
+      salesRepStats[p.salesRep].totalGrams += p.grams;
+      salesRepStats[p.salesRep].totalMashiin += (p.mashiinFee || 0);
     });
-  });
+    let goldProfit = appState.goldSales.reduce((s, sale) => s + sale.profitUSD, 0);
+    let totalExpenses = appState.expenses.reduce((s,e)=> s + e.amountZMW, 0);
+    let totalSurvey = appState.surveyRevenues.reduce((s,sv)=> s + sv.amountZMW, 0);
+    let netProfitZMW = (goldProfit * appState.exchangeRate) + totalSurvey - totalExpenses;
+    return { inventory, totalMashiinCollected, totalTransportCollected, salesRepStats, goldProfitUSD: goldProfit, totalExpenses, totalSurvey, netProfitZMW };
+  }
 
-  var mb = document.getElementById('mbtn');
-  if(mb) mb.addEventListener('click', function(){
-    sideOpen=!sideOpen;
-    document.getElementById('sb').classList.toggle('open',sideOpen);
-    document.getElementById('ovl').classList.toggle('show',sideOpen);
-  });
-  var ov = document.getElementById('ovl');
-  if(ov) ov.addEventListener('click', function(){
-    sideOpen=false;
-    document.getElementById('sb').classList.remove('open');
-    ov.classList.remove('show');
-  });
+  // ----- BUSINESS LOGIC -----
+  function recordPurchase(grams, ratePerGram, mashiinAmt, transportAmt, salesRep) {
+    if (grams <= 0 || ratePerGram <= 0) throw new Error("Invalid grams/rate");
+    const gross = grams * ratePerGram;
+    const totalDeductions = mashiinAmt + transportAmt;
+    const netPaid = gross - totalDeductions;
+    if (netPaid < 0) throw new Error("Deductions exceed gross value");
+    const purchase = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      grams, ratePerGram, grossAmount: gross,
+      mashiinFee: mashiinAmt, transportFee: transportAmt,
+      netPaid, salesRep, remainingGrams: grams
+    };
+    appState.goldPurchases.push(purchase);
+    appState.companyCashZMW -= netPaid;
+    persist();
+  }
 
-  var ab = document.getElementById('abuy');
-  if(ab) ab.addEventListener('click', function(){
-    var g=parseFloat(document.getElementById('bg').value), r=parseFloat(document.getElementById('br').value);
-    if(!g||!r) return alert('Enter grams and rate'); addBuy(g,r);
-  });
-  var as = document.getElementById('asell');
-  if(as) as.addEventListener('click', function(){
-    var g=parseFloat(document.getElementById('sg').value), r=parseFloat(document.getElementById('sr2').value);
-    if(!g||!r) return alert('Enter grams and rate'); addSell(g,r);
-  });
-  var ae = document.getElementById('aexp');
-  if(ae) ae.addEventListener('click', function(){
-    var d=document.getElementById('ed').value.trim(), a=parseFloat(document.getElementById('ea').value);
-    if(!d||!a) return alert('Enter description and amount'); addExp(d,a);
-  });
-  var av = document.getElementById('asurv');
-  if(av) av.addEventListener('click', function(){
-    var a=parseFloat(document.getElementById('sa').value);
-    if(!a) return alert('Enter amount'); addSurv(a);
-  });
+  function recordSale(gramsSold, sellRateUSD, conversionChoice, customConvertAmount = null) {
+    // FIFO over remaining grams (ZMW cost basis)
+    let remaining = gramsSold;
+    let totalCostBasisZMW = 0;
+    for (let i = 0; i < appState.goldPurchases.length && remaining > 0; i++) {
+      const p = appState.goldPurchases[i];
+      if (p.remainingGrams <= 0) continue;
+      const taken = Math.min(p.remainingGrams, remaining);
+      const proportionCost = (taken / p.grams) * p.netPaid;   // proportional net cost in ZMW
+      totalCostBasisZMW += proportionCost;
+      p.remainingGrams -= taken;
+      remaining -= taken;
+    }
+    if (remaining > 0) throw new Error("Not enough gold inventory");
+    const revenueUSD = gramsSold * sellRateUSD;
+    const costBasisUSD = totalCostBasisZMW / appState.exchangeRate;
+    const profitUSD = revenueUSD - costBasisUSD;
+    // profit distributed to shareholders in ZMW (convert profitUSD at current rate)
+    const profitZMW = profitUSD * appState.exchangeRate;
+    const perShare = profitZMW / appState.shareholders.length;
+    appState.shareholders.forEach(sh => { sh.balanceZMW += perShare; });
 
-  document.querySelectorAll('[data-w]').forEach(function(b) {
-    b.addEventListener('click', function(){
-      var sid=parseInt(b.dataset.w);
-      var sh=data.shareholders.find(function(s){return s.id===sid;});
-      var a=parseFloat(prompt('Withdraw amount\nCurrent balance: ' + f$(sh.balance)));
-      if(isNaN(a)||a<=0) return; reqW(sid,a);
+    let usdKept = 0;
+    let zmwConverted = 0;
+    if (conversionChoice === "keep_all") {
+      usdKept = revenueUSD;
+      appState.companyCashUSD += revenueUSD;
+    } else if (conversionChoice === "convert_all") {
+      zmwConverted = revenueUSD * appState.exchangeRate;
+      appState.companyCashZMW += zmwConverted;
+    } else if (conversionChoice === "partial" && customConvertAmount !== null) {
+      const convertUSD = Math.min(customConvertAmount, revenueUSD);
+      zmwConverted = convertUSD * appState.exchangeRate;
+      usdKept = revenueUSD - convertUSD;
+      appState.companyCashZMW += zmwConverted;
+      appState.companyCashUSD += usdKept;
+    }
+    appState.goldSales.push({
+      id: Date.now(), date: new Date().toISOString(), gramsSold, sellRateUSD,
+      revenueUSD, costBasisUSD, profitUSD, conversionDecision: conversionChoice,
+      usdKept, zmwConverted
     });
-  });
-  document.querySelectorAll('[data-ap]').forEach(function(b) {
-    b.addEventListener('click', function(){
-      if(confirm('Approve and pay this withdrawal?')) appW(parseInt(b.dataset.ap));
-    });
-  });
-}
+    persist();
+  }
 
-render();
+  function addExpense(desc, amountZMW) {
+    if (!desc || amountZMW <= 0) throw new Error("Invalid expense");
+    const perShare = amountZMW / appState.shareholders.length;
+    appState.shareholders.forEach(sh => { sh.balanceZMW -= perShare; });
+    appState.expenses.push({ id: Date.now(), date: new Date().toISOString(), description: desc, amountZMW });
+    appState.companyCashZMW -= amountZMW;
+    persist();
+  }
+
+  function addSurveyRevenue(amountZMW, customerName) {
+    if (!customerName || amountZMW <= 0) throw new Error("Customer & amount required");
+    const perShare = amountZMW / appState.shareholders.length;
+    appState.shareholders.forEach(sh => { sh.balanceZMW += perShare; });
+    appState.surveyRevenues.push({ id: Date.now(), date: new Date().toISOString(), amountZMW, customerName, profitByCustomer: amountZMW });
+    appState.companyCashZMW += amountZMW;
+    persist();
+  }
+
+  function exchangeCurrency(fromCurr, amount, rate) {
+    if (amount <= 0 || rate <= 0) throw new Error("Invalid exchange");
+    if (fromCurr === "ZMW") {
+      const neededZMW = amount;
+      if (appState.companyCashZMW < neededZMW) throw new Error("Insufficient ZMW");
+      const usdReceived = amount / rate;
+      appState.companyCashZMW -= neededZMW;
+      appState.companyCashUSD += usdReceived;
+      appState.exchangeLogs.push({ id: Date.now(), date: new Date().toISOString(), from: "ZMW", to: "USD", amount: neededZMW, rate, result: usdReceived });
+    } else if (fromCurr === "USD") {
+      const neededUSD = amount;
+      if (appState.companyCashUSD < neededUSD) throw new Error("Insufficient USD");
+      const zmwReceived = amount * rate;
+      appState.companyCashUSD -= neededUSD;
+      appState.companyCashZMW += zmwReceived;
+      appState.exchangeLogs.push({ id: Date.now(), date: new Date().toISOString(), from: "USD", to: "ZMW", amount: neededUSD, rate, result: zmwReceived });
+    }
+    appState.exchangeRate = rate;  // update last used rate
+    persist();
+  }
+
+  function requestWithdrawalZMW(shareholderId, amountZMW) {
+    const sh = appState.shareholders.find(s => s.id === shareholderId);
+    if (!sh || sh.balanceZMW < amountZMW) throw new Error("Insufficient balance");
+    appState.withdrawalRequests.push({
+      id: Date.now(), date: new Date().toISOString(), shareholderId, shareholderName: sh.name,
+      amountZMW, status: "pending"
+    });
+    persist();
+  }
+
+  function approveWithdrawal(reqId) {
+    const req = appState.withdrawalRequests.find(r => r.id === reqId);
+    if (!req || req.status !== "pending") return false;
+    const shareholder = appState.shareholders.find(s => s.id === req.shareholderId);
+    if (!shareholder || shareholder.balanceZMW < req.amountZMW) return false;
+    if (appState.companyCashZMW < req.amountZMW) throw new Error("Company ZMW insufficient");
+    shareholder.balanceZMW -= req.amountZMW;
+    appState.companyCashZMW -= req.amountZMW;
+    req.status = "approved";
+    persist();
+    return true;
+  }
+
+  // ---------- RENDER ENGINE ----------
+  function render() {
+    const root = document.getElementById('root');
+    if (!currentUser) {
+      root.innerHTML = renderLogin();
+      attachLoginEvents();
+    } else {
+      root.innerHTML = renderMainApp();
+      attachAppEvents();
+      attachMobileToggle();
+    }
+  }
+
+  function renderLogin() {
+    return `<div class="login-screen">
+      <div class="login-card">
+        <h1>🏔️ Gold Trade Pro</h1>
+        <h3>MASHIIN • DUAL CURRENCY • REPS</h3>
+        <div class="field"><label>Username</label><input id="loginUser" placeholder="Samatar / Yuusuf / Abdirisak / Ahmed" /></div>
+        <div class="field"><label>Password</label><input id="loginPass" type="password" /></div>
+        <button class="btn-gold" id="doLoginBtn">Access Vault</button>
+        <div id="loginError" class="error-msg"></div>
+      </div>
+    </div>`;
+  }
+
+  function renderMainApp() {
+    const isManager = (currentUser.role === 'manager');
+    const stats = computeStats();
+    const page = getPageContent(isManager, stats);
+    const navItems = [
+      { id: "dashboard", label: "📊 Dashboard" }, { id: "purchase", label: "💎 Buy Gold" },
+      { id: "sales", label: "💰 Sell Gold" }, { id: "exchange", label: "🔄 Exchange" },
+      { id: "reports", label: "📑 Reports" }, { id: "withdrawals", label: "🏦 Withdrawals" }
+    ];
+    const navButtons = navItems.map(item => `<button class="nav-btn ${activeTab === item.id ? 'active' : ''}" data-nav="${item.id}">${item.label}</button>`).join('');
+    return `
+      <div class="mobile-header"><button id="mobileMenuBtn" style="background:none;border:none;font-size:1.6rem;color:#e2bc6e;">☰</button><span style="font-weight:500;">Gold Trading</span><div style="width:28px"></div></div>
+      <div class="overlay-mob" id="mobileOverlay"></div>
+      <div class="sidebar" id="mainSidebar">
+        <div class="logo-area"><h2>⚜️ GOLD LEDGER</h2><p>Mashiin • Reps • ZMW/USD</p></div>
+        <div class="nav-menu">${navButtons}</div>
+        <div class="user-section">
+          <div class="user-badge"><div class="user-name">${currentUser.name}</div><div class="user-role">${currentUser.role === 'manager' ? 'Manager (Samatar)' : 'Shareholder'}</div></div>
+          <button class="btn-outline" id="logoutBtn">Sign Out</button>
+        </div>
+      </div>
+      <div class="content-main">${page}</div>
+    `;
+  }
+
+  function getPageContent(isManager, stats) {
+    if (activeTab === "dashboard") return dashboardHTML(isManager, stats);
+    if (activeTab === "purchase") return purchaseHTML(isManager);
+    if (activeTab === "sales") return salesHTML(isManager);
+    if (activeTab === "exchange") return exchangeHTML(isManager);
+    if (activeTab === "reports") return reportsHTML(isManager, stats);
+    if (activeTab === "withdrawals") return withdrawalsHTML(isManager);
+    return "<div class='card'>Select a section</div>";
+  }
+
+  function dashboardHTML(isManager, stats) {
+    const shList = appState.shareholders.map(sh => `<div class="balance-row" style="display:flex;justify-content:space-between;padding:8px 0"><span>${sh.name}</span><span class="green">${formatZMW(sh.balanceZMW)}</span></div>`).join('');
+    return `<div class="stats-row">
+      <div class="stat-card"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(appState.companyCashZMW)}</div></div>
+      <div class="stat-card"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(appState.companyCashUSD)}</div></div>
+      <div class="stat-card"><div class="stat-label">📦 Gold Inv.</div><div class="stat-value">${formatGrams(stats.inventory)}</div></div>
+      <div class="stat-card"><div class="stat-label">⚙️ Mashiin Total</div><div class="stat-value">${formatZMW(stats.totalMashiinCollected)}</div></div>
+    </div>
+    <div class="card"><div class="card-title">👥 Shareholder Balances (ZMW)</div>${shList || '<div class="muted">—</div>'}</div>
+    <div class="card"><div class="card-title">🔁 Exchange Rate (1 USD → ZMW)</div><div class="stat-value" style="font-size:1.4rem;">${appState.exchangeRate.toFixed(2)} ZMW</div></div>`;
+  }
+
+  function purchaseHTML(isManager) {
+    if (!isManager) return `<div class="card"><div class="muted">Only Manager (Samatar) can record gold purchases.</div></div>`;
+    const repsOptions = appState.salesReps.map(rep => `<option value="${rep}">${rep}</option>`).join('');
+    return `<div class="card"><div class="card-title">🛒 Buy Gold with Mashiin & Transport</div>
+      <div class="form-group"><label>Grams</label><input id="buyGrams" type="number" placeholder="grams" /></div>
+      <div class="form-group"><label>Rate per Gram (ZMW)</label><input id="buyRate" type="number" placeholder="ZMW/gram" /></div>
+      <div class="form-group"><label>Mashiin amount (ZMW)</label><input id="mashiinAmt" type="number" value="${appState.defaultMashiin}" /></div>
+      <div class="form-group"><label>Transport amount (ZMW)</label><input id="transportAmt" type="number" value="${appState.defaultTransport}" /></div>
+      <div class="form-group"><label>Sales Representative</label><select id="salesRepSelect">${repsOptions}</select></div>
+      <button class="btn-action" id="executePurchase">Record Purchase (Net Paid)</button>
+    </div>`;
+  }
+
+  function salesHTML(isManager) {
+    if (!isManager) return `<div class="card"><div class="muted">Manager only: record gold sale in USD and decide conversion.</div></div>`;
+    return `<div class="card"><div class="card-title">📈 Sell Gold (USD)</div>
+      <div class="form-group"><label>Grams to sell</label><input id="sellGrams" type="number" /></div>
+      <div class="form-group"><label>Sell Rate (USD/gram)</label><input id="sellRateUSD" type="number" /></div>
+      <div class="form-group"><label>Conversion Decision</label><select id="convDecision">
+        <option value="convert_all">Convert all USD → ZMW</option>
+        <option value="keep_all">Keep all as USD</option>
+        <option value="partial">Partial: convert specific USD amount</option>
+      </select></div>
+      <div class="form-group" id="partialDiv" style="display:none"><label>Amount USD to convert to ZMW</label><input id="partialUsd" type="number" placeholder="0" /></div>
+      <button class="btn-action" id="executeSale">Execute Sale & Distribute Profit (ZMW)</button>
+    </div>`;
+  }
+
+  function exchangeHTML(isManager) {
+    return `<div class="card"><div class="card-title">💱 Currency Exchange (ZMW ↔ USD)</div>
+      <div class="form-group"><label>Exchange Direction</label><select id="exDir"><option value="ZMWtoUSD">ZMW → USD</option><option value="USDtoZMW">USD → ZMW</option></select></div>
+      <div class="form-group"><label>Amount (in source currency)</label><input id="exAmount" type="number" /></div>
+      <div class="form-group"><label>Exchange Rate (1 USD = X ZMW)</label><input id="exRate" type="number" value="${appState.exchangeRate}" step="0.01" /></div>
+      <button class="btn-action" id="doExchange">Execute Exchange</button>
+      <div class="muted" style="margin-top:10px">Last rate: ${appState.exchangeRate} ZMW/USD</div>
+    </div>`;
+  }
+
+  function reportsHTML(isManager, stats) {
+    const repRows = Object.entries(stats.salesRepStats).map(([rep,data]) => `<tr><td>${rep}</td><td>${data.count} purchases</td><td>${formatGrams(data.totalGrams)}</td><td>${formatZMW(data.totalMashiin)}</td></tr>`).join('');
+    const surveyRows = appState.surveyRevenues.map(s => `<tr><td>${s.customerName}</td><td>${formatZMW(s.amountZMW)}</td><td>${new Date(s.date).toLocaleDateString()}</td></tr>`).join('');
+    return `<div class="two-col">
+      <div class="card"><div class="card-title">📊 Sales Rep Performance</div><table><thead><tr><th>Rep</th><th>Purchases</th><th>Grams</th><th>Total Mashiin</th></tr></thead><tbody>${repRows || '<tr><td colspan="4">—</td></tr>'}</tbody></table></div>
+      <div class="card"><div class="card-title">⚙️ Mashiin + Transport Summary</div><div>Total Mashiin: ${formatZMW(stats.totalMashiinCollected)}</div><div>Total Transport: ${formatZMW(stats.totalTransportCollected)}</div><div>Gold Profit (USD): ${formatUSD(stats.goldProfitUSD)}</div><div>Net Profit ZMW: ${formatZMW(stats.netProfitZMW)}</div></div>
+      <div class="card"><div class="card-title">👥 Survey Revenue by Customer</div><table><thead><tr><th>Customer</th><th>Amount ZMW</th><th>Date</th></tr></thead><tbody>${surveyRows || '<tr><td colspan="3">—</td></tr>'}</tbody></table></div>
+    </div>`;
+  }
+
+  function withdrawalsHTML(isManager) {
+    const userReqs = appState.withdrawalRequests.filter(r => isManager || r.shareholderId === currentUser.shareholderId);
+    const rows = userReqs.map(r => `<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td class="${r.status === 'pending' ? 'badge-pending' : 'badge-success'}">${r.status}</td>${isManager && r.status === 'pending' ? `<td><button class="btn-sm" data-approve="${r.id}">Approve</button></td>` : '<td>—</td>'}</tr>`).join('');
+    return `<div class="card"><div class="card-title">🏧 Withdrawal Requests (ZMW)</div>
+      ${!isManager ? `<button class="btn-sm" id="reqWithdrawBtn" style="margin-bottom:16px;">+ Request Withdrawal (ZMW)</button>` : ''}
+      <div class="table-wrap"><table><thead><tr><th>Shareholder</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows || '<tr><td colspan="4">No requests</td></tr>'}</tbody></table></div>
+    </div>`;
+  }
+
+  // EVENT HANDLERS
+  function attachLoginEvents() {
+    document.getElementById('doLoginBtn')?.addEventListener('click', () => {
+      const un = document.getElementById('loginUser').value.trim();
+      const pw = document.getElementById('loginPass').value;
+      if (un === appState.manager.name && pw === appState.manager.password) {
+        currentUser = { name: appState.manager.name, role: 'manager' };
+        activeTab = "dashboard";
+        render(); return;
+      }
+      const sh = appState.shareholders.find(s => s.name.toLowerCase() === un.toLowerCase() && s.password === pw);
+      if (sh) { currentUser = { name: sh.name, role: 'shareholder', shareholderId: sh.id }; render(); return; }
+      document.getElementById('loginError').innerText = "Invalid credentials";
+    });
+  }
+
+  function attachAppEvents() {
+    document.querySelectorAll('[data-nav]').forEach(btn => btn.addEventListener('click', (e) => { activeTab = btn.dataset.nav; render(); }));
+    document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; render(); });
+    const isMgr = currentUser?.role === 'manager';
+    if (isMgr) {
+      document.getElementById('executePurchase')?.addEventListener('click', () => {
+        const grams = parseFloat(document.getElementById('buyGrams').value);
+        const rate = parseFloat(document.getElementById('buyRate').value);
+        const mashiin = parseFloat(document.getElementById('mashiinAmt').value) || appState.defaultMashiin;
+        const transport = parseFloat(document.getElementById('transportAmt').value) || appState.defaultTransport;
+        const rep = document.getElementById('salesRepSelect').value;
+        if (!grams || !rate) return alert("Enter grams and rate");
+        try { recordPurchase(grams, rate, mashiin, transport, rep); alert("Purchase recorded."); render(); } catch(e){ alert(e.message); }
+      });
+      document.getElementById('executeSale')?.addEventListener('click', () => {
+        const grams = parseFloat(document.getElementById('sellGrams').value);
+        const rateUSD = parseFloat(document.getElementById('sellRateUSD').value);
+        const decision = document.getElementById('convDecision').value;
+        let partial = null;
+        if (decision === 'partial') partial = parseFloat(document.getElementById('partialUsd').value) || 0;
+        if (!grams || !rateUSD) return alert("Enter grams & sell rate");
+        try { recordSale(grams, rateUSD, decision, partial); alert("Sale recorded. Profit distributed in ZMW"); render(); } catch(e){ alert(e.message); }
+      });
+      document.getElementById('convDecision')?.addEventListener('change', (e) => {
+        document.getElementById('partialDiv').style.display = e.target.value === 'partial' ? 'block' : 'none';
+      });
+      document.getElementById('doExchange')?.addEventListener('click', () => {
+        const dir = document.getElementById('exDir').value;
+        const amount = parseFloat(document.getElementById('exAmount').value);
+        const rate = parseFloat(document.getElementById('exRate').value);
+        if (!amount || !rate) return;
+        try { exchangeCurrency(dir === 'ZMWtoUSD' ? 'ZMW' : 'USD', amount, rate); alert("Exchange done"); render(); } catch(e){ alert(e.message); }
+      });
+      document.querySelectorAll('[data-approve]').forEach(btn => btn.addEventListener('click', (e) => {
+        const id = parseInt(btn.dataset.approve);
+        try { approveWithdrawal(id); render(); } catch(e){ alert(e.message); }
+      }));
+    }
+    // withdrawal request for shareholders
+    if (currentUser?.role === 'shareholder') {
+      document.getElementById('reqWithdrawBtn')?.addEventListener('click', () => {
+        const amt = parseFloat(prompt("Enter amount to withdraw (ZMW):", "0"));
+        if (!amt || amt <= 0) return;
+        try { requestWithdrawalZMW(currentUser.shareholderId, amt); alert("Request submitted"); render(); } catch(e){ alert(e.message); }
+      });
+    }
+  }
+
+  function attachMobileToggle() {
+    const btn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('mainSidebar');
+    const overlay = document.getElementById('mobileOverlay');
+    if (btn && sidebar) {
+      btn.onclick = () => { sidebar.classList.toggle('open'); if(overlay) overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none'; };
+      if (overlay) overlay.onclick = () => { sidebar.classList.remove('open'); overlay.style.display = 'none'; };
+    }
+  }
+
+  render();
 </script>
 </body>
 </html>
