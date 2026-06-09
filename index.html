@@ -320,7 +320,7 @@
     let isLoading = true;
     let showPasswords = false;
     let appData = {
-        exchangeRate: 26.5,
+        exchangeRate: 17.5,
         goldPurchases: [],
         goldSales: [],
         expenses: [],
@@ -359,9 +359,9 @@
         try {
             const settingsDoc = await settingsRef.doc('main').get();
             if (settingsDoc.exists) {
-                appData.exchangeRate = settingsDoc.data().exchangeRate || 26.5;
+                appData.exchangeRate = settingsDoc.data().exchangeRate || 17.5;
             } else {
-                await settingsRef.doc('main').set({ exchangeRate: 26.5 });
+                await settingsRef.doc('main').set({ exchangeRate: 17.5 });
             }
             
             const shareholdersSnap = await shareholdersRef.get();
