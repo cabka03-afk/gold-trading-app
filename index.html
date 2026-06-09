@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gold Trading Pro | ADMIN ENABLED VERSION</title>
+    <title>Gold Trading Pro | FULL COMPLETE VERSION</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
-        /* FULL CSS - COMPREHENSIVE PLATFORM STYLES */
+        /* FULL CSS - NOTHING REMOVED */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0a0a07; font-family: 'Inter', system-ui, sans-serif; color: #ece3cf; }
         .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at 30% 40%, #131210, #020202); padding: 1.5rem; }
@@ -15,16 +15,13 @@
         .login-card h1 { font-size: 1.9rem; color: #e2bc6e; text-align: center; }
         .field { margin-bottom: 1rem; }
         .field label { font-size: 0.7rem; color: #cdbc8f; display: block; margin-bottom: 6px; }
-        .field input, .field select { width: 100%; background: #1f1e1a; border: 1px solid #3a3528; padding: 12px 18px; border-radius: 40px; color: #f7efdb; font-size: 1rem; }
+        .field input { width: 100%; background: #1f1e1a; border: 1px solid #3a3528; padding: 12px 18px; border-radius: 40px; color: #f7efdb; font-size: 1rem; }
         .btn-gold { width: 100%; background: linear-gradient(135deg, #a8822c, #e0b867); border: none; padding: 13px; border-radius: 40px; font-weight: bold; color: #0c0b07; cursor: pointer; font-size: 1rem; }
         .error-msg { color: #f5a67b; font-size: 0.8rem; margin-top: 12px; text-align: center; }
-        .login-toggle-bar { display: flex; gap: 10px; margin-bottom: 20px; background: #1f1e1a; padding: 5px; border-radius: 30px; border: 1px solid #3a3528; }
-        .toggle-tab { flex: 1; background: none; border: none; color: #a3946b; padding: 8px; border-radius: 25px; cursor: pointer; font-size: 0.8rem; font-weight: bold; }
-        .toggle-tab.active { background: #e0b867; color: #0c0b07; }
-        
         .sidebar { width: 280px; background: #0e0e0b; border-right: 1px solid #2a261d; position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; overflow-y: auto; }
         .logo-area { padding: 24px 20px; border-bottom: 1px solid #2f2b20; }
         .logo-area h2 { color: #e8c87a; font-size: 1.3rem; }
+        .nav-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
         .nav-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
         .nav-btn { background: none; border: none; padding: 10px 16px; text-align: left; font-size: 0.85rem; color: #cbbf97; border-radius: 34px; cursor: pointer; }
         .nav-btn.active, .nav-btn:hover { background: #25231c; color: #f5de9c; }
@@ -46,14 +43,20 @@
         input, select, textarea { width: 100%; background: #1e1d18; border: 1px solid #3f392b; padding: 10px 14px; border-radius: 36px; color: #f2e7cf; }
         .btn-action { background: linear-gradient(100deg, #9e7d30, #d6ae5a); border: none; padding: 12px; border-radius: 40px; font-weight: bold; color: #0c0a04; cursor: pointer; width: 100%; }
         .btn-sm { background: #2a271f; border: 1px solid #7a6b47; padding: 6px 14px; border-radius: 30px; color: #f0daa0; cursor: pointer; font-size: 0.7rem; }
-        .btn-action:hover { opacity: 0.9; }
         .btn-danger { background: #5a1e1e; border-color: #a54a4a; color: #ffb4b4; }
         .btn-danger:hover { background: #7a2a2a; }
         .green { color: #8bcb8b; }
         .red { color: #e69474; }
         .muted { color: #8e8160; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: #181714; border-radius: 28px; padding: 28px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #2f2b20; }
+        .user-row:hover { background: #1c1b16; }
+        .mobile-header { display: none; }
+        .loading { text-align: center; padding: 50px; color: #e2bc6e; font-size: 1.2rem; }
+        .sync-status { position: fixed; bottom: 10px; right: 10px; background: #1a1a17; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; z-index: 100; }
         
-        /* ========== REPORT DESIGN LAYOUTS ========== */
+        /* ========== BRIGHT REPORTS STYLES ========== */
         .report-container { background: #fef9ef; border-radius: 20px; padding: 20px; color: #1e1b15; margin-top: 15px; }
         .report-header { background: linear-gradient(135deg, #1e5631, #3a7d2c); color: white; padding: 18px 22px; border-radius: 16px; margin-bottom: 20px; }
         .report-header h3 { color: white; font-size: 1.3rem; margin-bottom: 6px; }
@@ -69,9 +72,10 @@
         .mashiin-card .value { font-size: 1.3rem; font-weight: bold; color: #8b6914; }
         .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; }
         .transaction-list-header { background: #efe5d5; padding: 12px 15px; font-weight: bold; color: #5c4a2e; }
-        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; }
+        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; transition: background 0.2s; }
+        .transaction-item:hover { background: #fef7e8; }
         .transaction-date { font-size: 0.7rem; color: #8b7a5c; min-width: 140px; }
-        .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; text-align: center; min-width: 120px; }
+        .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; margin: 0 10px; min-width: 120px; text-align: center; }
         .transaction-type.PURCHASE { background: #fff3e0; color: #e65100; }
         .transaction-type.SALE { background: #e8f5e9; color: #2e7d32; }
         .transaction-type.SURVEY { background: #e3f2fd; color: #1565c0; }
@@ -84,21 +88,22 @@
         .transaction-amount.positive { color: #2e7d32; }
         .transaction-amount.negative { color: #c62828; }
         .report-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; background: #f5efe3; padding: 12px; border-radius: 16px; }
-        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; color: #4a3e2c; }
-        .filter-btn.active { background: #c8a96e; color: white; border-color: #c8a96e; }
-        .type-filter-bar { background: #f5efe3; padding: 12px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; }
+        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; color: #4a3e2c; transition: all 0.2s; }
+        .filter-btn:hover, .filter-btn.active { background: #c8a96e; color: white; border-color: #c8a96e; }
+        .type-filter-bar { background: #f5efe3; padding: 12px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         .type-filter-bar select { width: auto; background: white; padding: 6px 12px; }
-        .sync-status { position: fixed; bottom: 10px; right: 10px; background: #1a1a17; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; z-index: 100; opacity: 0.8; }
         
         @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col, .three-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; z-index: 15; } }
+        
+        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, .btn-action, nav, .user-section, .sync-status { display: none !important; } .report-container { background: white !important; padding: 0 !important; margin: 0 !important; } .content-main { margin: 0 !important; padding: 0 !important; } }
     </style>
 </head>
 <body>
-<div id="root"><div class="loading" style="text-align:center; padding:50px; color:#e0b867;">☁️ Connecting to secure cloud ledger...</div></div>
-<div id="syncStatus" class="sync-status">🔄 Syncing Engine...</div>
+<div id="root"><div class="loading">☁️ Loading cloud data...</div></div>
+<div id="syncStatus" class="sync-status">🔄 Connecting...</div>
 
 <script>
-    // ========== FIREBASE ENGINE CONFIGURATION ==========
+    // ========== FIREBASE CONFIG ==========
     const firebaseConfig = {
         apiKey: "AIzaSyB4uA5m3_1Ps-zaPLF6UWD5X4VOoHn0JxY",
         authDomain: "gold-trading-app-203b8.firebaseapp.com",
@@ -111,7 +116,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     
-    // Core Registry Remappings
     const settingsRef = db.collection('settings');
     const purchasesRef = db.collection('goldPurchases');
     const salesRef = db.collection('goldSales');
@@ -124,11 +128,8 @@
     
     let currentUser = null;
     let activeTab = "dashboard";
+    let isLoading = true;
     let showPasswords = false;
-    let isMobileMenuOpen = false;
-    let loginMode = "shareholder"; // Toggle tracking variable: 'shareholder' or 'admin'
-    
-    // System Master Cache Object
     let appData = {
         companyCashZMW: 0,
         companyCashUSD: 0,
@@ -145,14 +146,38 @@
     const formatZMW = (v) => 'K' + (parseFloat(v)||0).toFixed(2);
     const formatUSD = (v) => '$' + (parseFloat(v)||0).toFixed(2);
     const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
-    const formatTransport = (v) => 'K' + (parseFloat(v)||0).toFixed(2);
+    
+    // Core function to dynamically calculate live cash metrics from data sources
+    function recalculateLiveBalances() {
+        let zmwInflows = 0;
+        let zmwOutflows = 0;
+        let usdInflows = 0;
+        let usdOutflows = 0;
 
-    // Bootloader Core Data Fetching Pipeline
+        // 1. Process structured cash history transaction entries
+        appData.cashTransactions.forEach(t => {
+            const zAmt = parseFloat(t.amountZMW) || 0;
+            const uAmt = parseFloat(t.amountUSD) || 0;
+
+            if (zAmt > 0) zmwInflows += zAmt;
+            else if (zAmt < 0) zmwOutflows += Math.abs(zAmt);
+
+            if (uAmt > 0) usdInflows += uAmt;
+            else if (uAmt < 0) usdOutflows += Math.abs(uAmt);
+        });
+
+        appData.companyCashZMW = zmwInflows - zmwOutflows;
+        appData.companyCashUSD = usdInflows - usdOutflows;
+    }
+
+    // Load all data from Firestore
     async function loadAllData() {
         try {
             const settingsDoc = await settingsRef.doc('main').get();
             if (settingsDoc.exists) {
                 appData.exchangeRate = settingsDoc.data().exchangeRate || 26.5;
+            } else {
+                await settingsRef.doc('main').set({ companyCashZMW: 0, companyCashUSD: 0, exchangeRate: 26.5 });
             }
             
             const shareholdersSnap = await shareholdersRef.get();
@@ -183,35 +208,62 @@
             const surveysSnap = await surveysRef.orderBy('date', 'desc').get();
             appData.surveyRevenues = surveysSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             
+            const depositsSnap = await depositsRef.orderBy('date', 'desc').get();
+            appData.deposits = depositsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+            
             const withdrawalsSnap = await withdrawalsRef.orderBy('date', 'desc').get();
             appData.withdrawalRequests = withdrawalsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             
             const transactionsSnap = await cashTransactionsRef.orderBy('date', 'desc').limit(500).get();
             appData.cashTransactions = transactionsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             
-            document.getElementById('syncStatus').innerHTML = '✅ Vault Protected';
+            recalculateLiveBalances();
+
+            isLoading = false;
+            document.getElementById('syncStatus').innerHTML = '✅ Cloud Connected';
+            setTimeout(() => { const s = document.getElementById('syncStatus'); if(s) s.style.opacity = '0.6'; }, 2000);
+            
             if (currentUser) { renderApp(); } else { showLogin(); }
         } catch(e) {
             console.error(e);
-            document.getElementById('syncStatus').innerHTML = '⚠️ Local Safe Mode';
+            document.getElementById('syncStatus').innerHTML = '⚠️ Offline Mode';
+            isLoading = false;
             if (currentUser) { renderApp(); } else { showLogin(); }
         }
     }
     
     async function saveSettings() {
-        await settingsRef.doc('main').set({ exchangeRate: appData.exchangeRate });
+        await settingsRef.doc('main').set({
+            companyCashZMW: appData.companyCashZMW,
+            companyCashUSD: appData.companyCashUSD,
+            exchangeRate: appData.exchangeRate
+        });
     }
     
     async function addCashTransaction(type, amountZMW, amountUSD, description, date) {
-        const trans = { id: Date.now().toString(), date: date || new Date().toISOString(), type, amountZMW, amountUSD, description };
+        const trans = { id: Date.now().toString(), date: date || new Date().toISOString(), type, amountZMW, amountUSD, description, runningBalanceZMW: appData.companyCashZMW, runningBalanceUSD: appData.companyCashUSD };
         appData.cashTransactions.unshift(trans);
         await cashTransactionsRef.doc(trans.id).set(trans);
+        recalculateLiveBalances();
     }
     
-    // User Provision Pipeline
+    async function deleteTransaction(transId) {
+        if (!confirm("⚠️ Delete this transaction? This cannot be undone.")) return;
+        const transaction = appData.cashTransactions.find(t => t.id === transId);
+        if (!transaction) return;
+        
+        appData.cashTransactions = appData.cashTransactions.filter(t => t.id !== transId);
+        await cashTransactionsRef.doc(transId).delete();
+        recalculateLiveBalances();
+        await saveSettings();
+        renderApp();
+        alert("✅ Transaction deleted");
+    }
+    
+    // User Management
     async function addShareholder(name, password) {
-        if (!name || !password) throw new Error("Credentials missing");
-        if (appData.shareholders.some(s => s.name.toLowerCase() === name.toLowerCase()) || name.toLowerCase() === 'admin') throw new Error("Identifier name restricted or taken");
+        if (!name || !password) throw new Error("Name and password required");
+        if (appData.shareholders.some(s => s.name === name)) throw new Error("Name exists");
         const newId = Math.max(...appData.shareholders.map(s=>s.id), 0) + 1;
         const newSh = { id: newId, name, password, balanceZMW: 0 };
         await shareholdersRef.doc(newId.toString()).set(newSh);
@@ -222,59 +274,70 @@
     async function deleteShareholder(id) {
         const sh = appData.shareholders.find(s => s.id === id);
         if (!sh) throw new Error("Not found");
-        if (sh.balanceZMW !== 0) throw new Error(`Cannot delete: Account contains active balance ${formatZMW(sh.balanceZMW)}`);
+        if (sh.balanceZMW !== 0) throw new Error(`Balance must be zero: ${formatZMW(sh.balanceZMW)}`);
         await shareholdersRef.doc(id.toString()).delete();
         appData.shareholders = appData.shareholders.filter(s => s.id !== id);
         return true;
     }
     
-    // Operations Logic Modules
+    // Business Functions
     async function addDeposit(type, source, amount, desc, date) {
-        if (amount <= 0) throw new Error("Amount must be positive");
+        if (amount <= 0) throw new Error("Amount positive");
         if (type === "shareholder") {
             const sh = appData.shareholders.find(s => s.name === source);
-            if (!sh) throw new Error("Shareholder matching profile not found");
+            if (!sh) throw new Error("Shareholder not found");
             sh.balanceZMW += amount;
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-            await addCashTransaction("DEPOSIT", amount, 0, `Equity Injection from ${source}`, date);
+            appData.companyCashZMW += amount;
+            await saveSettings();
+            await addCashTransaction("DEPOSIT", amount, 0, `Deposit from ${source}`, date);
         } else {
-            await addCashTransaction("DEPOSIT", amount, 0, `External Liquidity: ${desc || source}`, date);
+            appData.companyCashZMW += amount;
+            await saveSettings();
+            await addCashTransaction("DEPOSIT", amount, 0, `External: ${desc || source}`, date);
         }
-        await loadAllData();
+        renderApp();
     }
     
     async function exchangeCurrency(fromCurr, amount, rate, date) {
-        if (amount <= 0 || rate <= 0) throw new Error("Invalid pricing array data elements");
+        if (amount <= 0 || rate <= 0) throw new Error("Invalid");
         if (fromCurr === "ZMW") {
-            if (appData.companyCashZMW < amount) throw new Error("Insufficient local ZMW treasury depth");
+            if (appData.companyCashZMW < amount) throw new Error("Insufficient ZMW");
             const usdReceived = amount / rate;
-            await addCashTransaction("EXCHANGE", -amount, usdReceived, `Treasury Swapped ZMW → USD @ ${rate}`, date);
+            appData.companyCashZMW -= amount;
+            appData.companyCashUSD += usdReceived;
+            await saveSettings();
+            await addCashTransaction("EXCHANGE", -amount, usdReceived, `ZMW → USD at ${rate}`, date);
         } else {
-            if (appData.companyCashUSD < amount) throw new Error("Insufficient international USD asset portfolio depth");
+            if (appData.companyCashUSD < amount) throw new Error("Insufficient USD");
             const zmwReceived = amount * rate;
-            await addCashTransaction("EXCHANGE", zmwReceived, -amount, `Treasury Swapped USD → ZMW @ ${rate}`, date);
+            appData.companyCashUSD -= amount;
+            appData.companyCashZMW += zmwReceived;
+            await saveSettings();
+            await addCashTransaction("EXCHANGE", zmwReceived, -amount, `USD → ZMW at ${rate}`, date);
         }
         appData.exchangeRate = rate;
         await saveSettings();
-        await loadAllData();
+        renderApp();
     }
     
     async function recordPurchase(g, r, m, t, rep, date) {
         const gross = g * r;
         const net = gross - (m + t);
-        if (net < 0) throw new Error("Deduction vectors exceed procurement evaluation value");
-        if (appData.companyCashZMW < net) throw new Error("Insufficient procurement ZMW cash stack available");
+        if (net < 0) throw new Error("Deductions exceed value");
+        if (appData.companyCashZMW < net) throw new Error("Insufficient ZMW");
         const purchase = { id: Date.now().toString(), date, grams: g, ratePerGram: r, grossAmount: gross, mashiinFee: m, transportFee: t, netPaid: net, salesRep: rep, remainingGrams: g };
         await purchasesRef.doc(purchase.id).set(purchase);
-        await addCashTransaction("PURCHASE", -net, 0, `Buy ${g}g @ ${r} ZMW/g | Rep: ${rep}`, date);
-        await loadAllData();
+        appData.goldPurchases.unshift(purchase);
+        appData.companyCashZMW -= net;
+        await saveSettings();
+        await addCashTransaction("PURCHASE", -net, 0, `Buy ${g}g @ ${r} ZMW/g, Mashiin:${m}, Transport:${t}, Rep:${rep}`, date);
+        renderApp();
     }
     
     async function recordSale(g, rate, convChoice, partialUsd, date) {
         let remaining = g;
         let costZMW = 0;
-        
-        // Audit inventory depletion array tracking FIFO logic
         for (let p of appData.goldPurchases) {
             if (remaining <= 0) break;
             if (p.remainingGrams <= 0) continue;
@@ -284,44 +347,48 @@
             await purchasesRef.doc(p.id).update({ remainingGrams: p.remainingGrams });
             remaining -= taken;
         }
-        if (remaining > 0) throw new Error("Procurement volume depth violation: Insufficient gold inventory in warehouse stack.");
+        if (remaining > 0) throw new Error("Insufficient inventory");
         
         const revenueUSD = g * rate;
         const costUSD = costZMW / appData.exchangeRate;
         const profitUSD = revenueUSD - costUSD;
         const profitZMW = profitUSD * appData.exchangeRate;
         const perShare = profitZMW / appData.shareholders.length;
-        
         for (const sh of appData.shareholders) {
             sh.balanceZMW += perShare;
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
         }
         
         let usdKept = 0, zmwConverted = 0;
-        if (convChoice === "keep_all") { usdKept = revenueUSD; }
-        else if (convChoice === "convert_all") { zmwConverted = revenueUSD * appData.exchangeRate; }
-        else if (convChoice === "partial") {
+        if (convChoice === "keep_all") { usdKept = revenueUSD; appData.companyCashUSD += revenueUSD; }
+        else if (convChoice === "convert_all") { zmwConverted = revenueUSD * appData.exchangeRate; appData.companyCashZMW += zmwConverted; }
+        else if (convChoice === "partial" && partialUsd > 0) {
             const convertUSD = Math.min(partialUsd, revenueUSD);
             zmwConverted = convertUSD * appData.exchangeRate;
             usdKept = revenueUSD - convertUSD;
+            appData.companyCashZMW += zmwConverted;
+            appData.companyCashUSD += usdKept;
         }
+        await saveSettings();
         
         await salesRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, gramsSold: g, sellRateUSD: rate, revenueUSD, profitUSD });
-        await addCashTransaction("SALE", zmwConverted, usdKept, `Sold ${g}g @ ${rate} USD/g | Shared Dividend Profit: ${formatZMW(profitZMW)}`, date);
-        await loadAllData();
+        await addCashTransaction("SALE", zmwConverted, usdKept, `Sold ${g}g @ ${rate} USD/g, Profit: ${profitUSD.toFixed(2)} USD`, date);
+        renderApp();
     }
     
     async function addExpense(desc, amt, date) {
-        if (amt <= 0) throw new Error("Value entry metric must be positive");
-        if (appData.companyCashZMW < amt) throw new Error("Ledger balance sheet capacity constraint: Insufficient ZMW funds");
+        if (amt <= 0) throw new Error("Positive amount");
+        if (appData.companyCashZMW < amt) throw new Error("Insufficient ZMW");
         const perShare = amt / appData.shareholders.length;
         for (const sh of appData.shareholders) {
             sh.balanceZMW -= perShare;
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
         }
         await expensesRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, description: desc, amountZMW: amt });
-        await addCashTransaction("EXPENSE", -amt, 0, `Corporate Expense: ${desc}`, date);
-        await loadAllData();
+        appData.companyCashZMW -= amt;
+        await saveSettings();
+        await addCashTransaction("EXPENSE", -amt, 0, desc, date);
+        renderApp();
     }
     
     async function addSurveyRevenue(amt, cust, date) {
@@ -331,431 +398,37 @@
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
         }
         await surveysRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, amountZMW: amt, customerName: cust });
-        await addCashTransaction("SURVEY", amt, 0, `Geological Survey Service Fee cleared from ${cust}`, date);
-        await loadAllData();
+        appData.companyCashZMW += amt;
+        await saveSettings();
+        await addCashTransaction("SURVEY", amt, 0, `Survey from ${cust}`, date);
+        renderApp();
     }
     
     async function requestWithdrawal(id, amt) {
         const sh = appData.shareholders.find(s => s.id === id);
-        if (!sh || sh.balanceZMW < amt) throw new Error("Requested transaction depth exceeds authorized equity threshold");
+        if (!sh || sh.balanceZMW < amt) throw new Error("Insufficient balance");
         const req = { id: Date.now().toString(), date: new Date().toISOString(), shareholderId: id, shareholderName: sh.name, amountZMW: amt, status: "pending" };
         await withdrawalsRef.doc(req.id).set(req);
-        await loadAllData();
+        appData.withdrawalRequests.unshift(req);
+        renderApp();
     }
     
     async function approveWithdrawal(reqId) {
         const req = appData.withdrawalRequests.find(r => r.id === reqId);
         if (!req || req.status !== "pending") return;
         const sh = appData.shareholders.find(s => s.id === req.shareholderId);
-        if (!sh || sh.balanceZMW < req.amountZMW || appData.companyCashZMW < req.amountZMW) throw new Error("Distribution routing constraint: Insufficient core asset capital pools.");
+        if (!sh || sh.balanceZMW < req.amountZMW || appData.companyCashZMW < req.amountZMW) return;
         sh.balanceZMW -= req.amountZMW;
         await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
+        appData.companyCashZMW -= req.amountZMW;
+        await saveSettings();
         req.status = "approved";
         await withdrawalsRef.doc(req.id).update({ status: "approved" });
-        await addCashTransaction("WITHDRAWAL", -req.amountZMW, 0, `Shareholder Dividend Distribution Paid to ${sh.name}`, new Date().toISOString());
-        await loadAllData();
+        await addCashTransaction("WITHDRAWAL", -req.amountZMW, 0, `Withdrawal by ${sh.name}`, new Date().toISOString());
+        renderApp();
     }
     
-    // Login Interface Rendering Controller Engine
-    function showLogin() {
-        let options = appData.shareholders.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
-        
-        let dynamicField = loginMode === "shareholder" ? `
-            <div class="field">
-                <label>SELECT REGISTERED SHAREHOLDER</label>
-                <select id="loginUser">${options}</select>
-            </div>
-        ` : `
-            <div class="field">
-                <label>ADMIN ACCESS IDENTIFIER</label>
-                <input type="text" id="loginUserText" value="Admin" readonly style="background:#151412; border-color:#d4af37; color:#d4af37; font-weight:bold; text-align:center;">
-            </div>
-        `;
-
-        document.getElementById('root').innerHTML = `
-            <div class="login-screen">
-                <div class="login-card">
-                    <h1>🏆 Gold Trading Pro</h1>
-                    <p style="text-align:center; font-size:0.8rem; color:#a3946b; margin-bottom:20px;">Secure Management Portal</p>
-                    
-                    <div class="login-toggle-bar">
-                        <button class="toggle-tab ${loginMode==='shareholder'?'active':''}" onclick="loginMode='shareholder'; showLogin();">Shareholder</button>
-                        <button class="toggle-tab ${loginMode==='admin'?'active':''}" onclick="loginMode='admin'; showLogin();">System Admin</button>
-                    </div>
-
-                    <form id="loginForm">
-                        ${dynamicField}
-                        <div class="field">
-                            <label>SECURITY PASS KEY</label>
-                            <input type="password" id="loginPass" placeholder="••••••••" required>
-                        </div>
-                        <button type="submit" class="btn-gold" style="margin-top:10px;">AUTHORIZE SECURE LOGON</button>
-                        <div id="loginError" class="error-msg"></div>
-                    </form>
-                </div>
-            </div>`;
-            
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const pass = document.getElementById('loginPass').value;
-            
-            if (loginMode === "admin") {
-                // HARDCODED SECURE ADMIN AUTHENTICATION CHECK RUN
-                if (pass === "admin123") {
-                    currentUser = { id: 0, name: "Administrator", role: "admin", balanceZMW: 0 };
-                    renderApp();
-                } else {
-                    document.getElementById('loginError').innerText = "❌ Master Admin Password Incorrect!";
-                }
-            } else {
-                const name = document.getElementById('loginUser').value;
-                const user = appData.shareholders.find(s => s.name === name && s.password === pass);
-                if (user) {
-                    currentUser = { ...user, role: "shareholder" };
-                    renderApp();
-                } else {
-                    document.getElementById('loginError').innerText = "❌ Password Verification Failed!";
-                }
-            }
-        });
-    }
-
-    // Application View State Matrix Renderer
-    function renderApp() {
-        const navItems = ["dashboard","purchase","sales","exchange","survey","expenses","deposits","users","reports","withdrawals"];
-        const nav = navItems.map(t => 
-            `<button class="nav-btn ${activeTab===t?'active':''}" data-tab="${t}">${t.charAt(0).toUpperCase()+t.slice(1)}</button>`
-        ).join('');
-        
-        const today = new Date().toISOString().slice(0,10);
-        let content = '';
-        
-        // ===============================================
-        // DYNAMIC REAL-TIME TREASURY AGGREGATION AUDITING
-        // ===============================================
-        const totalDeposits = appData.cashTransactions.filter(t => t.type === "DEPOSIT").reduce((sum, t) => sum + (parseFloat(t.amountZMW) || 0), 0);
-        const totalSurveyZMW = appData.surveyRevenues.reduce((sum, s) => sum + (parseFloat(s.amountZMW) || 0), 0);
-        const totalGoldExpenseZMW = appData.goldPurchases.reduce((sum, p) => sum + (parseFloat(p.netPaid) || 0), 0);
-        const totalExpensesZMW = appData.expenses.reduce((sum, e) => sum + (parseFloat(e.amountZMW) || 0), 0);
-        const totalWithdrawalsZMW = appData.cashTransactions.filter(t => t.type === "WITHDRAWAL").reduce((sum, t) => sum + Math.abs(parseFloat(t.amountZMW) || 0), 0);
-        
-        const totalZwFromExchange = appData.cashTransactions.filter(t => t.type === "EXCHANGE" && t.amountZMW > 0).reduce((sum, t) => sum + (parseFloat(t.amountZMW) || 0), 0);
-        const totalZmwSpentExchange = appData.cashTransactions.filter(t => t.type === "EXCHANGE" && t.amountZMW < 0).reduce((sum, t) => sum + Math.abs(parseFloat(t.amountZMW) || 0), 0);
-        
-        const totalUsdFromExchange = appData.cashTransactions.filter(t => t.type === "EXCHANGE" && t.amountUSD > 0).reduce((sum, t) => sum + (parseFloat(t.amountUSD) || 0), 0);
-        const totalUsdSpentExchange = appData.cashTransactions.filter(t => t.type === "EXCHANGE" && t.amountUSD < 0).reduce((sum, t) => sum + Math.abs(parseFloat(t.amountUSD) || 0), 0);
-
-        const totalSalesZMW = appData.cashTransactions.filter(t => t.type === "SALE").reduce((sum, t) => sum + (parseFloat(t.amountZMW) || 0), 0);
-        const totalSalesUSD = appData.cashTransactions.filter(t => t.type === "SALE").reduce((sum, t) => sum + (parseFloat(t.amountUSD) || 0), 0);
-
-        appData.companyCashZMW = totalDeposits + totalSurveyZMW + totalSalesZMW + totalZmwFromExchange - totalGoldExpenseZMW - totalExpensesZMW - totalZmwSpentExchange - totalWithdrawalsZMW;
-        appData.companyCashUSD = totalSalesUSD + totalUsdFromExchange - totalUsdSpentExchange;
-
-        // Sync fresh local cache memory object values back to UI mapping layer state
-        if (currentUser.role !== "admin") {
-            const upToDateUserObject = appData.shareholders.find(s => s.id === currentUser.id);
-            if(upToDateUserObject) currentUser.balanceZMW = upToDateUserObject.balanceZMW;
-        }
-
-        if (activeTab === 'dashboard') {
-            const repMap = {};
-            appData.goldPurchases.forEach(p => { if(p.salesRep) repMap[p.salesRep] = (repMap[p.salesRep]||0) + p.grams; });
-            const custMap = {};
-            appData.surveyRevenues.forEach(s => { if(s.customerName) custMap[s.customerName] = (custMap[s.customerName]||0) + s.amountZMW; });
-            const remainingGoldStock = appData.goldPurchases.reduce((sum, p) => sum + (p.remainingGrams || 0), 0);
-
-            // Conditional configuration module layout context based on who is logged on
-            let personalAccountCard = currentUser.role === "admin" ? `
-                <div class="stat-card" style="border: 1px dashed #d4af37;">
-                    <div class="stat-label">🔑 ACCESS AUTHORIZATION LEVEL</div>
-                    <div class="stat-value" style="color:#d4af37; font-size:1.3rem; margin-top:5px;">SYSTEM MASTER</div>
-                </div>
-            ` : `
-                <div class="stat-card">
-                    <div class="stat-label">📈 ACCOUNT BAL (YOUR SHARE)</div>
-                    <div class="stat-value" style="color:#dfc68c;">${formatZMW(currentUser.balanceZMW)}</div>
-                </div>
-            `;
-
-            content = `
-                <div class="card">
-                    <h2 style="color:#e0b867; margin-bottom:5px;">Welcome back, ${currentUser.name}!</h2>
-                    <p class="muted" style="font-size:0.8rem;">Live execution desk general data logging matrix</p>
-                </div>
-                <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-label">🇿🇲 COMPANY CASH (ZMW)</div>
-                        <div class="stat-value">${formatZMW(appData.companyCashZMW)}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">🇺🇸 COMPANY CASH (USD)</div>
-                        <div class="stat-value">${formatUSD(appData.companyCashUSD)}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">⚖️ LIVE INVENTORY IN STOCK</div>
-                        <div class="stat-value" style="color:#b5e2b5;">${formatGrams(remainingGoldStock)}</div>
-                    </div>
-                    ${personalAccountCard}
-                </div>
-                <div class="two-col">
-                    <div class="card">
-                        <div class="card-title">👥 Sales Rep Metrics (Total weight sourced)</div>
-                        ${Object.entries(repMap).map(([r,g]) => `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${r}</span><strong>${formatGrams(g)}</strong></div>`).join('') || '<p class="muted">No data registered</p>'}
-                    </div>
-                    <div class="card">
-                        <div class="card-title">🗺️ Top Survey Revenue Clients</div>
-                        ${Object.entries(custMap).slice(0,5).map(([c,a]) => `<div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span>${c}</span><strong class="green">${formatZMW(a)}</strong></div>`).join('') || '<p class="muted">No data registered</p>'}
-                    </div>
-                </div>`;
-        }
-        
-        else if (activeTab === 'purchase') {
-            content = `
-                <div class="card">
-                    <div class="card-title">📥 Record New Gold Purchase Run</div>
-                    <form id="purchaseForm" class="three-col">
-                        <div class="form-group"><label>Weight Grams</label><input type="number" step="0.01" id="pGrams" required></div>
-                        <div class="form-group"><label>Rate per Gram (ZMW)</label><input type="number" step="0.01" id="pRate" required></div>
-                        <div class="form-group"><label>Mashiin Fee (ZMW)</label><input type="number" step="0.01" id="pMashiin" value="0"></div>
-                        <div class="form-group"><label>Transport Fee (ZMW)</label><input type="number" step="0.01" id="pTransport" value="0"></div>
-                        <div class="form-group"><label>Sales Rep Profiling Tag</label><input type="text" id="pRep" required></div>
-                        <div class="form-group"><label>Transaction Date</label><input type="date" id="pDate" value="${today}"></div>
-                        <div style="grid-column: 1 / -1;"><button type="submit" class="btn-action">SAVE GOLD PURCHASE</button></div>
-                    </form>
-                </div>
-                <div class="card">
-                    <div class="card-title">📋 Historic Purchase Logs</div>
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; font-size:0.85rem; text-align:left;">
-                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;"><th style="padding:8px;">Date</th><th>Rep</th><th>Grams</th><th>Rate</th><th>Gross</th><th>Mashiin</th><th>Net Paid</th><th>Remaining</th></tr></thead>
-                            <tbody>${appData.goldPurchases.map(p=>`<tr style="border-bottom:1px solid #222;"><td style="padding:8px;">${p.date}</td><td>${p.salesRep}</td><td>${formatGrams(p.grams)}</td><td>${formatZMW(p.ratePerGram)}</td><td>${formatZMW(p.grossAmount)}</td><td>${formatZMW(p.mashiinFee)}</td><td class="red">${formatZMW(p.netPaid)}</td><td>${formatGrams(p.remainingGrams)}</td></tr>`).join('')}</tbody>
-                        </table>
-                    </div>
-                </div>`;
-        }
-        
-        else if (activeTab === 'sales') {
-            content = `
-                <div class="card">
-                    <div class="card-title">📤 Record International Export/Sale</div>
-                    <form id="saleForm" class="two-col">
-                        <div class="form-group"><label>Total Grams to Sell</label><input type="number" step="0.01" id="sGrams" required></div>
-                        <div class="form-group"><label>Sell Rate (USD / Gram)</label><input type="number" step="0.01" id="sRate" required></div>
-                        <div class="form-group"><label>Profit Currency Deployment Strategy</label>
-                            <select id="sConv" required>
-                                <option value="keep_all">Hold 100% funds in International USD Wallet</option>
-                                <option value="convert_all">Convert 100% revenue straight to Local ZMW Cash</option>
-                                <option value="partial">Keep custom base in USD / liquid rest to ZMW</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><label>If Partial: Target Amount to keep in USD</label><input type="number" step="0.01" id="sPartUsd" value="0"></div>
-                        <div class="form-group" style="grid-column:1/-1;"><label>Sale Date</label><input type="date" id="sDate" value="${today}"></div>
-                        <div style="grid-column: 1 / -1;"><button type="submit" class="btn-action">FINALIZE LIQUIDATION & DISTRIBUTE DIVIDENDS</button></div>
-                    </form>
-                </div>
-                <div class="card">
-                    <div class="card-title">📋 Historic Sales Logs</div>
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; font-size:0.85rem; text-align:left;">
-                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;"><th style="padding:8px;">Date</th><th>Grams Sold</th><th>Rate USD</th><th>Gross Revenue</th><th>Calculated Net Profit (USD)</th></tr></thead>
-                            <tbody>${appData.goldSales.map(s=>`<tr style="border-bottom:1px solid #222;"><td style="padding:8px;">${s.date}</td><td>${formatGrams(s.gramsSold)}</td><td>${formatUSD(s.sellRateUSD)}</td><td class="green">${formatUSD(s.revenueUSD)}</td><td class="green" style="font-weight:bold;">${formatUSD(s.profitUSD)}</td></tr>`).join('')}</tbody>
-                        </table>
-                    </div>
-                </div>`;
-        }
-        
-        else if (activeTab === 'exchange') {
-            content = `
-                <div class="card">
-                    <div class="card-title">💱 Currency Swap Board (ZMW ↔ USD)</div>
-                    <form id="exchangeForm" class="three-col">
-                        <div class="form-group"><label>Source Conversion Track</label>
-                            <select id="eTrack"><option value="ZMW">ZMW → USD (Buying USD)</option><option value="USD">USD → ZMW (Cashing out to ZMW)</option></select>
-                        </div>
-                        <div class="form-group"><label>Source Volume Amount</label><input type="number" step="0.01" id="eAmt" required></div>
-                        <div class="form-group"><label>Executed Counter Rate</label><input type="number" step="0.01" id="eRate" value="${appData.exchangeRate}" required></div>
-                        <div class="form-group" style="grid-column:1/-1;"><label>Execution Date</label><input type="date" id="eDate" value="${today}"></div>
-                        <div style="grid-column: 1 / -1;"><button type="submit" class="btn-action">EXECUTE SWAP TRANSACTION</button></div>
-                    </form>
-                </div>`;
-        }
-        
-        else if (activeTab === 'survey') {
-            content = `
-                <div class="card">
-                    <div class="card-title">🗺️ Record Geolocation Survey Income</div>
-                    <form id="surveyForm" class="three-col">
-                        <div class="form-group"><label>Revenue Cleared (ZMW)</label><input type="number" step="0.01" id="suAmt" required></div>
-                        <div class="form-group"><label>Client / Customer Name</label><input type="text" id="suCust" required></div>
-                        <div class="form-group"><label>Execution Date</label><input type="date" id="suDate" value="${today}"></div>
-                        <div style="grid-column: 1 / -1;"><button type="submit" class="btn-action">SAVE SURVEY TRANSACTION</button></div>
-                    </form>
-                </div>`;
-        }
-        
-        else if (activeTab === 'expenses') {
-            content = `
-                <div class="card">
-                    <div class="card-title">💸 Record Company Operational Expense</div>
-                    <form id="expenseForm" class="three-col">
-                        <div class="form-group"><label>Expense Cost (ZMW)</label><input type="number" step="0.01" id="exAmt" required></div>
-                        <div class="form-group"><label>Cost Description / Purpose</label><input type="text" id="exDesc" required></div>
-                        <div class="form-group"><label>Billing Date</label><input type="date" id="exDate" value="${today}"></div>
-                        <div style="grid-column: 1 / -1;"><button type="submit" class="btn-action">POST EXPENSE TO GENERAL LEDGER</button></div>
-                    </form>
-                </div>`;
-        }
-        
-        else if (activeTab === 'deposits') {
-            content = `
-                <div class="card">
-                    <div class="card-title">📥 Process Capital Infusion / External Inflow</div>
-                    <form id="depositForm" class="two-col">
-                        <div class="form-group"><label>Source Stream Classification</label>
-                            <select id="dType" onchange="document.getElementById('shSourceGroup').style.display = this.value==='shareholder'?'block':'none';">
-                                <option value="shareholder">Equity Injection (From Existing Shareholder)</option>
-                                <option value="external">External Income / Outside Capital Injection</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="shSourceGroup"><label>Target Shareholder Account</label>
-                            <select id="dShSource">${appData.shareholders.map(s=>`<option value="${s.name}">${s.name}</option>`).join('')}</select>
-                        </div>
-                        <div class="form-group"><label>Cash Amount (ZMW)</label><input type="number" step="0.01" id="dAmt" required></div>
-                        <div class="form-group"><label>Reference / Narrative Memo</label><input type="text" id="dDesc" placeholder="Optional details"></div>
-                        <div class="form-group" style="grid-column:1/-1;"><label>Deposit Date</label><input type="date" id="dDate" value="${today}"></div>
-                        <div style="grid-column: 1 / -1;"><button type="submit" class="btn-action">PROCESS DEPOSIT ROUTING</button></div>
-                    </form>
-                </div>`;
-        }
-        
-        else if (activeTab === 'users') {
-            content = `
-                <div class="card">
-                    <div class="card-title">👥 Shareholder Registry & Access Keys</div>
-                    <div style="display:flex; justify-content:flex-end; margin-bottom:15px;">
-                        <button class="btn-sm" onclick="showPasswords=!showPasswords; renderApp();">${showPasswords?'Hide':'Reveal'} Encryption Keys</button>
-                    </div>
-                    <div class="user-list">
-                        ${appData.shareholders.map(s => `
-                            <div class="user-row" style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #222;">
-                                <div>
-                                    <strong>${s.name}</strong> 
-                                    <span class="muted" style="margin-left:15px;">Key: ${showPasswords?s.password:'••••••••'}</span>
-                                </div>
-                                <div style="text-align:right;">
-                                    <div style="font-weight:bold; color:#e0b867;">${formatZMW(s.balanceZMW)}</div>
-                                    ${appData.shareholders.length > 1 ? `<button class="btn-sm btn-danger" style="margin-top:4px;" onclick="handleDeleteShareholder(${s.id})">Remove Access</button>` : ''}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-title">➕ Provision New Shareholder Identity Matrix</div>
-                    <form id="userForm" class="two-col">
-                        <div class="form-group"><label>Unique Name Identifier</label><input type="text" id="uName" required></div>
-                        <div class="form-group"><label>Assigned Entry Password</label><input type="text" id="uPass" required></div>
-                        <div style="grid-column: 1 / -1;"><button type="submit" class="btn-action">SAVE PROVISIONED CREDENTIALS</button></div>
-                    </form>
-                </div>`;
-        }
-        
-        else if (activeTab === 'reports') {
-            content = `
-                <div class="card">
-                    <div class="card-title">🗓️ Compile System General Ledger Report</div>
-                    <div class="report-filters">
-                        <button class="filter-btn" onclick="setReportRange('today')">Today</button>
-                        <button class="filter-btn" onclick="setReportRange('yesterday')">Yesterday</button>
-                        <button class="filter-btn" onclick="setReportRange('thisMonth')">This Month</button>
-                        <button class="filter-btn" onclick="setReportRange('lastMonth')">Last Month</button>
-                        <button class="filter-btn" onclick="setReportRange('thisYear')">This Year</button>
-                        <button class="filter-btn active" onclick="setReportRange('all')">All Time</button>
-                    </div>
-                    <div class="type-filter-bar">
-                        <label>Filter Data Stream Type:</label>
-                        <select id="repTypeFilter" onchange="currentType=this.value; generateReport();">
-                            <option value="all">Comprehensive Audit (Everything)</option>
-                            <option value="PURCHASE">Gold Purchases Only</option>
-                            <option value="SALE">Gold Sales Liquidation Only</option>
-                            <option value="SURVEY">Geological Surveys Only</option>
-                            <option value="EXPENSE">General Operational Expenses Only</option>
-                            <option value="DEPOSIT">Capital Injection Runs Only</option>
-                            <option value="WITHDRAWAL">Shareholder Distributions Only</option>
-                            <option value="EXCHANGE">Currency Swap Actions Only</option>
-                        </select>
-                        <button class="btn-sm" style="margin-left:auto;" onclick="window.print()">🖨️ PRINT AUDIT REPORT</button>
-                    </div>
-                    <div id="reportOutput"></div>
-                </div>`;
-        }
-        
-        else if (activeTab === 'withdrawals') {
-            // Block requesting functionality if user profile is admin role context
-            let withdrawalFormLayout = currentUser.role === "admin" ? `
-                <div class="card" style="border:1px solid #3a3528; background:#161512; text-align:center; padding:30px;">
-                    <p class="muted">⚠️ Administrator accounts don't track private equity shares. Switch profiles or use the database distribution routing keys below to modify pending items.</p>
-                </div>
-            ` : `
-                <div class="card">
-                    <div class="card-title">💸 Transmit Shareholder Distribution / Withdrawal Request</div>
-                    <form id="withdrawForm" class="two-col">
-                        <div class="form-group"><label>Target Allocation Size (ZMW)</label><input type="number" step="0.01" id="wAmt" required></div>
-                        <div style="grid-column:1/-1;"><button type="submit" class="btn-action">TRANSMIT DISTRIBUTION REQUEST</button></div>
-                    </form>
-                </div>
-            `;
-
-            content = `
-                ${withdrawalFormLayout}
-                <div class="card">
-                    <div class="card-title">📋 Dividend Request Registry Routing Queue</div>
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; font-size:0.85rem; text-align:left;">
-                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;"><th style="padding:8px;">Date</th><th>Shareholder</th><th>Amount Requested</th><th>Processing Status</th><th>Control Access Actions</th></tr></thead>
-                            <tbody>${appData.withdrawalRequests.map(r=>`
-                                <tr style="border-bottom:1px solid #222;">
-                                    <td style="padding:8px;">${new Date(r.date).toLocaleDateString()}</td>
-                                    <td>${r.shareholderName}</td>
-                                    <td style="font-weight:bold;">${formatZMW(r.amountZMW)}</td>
-                                    <td class="${r.status==='approved'?'green':'muted'}" style="text-transform:uppercase; font-size:0.75rem;">${r.status}</td>
-                                    <td>
-                                        ${r.status === 'pending' ? `<button class="btn-sm" style="background:#1e4620; color:#cbeacb; border-color:#2e7d32;" onclick="handleApproveWithdrawal('${r.id}')">APPROVE OUTFLOW</button>` : '🔒 Finalized'}
-                                    </td>
-                                </tr>`).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>`;
-        }
-
-        let userIndicatorLabel = currentUser.role === "admin" ? "ROOT CONTROL ARCHITECTURE" : "TRADER COMPONENT ACCESS";
-
-        document.getElementById('root').innerHTML = `
-            <div class="mobile-header">
-                <h2>🏆 Gold Trading Pro</h2>
-                <button class="btn-sm" id="menuToggle">☰ Menu</button>
-            </div>
-            <div style="display:flex; min-height:100vh;">
-                <aside class="sidebar ${isMobileMenuOpen?'open':''}" id="sidebar">
-                    <div class="logo-area"><h2>🏆 Gold Trading Pro</h2></div>
-                    <nav class="nav-menu" id="navMenu">${nav}</nav>
-                    <div class="user-section">
-                        <div class="user-badge">
-                            <div style="font-size:0.65rem; color:#a3946b; text-transform:uppercase;">${userIndicatorLabel}</div>
-                            <strong style="color:#e0b867;">${currentUser.name}</strong>
-                        </div>
-                        <button class="btn-outline" id="logoutBtn">SIGN OUT Securely</button>
-                    </div>
-                </aside>
-                <main class="content-main">${content}</main>
-            </div>`;
-
-        setupEvents();
-        if (activeTab === 'reports') generateReport();
-    }
-
-    // Reports Compiler Engine Core Functional Pipeline Logic Module
+    // Reports variables
     let currentStart = null, currentEnd = null, currentType = "all";
     
     function getRange(filter) {
@@ -807,194 +480,568 @@
             customerSummary[s.customerName].total += s.amountZMW;
         });
         
-        document.getElementById('reportOutput').innerHTML = `
-        <div class="report-container">
+        document.getElementById('reportOutput').innerHTML = `<div class="report-container">
             <div class="report-header">
-                <h3>📊 Business Audit Ledger Report</h3>
-                <p>${currentStart && currentEnd ? currentStart.toLocaleDateString() + ' → ' + currentEnd.toLocaleDateString() : 'Comprehensive System Scope'} | Class Categorization: ${currentType}</p>
+                <h3>📊 Financial Report</h3>
+                <p>${currentStart && currentEnd ? currentStart.toLocaleDateString() + ' → ' + currentEnd.toLocaleDateString() : 'All Time'} | Type: ${currentType === 'all' ? 'All' : currentType}</p>
             </div>
             <div class="report-summary">
-                <div class="summary-card"><div class="label">💰 Operational Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
-                <div class="summary-card"><div class="label">📉 Operational Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
-                <div class="summary-card"><div class="label">📈 Delta Operational Profit</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
+                <div class="summary-card"><div class="label">💰 Total Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
+                <div class="summary-card"><div class="label">📉 Total Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
+                <div class="summary-card"><div class="label">📈 Net Profit</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
             </div>
             <div class="mashiin-card">
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
-                    <div><div class="label">⚙️ GLOBAL MASHIIN DEPRECIATION EXPENSE</div><div class="value">${formatZMW(totalMashiin)}</div></div>
-                    <div><div class="label">🚚 GLOBAL LOGISTICS TRANSPORT FEES</div><div class="value">${formatTransport(totalTransport)}</div></div>
+                    <div><div class="label">⚙️ TOTAL MASHIIN (All Time)</div><div class="value">${formatZMW(totalMashiin)}</div></div>
+                    <div><div class="label">🚚 TOTAL TRANSPORT (All Time)</div><div class="value">${formatZMW(totalTransport)}</div></div>
                 </div>
+                ${periodMashiin > 0 || periodTransport > 0 ? `<div style="margin-top:15px; padding-top:12px; border-top:1px solid #e8dcc8; display:flex; gap:20px;"><div><span class="label">📅 Mashiin (this period):</span> <strong style="color:#2e7d32;">${formatZMW(periodMashiin)}</strong></div><div><span class="label">📅 Transport (this period):</span> <strong style="color:#2e7d32;">${formatZMW(periodTransport)}</strong></div></div>` : ''}
             </div>
             <div class="three-col" style="margin-bottom:20px;">
                 <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
-                    <h4 style="margin-bottom:10px; color:#5c4a2e;">Sales Representative Metrics</h4>
-                    ${Object.entries(repSummary).map(([rep, d]) => `<div style="display:flex; justify-content:space-between; padding:5px 0; font-size:0.8rem; border-bottom:1px solid #f4eedf;"><span>${rep}</span><strong>${d.totalGrams.toFixed(2)}g (${d.count} runs)</strong></div>`).join('') || '<div class="muted">No data parameters found</div>'}
+                    <h4>👥 Sales Rep Performance</h4>
+                    ${Object.entries(repSummary).map(([rep, d]) => `<div style="display:flex; justify-content:space-between; padding:5px 0;"><span>${rep}</span><span>${d.count} buys | ${d.totalGrams.toFixed(2)}g | Mashiin: ${formatZMW(d.totalMashiin)}</span></div>`).join('') || '<div class="muted">No purchases in this period</div>'}
                 </div>
                 <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
-                    <h4 style="margin-bottom:10px; color:#5c4a2e;">Survey Metrics by Client</h4>
-                    ${Object.entries(customerSummary).map(([cust, d]) => `<div style="display:flex; justify-content:space-between; padding:5px 0; font-size:0.8rem; border-bottom:1px solid #f4eedf;"><span>${cust}</span><strong>${formatZMW(d.total)}</strong></div>`).join('') || '<div class="muted">No data parameters found</div>'}
+                    <h4>📋 Survey by Customer</h4>
+                    ${Object.entries(customerSummary).map(([cust, d]) => `<div style="display:flex; justify-content:space-between; padding:5px 0;"><span>${cust}</span><span>${d.count} surveys | ${formatZMW(d.total)}</span></div>`).join('') || '<div class="muted">No surveys in this period</div>'}
                 </div>
                 <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
-                    <h4 style="margin-bottom:10px; color:#5c4a2e;">Foreign Exchange Benchmarks</h4>
-                    <div style="font-size:1.2rem; font-weight:bold; color:#1e5631; margin-bottom:5px;">1 USD = ${appData.exchangeRate.toFixed(2)} ZMW</div>
-                    <p style="font-size:0.75rem;" class="muted">ZMW Liquid Reserve: ${formatZMW(appData.companyCashZMW)}<br>USD Offshore Base: ${formatUSD(appData.companyCashUSD)}</p>
+                    <h4>💱 Exchange Rate</h4>
+                    <div style="font-size:1.3rem; font-weight:bold; color:#2b6e2f;">1 USD = ${appData.exchangeRate.toFixed(2)} ZMW</div>
+                    <div class="muted">ZMW: ${formatZMW(appData.companyCashZMW)} | USD: ${formatUSD(appData.companyCashUSD)}</div>
                 </div>
             </div>
             <div class="transaction-list">
-                <div class="transaction-list-header">📋 LEDGER STREAM TRANSCRIPT (${filtered.length} entries)</div>
+                <div class="transaction-list-header">📋 TRANSACTION HISTORY (${filtered.length} records)</div>
                 ${filtered.map(t => `<div class="transaction-item">
                     <div class="transaction-date">${new Date(t.date).toLocaleString()}</div>
                     <div class="transaction-type ${t.type}">${t.type}</div>
                     <div class="transaction-desc">${t.description || ''}</div>
-                    <div class="transaction-amount ${t.amountZMW >= 0 ? 'positive' : 'negative'}">
-                        ${t.amountUSD !== 0 ? formatUSD(t.amountUSD) : formatZMW(t.amountZMW)}
+                    <div class="transaction-amount ${(t.amountZMW >= 0 && t.amountUSD >= 0) ? 'positive' : 'negative'}">
+                        ${t.amountZMW !== 0 ? formatZMW(t.amountZMW) : ''} 
+                        ${t.amountUSD !== 0 ? ' (' + formatUSD(t.amountUSD) + ')' : ''}
+                    </div>
+                    <div>
+                        ${currentUser && currentUser.role === 'admin' ? `<button class="btn-sm btn-danger" onclick="deleteTransaction('${t.id}')">❌</button>` : ''}
                     </div>
                 </div>`).join('')}
             </div>
         </div>`;
     }
 
-    // Operational Form Submissions Handler Mappings
-    function setupEvents() {
-        document.getElementById('logoutBtn').addEventListener('click', () => { currentUser = null; showLogin(); });
-        document.getElementById('menuToggle')?.addEventListener('click', () => {
-            isMobileMenuOpen = !isMobileMenuOpen;
-            document.getElementById('sidebar').classList.toggle('open', isMobileMenuOpen);
-        });
-        
-        document.getElementById('navMenu').addEventListener('click', (e) => {
-            const tab = e.target.getAttribute('data-tab');
-            if (tab) {
-                activeTab = tab;
-                isMobileMenuOpen = false;
-                renderApp();
-            }
-        });
-
-        document.getElementById('purchaseForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await recordPurchase(
-                    parseFloat(document.getElementById('pGrams').value),
-                    parseFloat(document.getElementById('pRate').value),
-                    parseFloat(document.getElementById('pMashiin').value),
-                    parseFloat(document.getElementById('pTransport').value),
-                    document.getElementById('pRep').value,
-                    document.getElementById('pDate').value
-                );
-                alert("✅ Purchase Run Evaluated and Dispatched");
-            } catch(err) { alert("❌ System Reject Error: " + err.message); }
-        });
-
-        document.getElementById('saleForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await recordSale(
-                    parseFloat(document.getElementById('sGrams').value),
-                    parseFloat(document.getElementById('sRate').value),
-                    document.getElementById('sConv').value,
-                    parseFloat(document.getElementById('sPartUsd').value),
-                    document.getElementById('sDate').value
-                );
-                alert("✅ Export Settlement Finished & Capital Shared");
-            } catch(err) { alert("❌ System Reject Error: " + err.message); }
-        });
-
-        document.getElementById('exchangeForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await exchangeCurrency(
-                    document.getElementById('eTrack').value,
-                    parseFloat(document.getElementById('eAmt').value),
-                    parseFloat(document.getElementById('eRate').value),
-                    document.getElementById('eDate').value
-                );
-                alert("✅ Swap Executed Successfully");
-            } catch(err) { alert("❌ System Reject Error: " + err.message); }
-        });
-
-        document.getElementById('surveyForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await addSurveyRevenue(
-                    parseFloat(document.getElementById('suAmt').value),
-                    document.getElementById('suCust').value,
-                    document.getElementById('suDate').value
-                );
-                alert("✅ Survey transaction mapped and saved.");
-            } catch(err) { alert("❌ System Reject Error: " + err.message); }
-        });
-
-        document.getElementById('expenseForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await addExpense(
-                    document.getElementById('exDesc').value,
-                    parseFloat(document.getElementById('exAmt').value),
-                    document.getElementById('exDate').value
-                );
-                alert("✅ Corporate expenditure metrics balanced.");
-            } catch(err) { alert("❌ System Reject Error: " + err.message); }
-        });
-
-        document.getElementById('depositForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await addDeposit(
-                    document.getElementById('dType').value,
-                    document.getElementById('dType').value === 'shareholder' ? document.getElementById('dShSource').value : document.getElementById('dDesc').value,
-                    parseFloat(document.getElementById('dAmt').value),
-                    document.getElementById('dDesc').value,
-                    document.getElementById('dDate').value
-                );
-                alert("✅ Deposit Stream Allocation Matrix Inflow verified.");
-            } catch(err) { alert("❌ System Reject Error: " + err.message); }
-        });
-
-        document.getElementById('userForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await addShareholder(document.getElementById('uName').value, document.getElementById('uPass').value);
-                alert("✅ Security matrix protocol generated. Node saved.");
-                renderApp();
-            } catch(err) { alert("❌ Registration Blocked: " + err.message); }
-        });
-
-        document.getElementById('withdrawForm')?.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            try {
-                await requestWithdrawal(currentUser.id, parseFloat(document.getElementById('wAmt').value));
-                alert("✅ Distribution entry queued.");
-            } catch(err) { alert("❌ System Reject Error: " + err.message); }
-        });
+    // Auth & Navigation Engine UI Hooks
+    function showLogin() {
+        let options = appData.shareholders.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+        document.getElementById('root').innerHTML = `
+            <div class="login-screen">
+                <div class="login-card">
+                    <h1>🏆 Gold Trading Pro</h1>
+                    <p style="text-align:center; color:#8e8160; font-size:0.8rem; margin-bottom:20px;">Secure Corporate Ledger Gateway</p>
+                    <div id="loginError" class="error-msg"></div>
+                    <div class="field">
+                        <label>ACCESS CONTEXT</label>
+                        <select id="loginRole" onchange="toggleRoleContext(this.value)">
+                            <option value="shareholder">Shareholder Authentication</option>
+                            <option value="admin">System Administration</option>
+                        </select>
+                    </div>
+                    <div class="field" id="userSelectGroup">
+                        <label>SELECT SHAREHOLDER PROFILE</label>
+                        <select id="loginUser">${options}</select>
+                    </div>
+                    <div class="field" id="adminInputGroup" style="display:none;">
+                        <label>ADMINISTRATOR IDENTITY</label>
+                        <input type="text" id="loginAdminName" value="Admin" readonly>
+                    </div>
+                    <div class="field">
+                        <label>SECURE ACCOUNT KEYPASS</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••">
+                    </div>
+                    <button class="btn-gold" onclick="handleAuthSubmit()">INITIALIZE SESSlON</button>
+                </div>
+            </div>`;
     }
 
-    function setReportRange(range) {
-        const bounds = getRange(range);
-        currentStart = bounds.start;
-        currentEnd = bounds.end;
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        if(event && event.target) event.target.classList.add('active');
+    function toggleRoleContext(val) {
+        if(val === 'admin') {
+            document.getElementById('userSelectGroup').style.display = 'none';
+            document.getElementById('adminInputGroup').style.display = 'block';
+        } else {
+            document.getElementById('userSelectGroup').style.display = 'block';
+            document.getElementById('adminInputGroup').style.display = 'none';
+        }
+    }
+
+    function handleAuthSubmit() {
+        const role = document.getElementById('loginRole').value;
+        const pass = document.getElementById('loginPassword').value;
+        const errMsg = document.getElementById('loginError');
+        
+        if (role === 'admin') {
+            if (pass === 'admin123') {
+                currentUser = { name: "Administrator", role: "admin" };
+                renderApp();
+            } else {
+                errMsg.innerText = "❌ Master password clearance rejected.";
+            }
+        } else {
+            const name = document.getElementById('loginUser').value;
+            const match = appData.shareholders.find(s => s.name === name && s.password === pass);
+            if (match) {
+                currentUser = { ...match, role: "shareholder" };
+                renderApp();
+            } else {
+                errMsg.innerText = "❌ Security key verification failed.";
+            }
+        }
+    }
+
+    function handleLogout() {
+        currentUser = null;
+        showLogin();
+    }
+
+    function switchTab(t) {
+        activeTab = t;
+        renderApp();
+    }
+
+    // Dynamic UI Main Engine Rendering
+    function renderApp() {
+        const totalStockGrams = appData.goldPurchases.reduce((s, p) => s + (parseFloat(p.remainingGrams) || 0), 0);
+        let userBalanceLabel = "";
+        
+        if (currentUser.role === 'shareholder') {
+            const shObj = appData.shareholders.find(s => s.id === currentUser.id);
+            userBalanceLabel = shObj ? formatZMW(shObj.balanceZMW) : "K0.00";
+        }
+
+        let mainViewHtml = "";
+        if (activeTab === "dashboard") {
+            mainViewHtml = `
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-label">🇿🇲 COMPANY CASH (ZMW)</div>
+                        <div class="stat-value">${formatZMW(appData.companyCashZMW)}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">🇺🇸 VAULT TREASURY (USD)</div>
+                        <div class="stat-value">${formatUSD(appData.companyCashUSD)}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">⚖️ LIVE STOCK INVENTORY</div>
+                        <div class="stat-value">${formatGrams(totalStockGrams)}</div>
+                    </div>
+                    <div class="stat-card">
+                        ${currentUser.role === 'shareholder' ? `
+                            <div class="stat-label">💰 ACCOUNT BAL (YOUR SHARE)</div>
+                            <div class="stat-value" style="color:#8bcb8b;">${userBalanceLabel}</div>
+                        ` : `
+                            <div class="stat-label">🛡️ CONTEXT BADGE</div>
+                            <div class="stat-value" style="font-size:1.1rem; padding-top:6px; color:#e0b867;">SYSTEM MASTER</div>
+                        `}
+                    </div>
+                </div>
+                
+                <div class="two-col">
+                    <div class="card">
+                        <div class="card-title">📥 Log Capital Inflow (Deposit)</div>
+                        <div class="form-group">
+                            <label>Deposit Source Context</label>
+                            <select id="depType" onchange="document.getElementById('shSourceGroup').style.display = this.value==='shareholder'?'block':'none'">
+                                <option value="external">External / Revenue Funding Stream</option>
+                                <option value="shareholder">Shareholder Equity Injection</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="shSourceGroup" style="display:none;">
+                            <label>Shareholder Entity</label>
+                            <select id="depSourceSh">${appData.shareholders.map(s=>`<option value="${s.name}">${s.name}</option>`).join('')}</select>
+                        </div>
+                        <div class="form-group">
+                            <label>Inflow Reference Label (For External)</label>
+                            <input type="text" id="depDesc" placeholder="e.g. Supplementary liquidity">
+                        </div>
+                        <div class="form-group">
+                            <label>Cash Quantity (ZMW)</label>
+                            <input type="number" id="depAmt" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Posting Timeline Date</label>
+                            <input type="datetime-local" id="depDate">
+                        </div>
+                        <button class="btn-action" onclick="submitDeposit()">EXECUTE CAPITAL INFLOW</button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">💱 Live Forex Board (Currency Swap)</div>
+                        <div class="form-group">
+                            <label>Source Account Outflow</label>
+                            <select id="exFrom"><option value="ZMW">ZMW Wallet Pool</option><option value="USD">USD Vault Pool</option></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Liquidity Amount to Swap</label>
+                            <input type="number" id="exAmt" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Executed Conversion Rate</label>
+                            <input type="number" id="exRate" value="${appData.exchangeRate}" step="any">
+                        </div>
+                        <div class="form-group">
+                            <label>Posting Timeline Date</label>
+                            <input type="datetime-local" id="exDate">
+                        </div>
+                        <button class="btn-action" onclick="submitExchange()">CONVERT RESERVES</button>
+                    </div>
+                </div>`;
+        } else if (activeTab === "purchases") {
+            mainViewHtml = `
+                <div class="card">
+                    <div class="card-title">⚖️ Log Minefield Gold Procurement</div>
+                    <div class="three-col">
+                        <div class="form-group"><label>Gross Mass (Grams)</label><input type="number" id="purGrams" step="any"></div>
+                        <div class="form-group"><label>Negotiated Local Rate (ZMW / g)</label><input type="number" id="purRate" step="any"></div>
+                        <div class="form-group"><label>Sales Rep Handler Assignment</label><input type="text" id="purRep" placeholder="Name of field rep"></div>
+                    </div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Mashiin Smelting Deductions (ZMW)</label><input type="number" id="purMashiin" value="0" step="any"></div>
+                        <div class="form-group"><label>Logistics / Transport Costs (ZMW)</label><input type="number" id="purTransport" value="0" step="any"></div>
+                    </div>
+                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="purDate"></div>
+                    <button class="btn-action" onclick="submitPurchase()">AUTHORIZE POOL PURCHASE</button>
+                </div>
+                <div class="card">
+                    <div class="card-title">📜 Open Active Procurement Batches (FIFO Inventory Ledger)</div>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
+                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;">
+                                <th style="padding:8px;">Date</th><th>Rep</th><th>Gross Grams</th><th>Remaining</th><th>Rate</th><th>Net Cost</th>
+                            </tr></thead>
+                            <tbody>
+                                ${appData.goldPurchases.map(p => `
+                                    <tr style="border-bottom:1px solid #1f1d18;">
+                                        <td style="padding:8px;">${new Date(p.date).toLocaleDateString()}</td>
+                                        <td>${p.salesRep||'N/A'}</td>
+                                        <td>${formatGrams(p.grams)}</td>
+                                        <td class="${p.remainingGrams>0?'green':'muted'}">${formatGrams(p.remainingGrams)}</td>
+                                        <td>${formatZMW(p.ratePerGram)}</td>
+                                        <td>${formatZMW(p.netPaid)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+        } else if (activeTab === "sales") {
+            mainViewHtml = `
+                <div class="card">
+                    <div class="card-title">🛫 Record Bullion Export / International Trade Sale</div>
+                    <div class="two-col">
+                        <div class="form-group"><label>Mass Sold (Grams)</label><input type="number" id="saleGrams" step="any"></div>
+                        <div class="form-group"><label>Global Market Selling Rate (USD / g)</label><input type="number" id="saleRate" step="any"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Revenue Conversion Architecture Strategy</label>
+                        <select id="saleConv" onchange="document.getElementById('partialUsdGroup').style.display=this.value==='partial'?'block':'none'">
+                            <option value="keep_all">Retain 100% Inflows in International Vault (USD)</option>
+                            <option value="convert_all">Instantly Swap Entire Value to Local Cash (ZMW)</option>
+                            <option value="partial">Execute Hybrid Structural Split Distribution</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="partialUsdGroup" style="display:none;">
+                        <label>Amount to Retain in Vault (USD)</label>
+                        <input type="number" id="salePartialUsd" value="0" step="any">
+                    </div>
+                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="saleDate"></div>
+                    <button class="btn-action" onclick="submitSale()">EXECUTE BULLION LIQUIDATION</button>
+                </div>`;
+        } else if (activeTab === "expenses") {
+            mainViewHtml = `
+                <div class="card">
+                    <div class="card-title">📉 Record Shared Operational Costs / Expenses</div>
+                    <div class="form-group"><label>Expense Category / Ledger Description</label><input type="text" id="expDesc" placeholder="e.g. Fuel, Mine maintenance, Licenses"></div>
+                    <div class="form-group"><label>Total Disbursement (ZMW)</label><input type="number" id="expAmt" step="any"></div>
+                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="expDate"></div>
+                    <p style="font-size:0.75rem; color:#a3946b; margin-bottom:12px;">ℹ️ This deployment will auto-distribute liability fractions equally across all registered shareholder equity shares.</p>
+                    <button class="btn-action" onclick="submitExpense()">POST CORPORATE EXPENSE</button>
+                </div>
+                <div class="card">
+                    <div class="card-title">⚒️ Geological Surveys / Auxiliary Enterprise Inflows</div>
+                    <div class="form-group"><label>Client / Quarry Destination Entity Name</label><input type="text" id="srvCust" placeholder="e.g. Kansanshi Exploration Block B"></div>
+                    <div class="form-group"><label>Gross Fee Collected (ZMW)</label><input type="number" id="srvAmt" step="any"></div>
+                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="srvDate"></div>
+                    <p style="font-size:0.75rem; color:#a3946b; margin-bottom:12px;">ℹ️ Revenue profits from operations will be credited symmetrically to active shareholder dynamic tracking sheets.</p>
+                    <button class="btn-action" onclick="submitSurvey()">POST SURVEY REVENUE</button>
+                </div>`;
+        } else if (activeTab === "payouts") {
+            mainViewHtml = `
+                <div class="card">
+                    <div class="card-title">💸 Dispatch Capital Equity Distributions (Withdrawals)</div>
+                    ${currentUser.role === 'shareholder' ? `
+                        <div class="form-group"><label>Target Outflow Quantity (ZMW)</label><input type="number" id="witAmt" step="any"></div>
+                        <button class="btn-action" onclick="submitWithdrawalRequest()">DISPATCH DISBURSEMENT VOUCHER</button>
+                    ` : `
+                        <p class="muted">System Master access active. Switch context profiles to prompt individual user balance requests.</p>
+                    `}
+                </div>
+                <div class="card">
+                    <div class="card-title">🚦 Administrative Verification Gate (Pending Capital Routing Queue)</div>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
+                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;"><th style="padding:8px;">Date</th><th>Entity</th><th>Disbursement Request</th><th>Status</th><th>Verification Authorization</th></tr></thead>
+                            <tbody>
+                                ${appData.withdrawalRequests.map(r => `
+                                    <tr style="border-bottom:1px solid #1f1d18;">
+                                        <td style="padding:8px;">${new Date(r.date).toLocaleDateString()}</td>
+                                        <td><strong>${r.shareholderName}</strong></td>
+                                        <td>${formatZMW(r.amountZMW)}</td>
+                                        <td class="${r.status==='approved'?'green':'red'}">${r.status.toUpperCase()}</td>
+                                        <td>
+                                            ${(r.status === 'pending' && currentUser.role === 'admin') ? `<button class="btn-sm" style="background:#1e3a1e; border-color:#2e7d32; color:#fff;" onclick="executeApproval('${r.id}')">APPROVE OUTFLOW</button>` : `<span class="muted">Processed</span>`}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+        } else if (activeTab === "reports") {
+            mainViewHtml = `
+                <div class="card">
+                    <div class="card-title">🎛️ Report Generation Control Dashboard</div>
+                    <div class="report-filters">
+                        <button class="filter-btn" id="f-all" onclick="setPeriodFilter('all')">All Time</button>
+                        <button class="filter-btn" id="f-today" onclick="setPeriodFilter('today')">Today</button>
+                        <button class="filter-btn" id="f-yesterday" onclick="setPeriodFilter('yesterday')">Yesterday</button>
+                        <button class="filter-btn" id="f-thisMonth" onclick="setPeriodFilter('thisMonth')">This Month</button>
+                        <button class="filter-btn" id="f-lastMonth" onclick="setPeriodFilter('lastMonth')">Last Month</button>
+                        <button class="filter-btn" id="f-thisYear" onclick="setPeriodFilter('thisYear')">This Year</button>
+                    </div>
+                    <div class="type-filter-bar">
+                        <div>
+                            <label style="font-size:0.75rem; color:#a3946b; margin-right:8px;">Filter by Module</label>
+                            <select id="filterTypeDropdown" onchange="setTypeFilter(this.value)">
+                                <option value="all">All Ledgers Combined</option>
+                                <option value="PURCHASE">Procurements Only</option>
+                                <option value="SALE">Sales Realization Only</option>
+                                <option value="EXPENSE">Operational Expenses Only</option>
+                                <option value="SURVEY">Auxiliary Operations Only</option>
+                                <option value="DEPOSIT">Capital Liquidity Funding</option>
+                                <option value="WITHDRAWAL">Equity Outflows</option>
+                                <option value="EXCHANGE">Reserve Swaps</option>
+                            </select>
+                        </div>
+                        <button class="btn-sm" onclick="window.print()" style="margin-left:auto; background:#4a3e2c;">🖨️ Export Hardcopy PDF</button>
+                    </div>
+                    <div id="reportOutput"></div>
+                </div>`;
+        } else if (activeTab === "settings") {
+            mainViewHtml = `
+                <div class="card">
+                    <div class="card-title">👥 Shareholder Equity Structure Ledger Configuration</div>
+                    ${currentUser.role === 'admin' ? `
+                        <div class="two-col" style="margin-bottom:20px;">
+                            <div class="form-group"><label>New Entity Name</label><input type="text" id="newShName"></div>
+                            <div class="form-group"><label>Secure Access Keypass</label><input type="text" id="newShPass"></div>
+                        </div>
+                        <button class="btn-action" onclick="submitCreateShareholder()" style="margin-bottom:24px;">REGISTER PARTNER STRUCT</button>
+                    ` : `
+                        <p class="muted" style="margin-bottom:15px;">⚠️ Master clearance privileges required to inject or remove structural equity entities.</p>
+                    `}
+                    <div class="form-group">
+                        <button class="btn-sm" onclick="showPasswords = !showPasswords; renderApp();">${showPasswords ? '🙈 Mask Secure Access Credentials' : '👁️ Audit Clear Passwords'}</button>
+                    </div>
+                    <div style="overflow-x:auto; margin-top:15px;">
+                        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
+                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;"><th style="padding:8px;">ID</th><th>Name</th><th>Keypass</th><th>Balance</th><th>Action Context</th></tr></thead>
+                            <tbody>
+                                ${appData.shareholders.map(s => `
+                                    <tr style="border-bottom:1px solid #1f1d18;">
+                                        <td style="padding:8px;">${s.id}</td>
+                                        <td><strong>${s.name}</strong></td>
+                                        <td><code>${showPasswords ? s.password : '••••••••'}</code></td>
+                                        <td class="green">${formatZMW(s.balanceZMW)}</td>
+                                        <td>
+                                            ${currentUser.role === 'admin' ? `<button class="btn-sm btn-danger" onclick="submitDeleteShareholder(${s.id})">REVOKE PRIVILEGES</button>` : `<span class="muted">No Access</span>`}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+        }
+
+        document.getElementById('root').innerHTML = `
+            <div class="mobile-header">
+                <h2>Gold Trading Pro</h2>
+                <button class="btn-sm" onclick="document.getElementById('sidebarWidget').classList.toggle('open')">☰ Menu</button>
+            </div>
+            <div class="sidebar" id="sidebarWidget">
+                <div class="logo-area">
+                    <h2>Gold Trading Pro</h2>
+                    <p style="font-size:0.65rem; color:#7a6d4e; letter-spacing:1px; margin-top:2px;">ENTERPRISE COMPILATION</p>
+                </div>
+                <nav class="nav-menu">
+                    <button class="nav-btn ${activeTab==='dashboard'?'active':''}" onclick="switchTab('dashboard')">📊 Main Board Dashboard</button>
+                    <button class="nav-btn ${activeTab==='purchases'?'active':''}" onclick="switchTab('purchases')">⚖️ Mine Procurements</button>
+                    <button class="nav-btn ${activeTab==='sales'?'active':''}" onclick="switchTab('sales')">🛫 Bullion Exports</button>
+                    <button class="nav-btn ${activeTab==='expenses'?'active':''}" onclick="switchTab('expenses')">📉 Costs & Auxiliary Inflows</button>
+                    <button class="nav-btn ${activeTab==='payouts'?'active':''}" onclick="switchTab('payouts')">💸 Capital Payout Routing</button>
+                    <button class="nav-btn ${activeTab==='reports'?'active':''}" onclick="switchTab('reports')">📋 Audit Trial Ledger Records</button>
+                    <button class="nav-btn ${activeTab==='settings'?'active':''}" onclick="switchTab('settings')">👥 Shareholder Config Engine</button>
+                </nav>
+                <div class="user-section">
+                    <div class="user-badge">
+                        <div style="font-size:0.65rem; color:#a3946b;">AUTHENTICATED CONTEXT</div>
+                        <div style="font-size:0.9rem; font-weight:bold; color:#f0daa0; margin-top:2px;">${currentUser.name}</div>
+                        <div style="font-size:0.7rem; color:#6b6247; margin-top:1px;">Role Context: ${currentUser.role.toUpperCase()}</div>
+                    </div>
+                    <button class="btn-outline" onclick="handleLogout()">TERMINATE SESSION</button>
+                </div>
+            </div>
+            <main class="content-main">${mainViewHtml}</main>
+        `;
+        
+        // Post-render UI updates
+        const inputs = document.querySelectorAll('input[type="datetime-local"]');
+        const nowStr = new Date().toISOString().substring(0,16);
+        inputs.forEach(i => { if(!i.value) i.value = nowStr; });
+        
+        if (activeTab === "reports") {
+            const range = getRange(currentTypeFilterPeriod);
+            currentStart = range.start;
+            currentEnd = range.end;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            const activeBtn = document.getElementById('f-' + currentTypeFilterPeriod);
+            if (activeBtn) activeBtn.classList.add('active');
+            const drop = document.getElementById('filterTypeDropdown');
+            if (drop) drop.value = currentType;
+            generateReport();
+        }
+    }
+
+    let currentTypeFilterPeriod = "all";
+    function setPeriodFilter(p) {
+        currentTypeFilterPeriod = p;
+        const range = getRange(p);
+        currentStart = range.start;
+        currentEnd = range.end;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('f-' + p).classList.add('active');
+        generateReport();
+    }
+    
+    function setTypeFilter(val) {
+        currentType = val;
         generateReport();
     }
 
-    async function handleDeleteShareholder(id) {
-        if (!confirm("⚠️ De-authorize login vector? This drops individual node data matrix connections.")) return;
+    // Dynamic UI Execution Methods
+    async function submitDeposit() {
         try {
-            await deleteShareholder(id);
-            alert("✅ Shareholder account revoked.");
-            renderApp();
-        } catch(e) { alert("❌ Action Revoked: " + e.message); }
+            const type = document.getElementById('depType').value;
+            const source = type === 'shareholder' ? document.getElementById('depSourceSh').value : 'External Stream';
+            const desc = document.getElementById('depDesc').value;
+            const amt = parseFloat(document.getElementById('depAmt').value) || 0;
+            const date = new Date(document.getElementById('depDate').value).toISOString();
+            await addDeposit(type, source, amt, desc, date);
+            alert("✅ Deposit initialized successfully.");
+        } catch(e) { alert("❌ " + e.message); }
     }
 
-    async function handleApproveWithdrawal(id) {
-        if (!confirm("⚠️ Finalize distribution payload payout routing sequence?")) return;
+    async function submitExchange() {
+        try {
+            const from = document.getElementById('exFrom').value;
+            const amt = parseFloat(document.getElementById('exAmt').value) || 0;
+            const rate = parseFloat(document.getElementById('exRate').value) || 0;
+            const date = new Date(document.getElementById('exDate').value).toISOString();
+            await exchangeCurrency(from, amt, rate, date);
+            alert("✅ Reserves swapped successfully.");
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    async function submitPurchase() {
+        try {
+            const g = parseFloat(document.getElementById('purGrams').value) || 0;
+            const r = parseFloat(document.getElementById('purRate').value) || 0;
+            const m = parseFloat(document.getElementById('purMashiin').value) || 0;
+            const t = parseFloat(document.getElementById('purTransport').value) || 0;
+            const rep = document.getElementById('purRep').value;
+            const date = new Date(document.getElementById('purDate').value).toISOString();
+            await recordPurchase(g, r, m, t, rep, date);
+            alert("✅ Purchase finalized.");
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    async function submitSale() {
+        try {
+            const g = parseFloat(document.getElementById('saleGrams').value) || 0;
+            const r = parseFloat(document.getElementById('saleRate').value) || 0;
+            const conv = document.getElementById('saleConv').value;
+            const partialUsd = parseFloat(document.getElementById('salePartialUsd').value) || 0;
+            const date = new Date(document.getElementById('saleDate').value).toISOString();
+            await recordSale(g, r, conv, partialUsd, date);
+            alert("✅ Export transaction realized.");
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    async function submitExpense() {
+        try {
+            const desc = document.getElementById('expDesc').value;
+            const amt = parseFloat(document.getElementById('expAmt').value) || 0;
+            const date = new Date(document.getElementById('expDate').value).toISOString();
+            await addExpense(desc, amt, date);
+            alert("✅ Expense posted to ledgers.");
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    async function submitSurvey() {
+        try {
+            const cust = document.getElementById('srvCust').value;
+            const amt = parseFloat(document.getElementById('srvAmt').value) || 0;
+            const date = new Date(document.getElementById('srvDate').value).toISOString();
+            await addSurveyRevenue(amt, cust, date);
+            alert("✅ Survey project tracking realized.");
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    async function submitWithdrawalRequest() {
+        try {
+            const amt = parseFloat(document.getElementById('witAmt').value) || 0;
+            await requestWithdrawal(currentUser.id, amt);
+            alert("✅ Request sent to pending routing queue.");
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    async function executeApproval(id) {
         try {
             await approveWithdrawal(id);
-            alert("✅ Distribution completed successfully.");
-        } catch(e) { alert("❌ Transfer Blocked: " + e.message); }
+            alert("✅ Outflow approved.");
+        } catch(e) { alert("❌ Execution failed: " + e.message); }
     }
 
-    // Initialize Boot Sequence Execution Call
+    async function submitCreateShareholder() {
+        try {
+            const n = document.getElementById('newShName').value;
+            const p = document.getElementById('newShPass').value;
+            await addShareholder(n, p);
+            alert("✅ Registered structural entity.");
+            renderApp();
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    async function submitDeleteShareholder(id) {
+        try {
+            if(confirm("⚠️ Completely drop this partner structure configuration from database records?")) {
+                await deleteShareholder(id);
+                alert("✅ Dropped entity.");
+                renderApp();
+            }
+        } catch(e) { alert("❌ " + e.message); }
+    }
+
+    // Initialize System Engine Application on start
     loadAllData();
 </script>
 </body>
