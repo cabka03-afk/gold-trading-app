@@ -1,784 +1,780 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Gold Trade Pro | Mashiin • Sales Reps • Dual Currency</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Gold Trading Pro | Accounting + Loans + Reports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: #0c0b08;
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      color: #ece3cf;
-    }
+        body {
+            background: #0a0a07;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            color: #ece3cf;
+        }
 
-    /* LOGIN */
-    .login-screen {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(ellipse at 30% 40%, #131210, #020202);
-      padding: 1.5rem;
-    }
+        /* login */
+        .login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at 30% 40%, #131210, #020202);
+            padding: 1.5rem;
+        }
 
-    .login-card {
-      background: #131210e6;
-      backdrop-filter: blur(6px);
-      border: 1px solid rgba(218, 185, 105, 0.4);
-      border-radius: 2rem;
-      padding: 2rem 2rem 2rem 2rem;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 25px 40px -12px black;
-    }
+        .login-card {
+            background: #131210e6;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(218, 185, 105, 0.4);
+            border-radius: 2rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+        }
 
-    .login-card h1 {
-      font-size: 1.9rem;
-      color: #e2bc6e;
-      text-align: center;
-      font-weight: 600;
-    }
+        .login-card h1 {
+            font-size: 1.9rem;
+            color: #e2bc6e;
+            text-align: center;
+        }
 
-    .login-card h3 {
-      font-size: 0.7rem;
-      text-align: center;
-      color: #a59268;
-      letter-spacing: 0.15em;
-      margin-bottom: 28px;
-      margin-top: 6px;
-    }
+        .field {
+            margin-bottom: 1rem;
+        }
 
-    .field {
-      margin-bottom: 1.1rem;
-    }
+        .field label {
+            font-size: 0.7rem;
+            color: #cdbc8f;
+            display: block;
+            margin-bottom: 6px;
+        }
 
-    .field label {
-      display: block;
-      font-size: 0.7rem;
-      color: #cdbc8f;
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
+        .field input {
+            width: 100%;
+            background: #1f1e1a;
+            border: 1px solid #3a3528;
+            padding: 12px 18px;
+            border-radius: 40px;
+            color: #f7efdb;
+        }
 
-    .field input {
-      width: 100%;
-      background: #1f1e1a;
-      border: 1px solid #3a3528;
-      padding: 12px 18px;
-      border-radius: 40px;
-      color: #f7efdb;
-      font-size: 0.9rem;
-      outline: none;
-    }
+        .btn-gold {
+            width: 100%;
+            background: linear-gradient(135deg, #a8822c, #e0b867);
+            border: none;
+            padding: 13px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #0c0b07;
+            cursor: pointer;
+        }
 
-    .field input:focus {
-      border-color: #e2bc6e;
-    }
+        .error-msg {
+            color: #f5a67b;
+            font-size: 0.75rem;
+            margin-top: 12px;
+            text-align: center;
+        }
 
-    .btn-gold {
-      width: 100%;
-      background: linear-gradient(135deg, #a8822c, #e0b867);
-      border: none;
-      padding: 13px;
-      border-radius: 40px;
-      font-weight: bold;
-      color: #0c0b07;
-      font-size: 0.9rem;
-      cursor: pointer;
-      margin-top: 8px;
-    }
+        /* app layout */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
 
-    .error-msg {
-      color: #f5a67b;
-      text-align: center;
-      font-size: 0.75rem;
-      margin-top: 12px;
-    }
+        .sidebar {
+            width: 280px;
+            background: #0e0e0b;
+            border-right: 1px solid #2a261d;
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
 
-    /* APP LAYOUT */
-    .app-layout {
-      display: flex;
-      min-height: 100vh;
-    }
+        .logo-area {
+            padding: 24px 20px;
+            border-bottom: 1px solid #2f2b20;
+        }
 
-    .sidebar {
-      width: 270px;
-      background: #0e0e0b;
-      border-right: 1px solid #2a261d;
-      position: fixed;
-      inset: 0;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-    }
+        .logo-area h2 {
+            color: #e8c87a;
+            font-size: 1.3rem;
+        }
 
-    .logo-area {
-      padding: 28px 22px;
-      border-bottom: 1px solid #2f2b20;
-    }
+        .nav-menu {
+            flex: 1;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-    .logo-area h2 {
-      color: #e8c87a;
-      font-size: 1.3rem;
-    }
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 10px 16px;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #cbbf97;
+            border-radius: 34px;
+            cursor: pointer;
+        }
 
-    .logo-area p {
-      font-size: 0.6rem;
-      color: #8f8260;
-      margin-top: 6px;
-    }
+        .nav-btn.active, .nav-btn:hover {
+            background: #25231c;
+            color: #f5de9c;
+        }
 
-    .nav-menu {
-      flex: 1;
-      padding: 24px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
+        .user-section {
+            padding: 20px;
+            border-top: 1px solid #2b271f;
+        }
 
-    .nav-btn {
-      background: none;
-      border: none;
-      padding: 10px 16px;
-      text-align: left;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #cbbf97;
-      border-radius: 34px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+        .user-badge {
+            background: #191814;
+            border-radius: 28px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
 
-    .nav-btn.active, .nav-btn:hover {
-      background: #25231c;
-      color: #f5de9c;
-    }
+        .btn-outline {
+            width: 100%;
+            background: none;
+            border: 1px solid #5f553b;
+            padding: 8px;
+            border-radius: 40px;
+            color: #dcceaa;
+            cursor: pointer;
+        }
 
-    .user-section {
-      padding: 20px;
-      border-top: 1px solid #2b271f;
-    }
+        .content-main {
+            margin-left: 280px;
+            padding: 28px 32px;
+            flex: 1;
+        }
 
-    .user-badge {
-      background: #191814;
-      border-radius: 28px;
-      padding: 12px 16px;
-      margin-bottom: 14px;
-    }
+        /* cards & stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
 
-    .user-name {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
+        .stat-card {
+            background: #12120f;
+            border: 1px solid #2b271f;
+            border-radius: 28px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-    .user-role {
-      font-size: 0.65rem;
-      color: #ad9d74;
-      text-transform: capitalize;
-    }
+        .stat-card:hover {
+            border-color: #e0b867;
+        }
 
-    .btn-outline {
-      width: 100%;
-      background: none;
-      border: 1px solid #5f553b;
-      padding: 8px;
-      border-radius: 40px;
-      color: #dcceaa;
-      cursor: pointer;
-      font-size: 0.7rem;
-    }
+        .stat-label {
+            font-size: 0.7rem;
+            color: #a3946b;
+        }
 
-    .content-main {
-      margin-left: 270px;
-      padding: 28px 32px;
-      flex: 1;
-    }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e9cf8b;
+        }
 
-    /* CARDS & STATS */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      margin-bottom: 28px;
-    }
+        .card {
+            background: #11110e;
+            border: 1px solid #2b281f;
+            border-radius: 26px;
+            padding: 1.5rem;
+            margin-bottom: 1.8rem;
+        }
 
-    .stat-card {
-      background: #12120f;
-      border: 1px solid #2b271f;
-      border-radius: 28px;
-      padding: 1.2rem;
-    }
+        .card-title {
+            font-size: 1.1rem;
+            border-left: 3px solid #e0b867;
+            padding-left: 12px;
+            margin-bottom: 20px;
+        }
 
-    .stat-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      color: #a3946b;
-    }
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
 
-    .stat-value {
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: #e9cf8b;
-    }
+        .form-group {
+            margin-bottom: 16px;
+        }
 
-    .card {
-      background: #11110e;
-      border: 1px solid #2b281f;
-      border-radius: 26px;
-      padding: 1.5rem;
-      margin-bottom: 1.8rem;
-    }
+        .form-group label {
+            font-size: 0.7rem;
+            color: #c7b584;
+            display: block;
+            margin-bottom: 5px;
+        }
 
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 500;
-      border-left: 3px solid #e0b867;
-      padding-left: 12px;
-      margin-bottom: 20px;
-    }
+        input, select, textarea {
+            width: 100%;
+            background: #1e1d18;
+            border: 1px solid #3f392b;
+            padding: 10px 14px;
+            border-radius: 36px;
+            color: #f2e7cf;
+        }
 
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
+        .btn-action {
+            background: linear-gradient(100deg, #9e7d30, #d6ae5a);
+            border: none;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: bold;
+            color: #0c0a04;
+            cursor: pointer;
+            width: 100%;
+        }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+        .btn-sm {
+            background: #2a271f;
+            border: 1px solid #7a6b47;
+            padding: 6px 14px;
+            border-radius: 30px;
+            color: #f0daa0;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
 
-    .form-group label {
-      font-size: 0.7rem;
-      color: #c7b584;
-      display: block;
-      margin-bottom: 5px;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    input, select {
-      width: 100%;
-      background: #1e1d18;
-      border: 1px solid #3f392b;
-      padding: 10px 14px;
-      border-radius: 36px;
-      color: #f2e7cf;
-      font-size: 0.85rem;
-    }
+        th {
+            text-align: left;
+            padding: 10px 6px 10px 0;
+            color: #b8a76c;
+            font-size: 0.7rem;
+        }
 
-    .btn-action {
-      background: linear-gradient(100deg, #9e7d30, #d6ae5a);
-      border: none;
-      padding: 12px;
-      border-radius: 40px;
-      font-weight: bold;
-      color: #0c0a04;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 8px;
-    }
+        td {
+            padding: 10px 6px 10px 0;
+            border-bottom: 1px solid #2f2b1f;
+            font-size: 0.8rem;
+        }
 
-    .btn-sm {
-      background: #2a271f;
-      border: 1px solid #7a6b47;
-      padding: 5px 15px;
-      border-radius: 30px;
-      color: #f0daa0;
-      font-size: 0.7rem;
-      cursor: pointer;
-    }
+        .badge-pending {
+            background: #4a3e24;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+        }
 
-    .badge {
-      background: #2f2c21;
-      padding: 3px 12px;
-      border-radius: 40px;
-      font-size: 0.7rem;
-    }
+        .badge-approved {
+            background: #1e3a2a;
+            color: #9bdba0;
+            padding: 2px 10px;
+            border-radius: 30px;
+        }
 
-    .badge-success {
-      background: #1e3a2a;
-      color: #9bdba0;
-    }
+        .green {
+            color: #8bcb8b;
+        }
 
-    .badge-pending {
-      background: #4a3e24;
-      color: #f5cf87;
-    }
+        .red {
+            color: #e69474;
+        }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+        .muted {
+            color: #8e8160;
+        }
 
-    th {
-      text-align: left;
-      padding: 12px 6px 12px 0;
-      color: #b8a76c;
-      font-size: 0.7rem;
-    }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    td {
-      padding: 10px 6px 10px 0;
-      border-bottom: 1px solid #2f2b1f;
-      font-size: 0.8rem;
-    }
+        .modal-content {
+            background: #181714;
+            border-radius: 28px;
+            padding: 28px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
 
-    .muted {
-      color: #8e8160;
-    }
+        .mobile-header {
+            display: none;
+        }
 
-    .green {
-      color: #91cf8b;
-    }
-
-    .red {
-      color: #e69474;
-    }
-
-    .mobile-header {
-      display: none;
-    }
-
-    @media (max-width: 760px) {
-      .sidebar {
-        transform: translateX(-100%);
-        transition: 0.2s;
-      }
-      .sidebar.open {
-        transform: translateX(0);
-      }
-      .content-main {
-        margin-left: 0;
-        padding: 18px;
-      }
-      .mobile-header {
-        display: flex;
-        justify-content: space-between;
-        padding: 14px 18px;
-        background: #0e0e0b;
-        position: sticky;
-        top: 0;
-        z-index: 15;
-      }
-      .stats-row {
-        grid-template-columns: 1fr 1fr;
-      }
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-      .overlay-mob {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.6);
-        z-index: 18;
-        display: none;
-      }
-    }
-  </style>
+        @media (max-width: 760px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: 0.2s;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .content-main {
+                margin-left: 0;
+                padding: 18px;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+            .mobile-header {
+                display: flex;
+                justify-content: space-between;
+                padding: 14px 18px;
+                background: #0e0e0b;
+                position: sticky;
+                top: 0;
+            }
+        }
+    </style>
 </head>
 <body>
 <div id="root"></div>
 
 <script>
-  // ---------- DATA MODEL ----------
-  const defaultState = {
-    companyCashZMW: 25000.0,    // starting ZMW capital
-    companyCashUSD: 0.0,         // USD from gold sales (not converted)
-    exchangeRate: 26.5,          // 1 USD = X ZMW (default, can be changed)
-    exchangeLogs: [],            // { id, date, fromCurr, toCurr, amount, rate, result }
-    
-    goldPurchases: [],           // { id, date, grams, ratePerGram, grossAmount, mashiinFee, transportFee, netPaid, salesRep, remainingGrams }
-    goldSales: [],               // { id, date, gramsSold, sellRateUSD, revenueUSD, costBasisUSD, profitUSD, conversionDecision, usdKept, zmwConverted }
-    expenses: [],                // { id, date, description, amountZMW }
-    surveyRevenues: [],          // { id, date, amountZMW, customerName, profitByCustomer }
-    withdrawalRequests: [],      // { id, date, shareholderId, shareholderName, amountZMW, status }
-    
-    // Shareholders (only ZMW balances)
-    shareholders: [
-      { id: 1, name: "Yuusuf", password: "yuusuf123", balanceZMW: 0.0, role: "shareholder" },
-      { id: 2, name: "Abdirisak", password: "abdirisak123", balanceZMW: 0.0, role: "shareholder" },
-      { id: 3, name: "Ahmed", password: "ahmed123", balanceZMW: 0.0, role: "shareholder" }
-    ],
-    // Manager (Samatar) special role
-    manager: { name: "Samatar", password: "samatar123", role: "manager" },
-    // Sales reps list (for dropdown, not login)
-    salesReps: ["Samatar", "Yuusuf", "Abdirisak", "Jamal"],
-    // default mashiin/transport values
-    defaultMashiin: 750,
-    defaultTransport: 150
-  };
-
-  // load / save
-  let appState = JSON.parse(localStorage.getItem('gold_trade_pro')) || JSON.parse(JSON.stringify(defaultState));
-  let currentUser = null;
-  let activeTab = "dashboard";
-  let mobileOpen = false;
-
-  function persist() {
-    localStorage.setItem('gold_trade_pro', JSON.stringify(appState));
-  }
-
-  // helpers
-  const formatZMW = (val) => 'K' + (parseFloat(val)||0).toFixed(2);
-  const formatUSD = (val) => '$' + (parseFloat(val)||0).toFixed(2);
-  const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
-
-  // stats
-  function computeStats() {
-    let totalBought = appState.goldPurchases.reduce((s,p)=> s + p.grams, 0);
-    let totalSold = appState.goldSales.reduce((s,sale)=> s + sale.gramsSold, 0);
-    let inventory = totalBought - totalSold;
-    let totalMashiinCollected = appState.goldPurchases.reduce((s,p)=> s + (p.mashiinFee || 0), 0);
-    let totalTransportCollected = appState.goldPurchases.reduce((s,p)=> s + (p.transportFee || 0), 0);
-    let salesRepStats = {};
-    appState.goldPurchases.forEach(p => {
-      if (!salesRepStats[p.salesRep]) salesRepStats[p.salesRep] = { count:0, totalGrams:0, totalMashiin:0 };
-      salesRepStats[p.salesRep].count++;
-      salesRepStats[p.salesRep].totalGrams += p.grams;
-      salesRepStats[p.salesRep].totalMashiin += (p.mashiinFee || 0);
-    });
-    let goldProfit = appState.goldSales.reduce((s, sale) => s + sale.profitUSD, 0);
-    let totalExpenses = appState.expenses.reduce((s,e)=> s + e.amountZMW, 0);
-    let totalSurvey = appState.surveyRevenues.reduce((s,sv)=> s + sv.amountZMW, 0);
-    let netProfitZMW = (goldProfit * appState.exchangeRate) + totalSurvey - totalExpenses;
-    return { inventory, totalMashiinCollected, totalTransportCollected, salesRepStats, goldProfitUSD: goldProfit, totalExpenses, totalSurvey, netProfitZMW };
-  }
-
-  // ----- BUSINESS LOGIC -----
-  function recordPurchase(grams, ratePerGram, mashiinAmt, transportAmt, salesRep) {
-    if (grams <= 0 || ratePerGram <= 0) throw new Error("Invalid grams/rate");
-    const gross = grams * ratePerGram;
-    const totalDeductions = mashiinAmt + transportAmt;
-    const netPaid = gross - totalDeductions;
-    if (netPaid < 0) throw new Error("Deductions exceed gross value");
-    const purchase = {
-      id: Date.now(),
-      date: new Date().toISOString(),
-      grams, ratePerGram, grossAmount: gross,
-      mashiinFee: mashiinAmt, transportFee: transportAmt,
-      netPaid, salesRep, remainingGrams: grams
+    // ------------------- ACCOUNTING DATA MODEL -------------------
+    const defaultState = {
+        // Cash balances
+        companyCashZMW: 50000.0,
+        companyCashUSD: 0.0,
+        exchangeRate: 26.5,
+        
+        // Chart of Accounts - transactions log
+        cashTransactions: [],  // { id, date, type, amountZMW, amountUSD, description, runningBalanceZMW, runningBalanceUSD }
+        
+        // Gold inventory & sales
+        goldPurchases: [],
+        goldSales: [],
+        
+        // Expenses & Survey
+        expenses: [],
+        surveyRevenues: [],
+        
+        // Liabilities (Loans taken)
+        liabilities: [],   // { id, lender, amountZMW, remainingBalance, interestRate, dueDate, dateTaken, notes }
+        
+        // Debtors (people who owe company)
+        debtors: [],       // { id, customerName, amountZMW, remainingBalance, dueDate, notes }
+        
+        // Equity tracking
+        startingEquity: 50000.0,
+        retainedEarnings: 0.0,
+        
+        // Withdrawals
+        withdrawalRequests: [],
+        
+        // Shareholders (ZMW balances only)
+        shareholders: [
+            { id: 1, name: "Yuusuf", password: "yuusuf123", balanceZMW: 0.0, role: "shareholder" },
+            { id: 2, name: "Abdirisak", password: "abdirisak123", balanceZMW: 0.0, role: "shareholder" },
+            { id: 3, name: "Ahmed", password: "ahmed123", balanceZMW: 0.0, role: "shareholder" }
+        ],
+        
+        // Admin & Manager
+        adminUser: { name: "Admin", password: "Muhiim1998", role: "admin" },
+        managerUser: { name: "Samatar", password: "samatar123", role: "manager" },
+        
+        salesReps: ["Samatar", "Yuusuf", "Abdirisak", "Jamal"],
+        defaultMashiin: 750,
+        defaultTransport: 150,
+        
+        exchangeLogs: []
     };
-    appState.goldPurchases.push(purchase);
-    appState.companyCashZMW -= netPaid;
-    persist();
-  }
 
-  function recordSale(gramsSold, sellRateUSD, conversionChoice, customConvertAmount = null) {
-    // FIFO over remaining grams (ZMW cost basis)
-    let remaining = gramsSold;
-    let totalCostBasisZMW = 0;
-    for (let i = 0; i < appState.goldPurchases.length && remaining > 0; i++) {
-      const p = appState.goldPurchases[i];
-      if (p.remainingGrams <= 0) continue;
-      const taken = Math.min(p.remainingGrams, remaining);
-      const proportionCost = (taken / p.grams) * p.netPaid;   // proportional net cost in ZMW
-      totalCostBasisZMW += proportionCost;
-      p.remainingGrams -= taken;
-      remaining -= taken;
+    let state = JSON.parse(localStorage.getItem('gold_pro_acct')) || JSON.parse(JSON.stringify(defaultState));
+    let currentUser = null;
+    let activeTab = "dashboard";
+    let modalData = null;
+
+    function persist() { localStorage.setItem('gold_pro_acct', JSON.stringify(state)); }
+
+    const formatZMW = (v) => 'K' + (parseFloat(v)||0).toFixed(2);
+    const formatUSD = (v) => '$' + (parseFloat(v)||0).toFixed(2);
+    const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
+
+    // log cash transaction
+    function logCashTransaction(type, amountZMW, amountUSD, desc) {
+        const runningZMW = state.companyCashZMW;
+        const runningUSD = state.companyCashUSD;
+        state.cashTransactions.unshift({
+            id: Date.now(),
+            date: new Date().toISOString(),
+            type, amountZMW, amountUSD, description: desc,
+            runningBalanceZMW: runningZMW,
+            runningBalanceUSD: runningUSD
+        });
+        persist();
     }
-    if (remaining > 0) throw new Error("Not enough gold inventory");
-    const revenueUSD = gramsSold * sellRateUSD;
-    const costBasisUSD = totalCostBasisZMW / appState.exchangeRate;
-    const profitUSD = revenueUSD - costBasisUSD;
-    // profit distributed to shareholders in ZMW (convert profitUSD at current rate)
-    const profitZMW = profitUSD * appState.exchangeRate;
-    const perShare = profitZMW / appState.shareholders.length;
-    appState.shareholders.forEach(sh => { sh.balanceZMW += perShare; });
 
-    let usdKept = 0;
-    let zmwConverted = 0;
-    if (conversionChoice === "keep_all") {
-      usdKept = revenueUSD;
-      appState.companyCashUSD += revenueUSD;
-    } else if (conversionChoice === "convert_all") {
-      zmwConverted = revenueUSD * appState.exchangeRate;
-      appState.companyCashZMW += zmwConverted;
-    } else if (conversionChoice === "partial" && customConvertAmount !== null) {
-      const convertUSD = Math.min(customConvertAmount, revenueUSD);
-      zmwConverted = convertUSD * appState.exchangeRate;
-      usdKept = revenueUSD - convertUSD;
-      appState.companyCashZMW += zmwConverted;
-      appState.companyCashUSD += usdKept;
+    // Purchase with Mashiin/Transport
+    function recordPurchase(grams, ratePerGram, mashiinAmt, transportAmt, salesRep) {
+        const gross = grams * ratePerGram;
+        const netPaid = gross - (mashiinAmt + transportAmt);
+        if (netPaid < 0) throw new Error("Deductions exceed value");
+        state.goldPurchases.push({
+            id: Date.now(), date: new Date().toISOString(), grams, ratePerGram, grossAmount: gross,
+            mashiinFee: mashiinAmt, transportFee: transportAmt, netPaid, salesRep, remainingGrams: grams
+        });
+        state.companyCashZMW -= netPaid;
+        logCashTransaction("GOLD_PURCHASE", -netPaid, 0, `Buy ${grams}g @ ${ratePerGram} ZMW/g, Mashiin:${mashiinAmt}, Transport:${transportAmt}, Rep:${salesRep}`);
+        persist();
     }
-    appState.goldSales.push({
-      id: Date.now(), date: new Date().toISOString(), gramsSold, sellRateUSD,
-      revenueUSD, costBasisUSD, profitUSD, conversionDecision: conversionChoice,
-      usdKept, zmwConverted
-    });
-    persist();
-  }
 
-  function addExpense(desc, amountZMW) {
-    if (!desc || amountZMW <= 0) throw new Error("Invalid expense");
-    const perShare = amountZMW / appState.shareholders.length;
-    appState.shareholders.forEach(sh => { sh.balanceZMW -= perShare; });
-    appState.expenses.push({ id: Date.now(), date: new Date().toISOString(), description: desc, amountZMW });
-    appState.companyCashZMW -= amountZMW;
-    persist();
-  }
-
-  function addSurveyRevenue(amountZMW, customerName) {
-    if (!customerName || amountZMW <= 0) throw new Error("Customer & amount required");
-    const perShare = amountZMW / appState.shareholders.length;
-    appState.shareholders.forEach(sh => { sh.balanceZMW += perShare; });
-    appState.surveyRevenues.push({ id: Date.now(), date: new Date().toISOString(), amountZMW, customerName, profitByCustomer: amountZMW });
-    appState.companyCashZMW += amountZMW;
-    persist();
-  }
-
-  function exchangeCurrency(fromCurr, amount, rate) {
-    if (amount <= 0 || rate <= 0) throw new Error("Invalid exchange");
-    if (fromCurr === "ZMW") {
-      const neededZMW = amount;
-      if (appState.companyCashZMW < neededZMW) throw new Error("Insufficient ZMW");
-      const usdReceived = amount / rate;
-      appState.companyCashZMW -= neededZMW;
-      appState.companyCashUSD += usdReceived;
-      appState.exchangeLogs.push({ id: Date.now(), date: new Date().toISOString(), from: "ZMW", to: "USD", amount: neededZMW, rate, result: usdReceived });
-    } else if (fromCurr === "USD") {
-      const neededUSD = amount;
-      if (appState.companyCashUSD < neededUSD) throw new Error("Insufficient USD");
-      const zmwReceived = amount * rate;
-      appState.companyCashUSD -= neededUSD;
-      appState.companyCashZMW += zmwReceived;
-      appState.exchangeLogs.push({ id: Date.now(), date: new Date().toISOString(), from: "USD", to: "ZMW", amount: neededUSD, rate, result: zmwReceived });
+    // Sale with profit distribution in ZMW
+    function recordSale(gramsSold, sellRateUSD, conversionChoice, customConvertUSD = 0) {
+        let remaining = gramsSold;
+        let totalCostBasisZMW = 0;
+        for (let p of state.goldPurchases) {
+            if (remaining <= 0) break;
+            if (p.remainingGrams <= 0) continue;
+            const taken = Math.min(p.remainingGrams, remaining);
+            const proportionCost = (taken / p.grams) * p.netPaid;
+            totalCostBasisZMW += proportionCost;
+            p.remainingGrams -= taken;
+            remaining -= taken;
+        }
+        if (remaining > 0) throw new Error("Insufficient inventory");
+        const revenueUSD = gramsSold * sellRateUSD;
+        const costBasisUSD = totalCostBasisZMW / state.exchangeRate;
+        const profitUSD = revenueUSD - costBasisUSD;
+        const profitZMW = profitUSD * state.exchangeRate;
+        const perShare = profitZMW / state.shareholders.length;
+        state.shareholders.forEach(sh => sh.balanceZMW += perShare);
+        
+        let usdKept = 0, zmwConverted = 0;
+        if (conversionChoice === "keep_all") { usdKept = revenueUSD; state.companyCashUSD += revenueUSD; }
+        else if (conversionChoice === "convert_all") { zmwConverted = revenueUSD * state.exchangeRate; state.companyCashZMW += zmwConverted; }
+        else if (conversionChoice === "partial" && customConvertUSD > 0) {
+            const convertUSD = Math.min(customConvertUSD, revenueUSD);
+            zmwConverted = convertUSD * state.exchangeRate;
+            usdKept = revenueUSD - convertUSD;
+            state.companyCashZMW += zmwConverted;
+            state.companyCashUSD += usdKept;
+        }
+        state.goldSales.push({ id: Date.now(), date: new Date().toISOString(), gramsSold, sellRateUSD, revenueUSD, profitUSD, conversionChoice, usdKept, zmwConverted });
+        logCashTransaction("GOLD_SALE", zmwConverted, usdKept, `Sold ${gramsSold}g @ ${sellRateUSD} USD/g, profit ${profitUSD} USD`);
+        persist();
     }
-    appState.exchangeRate = rate;  // update last used rate
-    persist();
-  }
 
-  function requestWithdrawalZMW(shareholderId, amountZMW) {
-    const sh = appState.shareholders.find(s => s.id === shareholderId);
-    if (!sh || sh.balanceZMW < amountZMW) throw new Error("Insufficient balance");
-    appState.withdrawalRequests.push({
-      id: Date.now(), date: new Date().toISOString(), shareholderId, shareholderName: sh.name,
-      amountZMW, status: "pending"
-    });
-    persist();
-  }
-
-  function approveWithdrawal(reqId) {
-    const req = appState.withdrawalRequests.find(r => r.id === reqId);
-    if (!req || req.status !== "pending") return false;
-    const shareholder = appState.shareholders.find(s => s.id === req.shareholderId);
-    if (!shareholder || shareholder.balanceZMW < req.amountZMW) return false;
-    if (appState.companyCashZMW < req.amountZMW) throw new Error("Company ZMW insufficient");
-    shareholder.balanceZMW -= req.amountZMW;
-    appState.companyCashZMW -= req.amountZMW;
-    req.status = "approved";
-    persist();
-    return true;
-  }
-
-  // ---------- RENDER ENGINE ----------
-  function render() {
-    const root = document.getElementById('root');
-    if (!currentUser) {
-      root.innerHTML = renderLogin();
-      attachLoginEvents();
-    } else {
-      root.innerHTML = renderMainApp();
-      attachAppEvents();
-      attachMobileToggle();
+    function addExpense(desc, amountZMW) {
+        const perShare = amountZMW / state.shareholders.length;
+        state.shareholders.forEach(sh => sh.balanceZMW -= perShare);
+        state.expenses.push({ id: Date.now(), date: new Date().toISOString(), description: desc, amountZMW });
+        state.companyCashZMW -= amountZMW;
+        logCashTransaction("EXPENSE", -amountZMW, 0, desc);
+        persist();
     }
-  }
 
-  function renderLogin() {
-    return `<div class="login-screen">
-      <div class="login-card">
-        <h1>🏔️ Gold Trade Pro</h1>
-        <h3>MASHIIN • DUAL CURRENCY • REPS</h3>
-        <div class="field"><label>Username</label><input id="loginUser" placeholder="Samatar / Yuusuf / Abdirisak / Ahmed" /></div>
-        <div class="field"><label>Password</label><input id="loginPass" type="password" /></div>
-        <button class="btn-gold" id="doLoginBtn">Access Vault</button>
-        <div id="loginError" class="error-msg"></div>
-      </div>
-    </div>`;
-  }
+    function addSurveyRevenue(amountZMW, customerName) {
+        const perShare = amountZMW / state.shareholders.length;
+        state.shareholders.forEach(sh => sh.balanceZMW += perShare);
+        state.surveyRevenues.push({ id: Date.now(), date: new Date().toISOString(), amountZMW, customerName });
+        state.companyCashZMW += amountZMW;
+        logCashTransaction("SURVEY_REVENUE", amountZMW, 0, `Survey from ${customerName}`);
+        persist();
+    }
 
-  function renderMainApp() {
-    const isManager = (currentUser.role === 'manager');
-    const stats = computeStats();
-    const page = getPageContent(isManager, stats);
-    const navItems = [
-      { id: "dashboard", label: "📊 Dashboard" }, { id: "purchase", label: "💎 Buy Gold" },
-      { id: "sales", label: "💰 Sell Gold" }, { id: "exchange", label: "🔄 Exchange" },
-      { id: "reports", label: "📑 Reports" }, { id: "withdrawals", label: "🏦 Withdrawals" }
-    ];
-    const navButtons = navItems.map(item => `<button class="nav-btn ${activeTab === item.id ? 'active' : ''}" data-nav="${item.id}">${item.label}</button>`).join('');
-    return `
-      <div class="mobile-header"><button id="mobileMenuBtn" style="background:none;border:none;font-size:1.6rem;color:#e2bc6e;">☰</button><span style="font-weight:500;">Gold Trading</span><div style="width:28px"></div></div>
-      <div class="overlay-mob" id="mobileOverlay"></div>
-      <div class="sidebar" id="mainSidebar">
-        <div class="logo-area"><h2>⚜️ GOLD LEDGER</h2><p>Mashiin • Reps • ZMW/USD</p></div>
-        <div class="nav-menu">${navButtons}</div>
-        <div class="user-section">
-          <div class="user-badge"><div class="user-name">${currentUser.name}</div><div class="user-role">${currentUser.role === 'manager' ? 'Manager (Samatar)' : 'Shareholder'}</div></div>
-          <button class="btn-outline" id="logoutBtn">Sign Out</button>
+    // Loan / Liability
+    function addLiability(lender, amountZMW, interestRate, dueDate, notes) {
+        state.liabilities.push({
+            id: Date.now(), date: new Date().toISOString(), lender, amountZMW, remainingBalance: amountZMW,
+            interestRate: interestRate || 0, dueDate, notes
+        });
+        state.companyCashZMW += amountZMW;
+        logCashTransaction("LOAN_RECEIVED", amountZMW, 0, `Loan from ${lender} (${formatZMW(amountZMW)})`);
+        persist();
+    }
+
+    function repayLiability(liabilityId, repayAmount) {
+        const loan = state.liabilities.find(l => l.id === liabilityId);
+        if (!loan || repayAmount > loan.remainingBalance) throw new Error("Invalid repayment");
+        loan.remainingBalance -= repayAmount;
+        state.companyCashZMW -= repayAmount;
+        logCashTransaction("LOAN_REPAYMENT", -repayAmount, 0, `Repaid ${formatZMW(repayAmount)} to ${loan.lender}`);
+        persist();
+    }
+
+    // Debtor (customer owes)
+    function addDebtor(customerName, amountZMW, dueDate, notes) {
+        state.debtors.push({
+            id: Date.now(), date: new Date().toISOString(), customerName, amountZMW, remainingBalance: amountZMW, dueDate, notes
+        });
+        logCashTransaction("DEBTOR_CREATED", 0, 0, `Debt recorded: ${customerName} owes ${formatZMW(amountZMW)}`);
+        persist();
+    }
+
+    function receiveDebtPayment(debtorId, payAmount) {
+        const debtor = state.debtors.find(d => d.id === debtorId);
+        if (!debtor || payAmount > debtor.remainingBalance) throw new Error("Invalid payment");
+        debtor.remainingBalance -= payAmount;
+        state.companyCashZMW += payAmount;
+        logCashTransaction("DEBTOR_PAYMENT", payAmount, 0, `Received ${formatZMW(payAmount)} from ${debtor.customerName}`);
+        persist();
+    }
+
+    function requestWithdrawalZMW(shareholderId, amountZMW) {
+        const sh = state.shareholders.find(s => s.id === shareholderId);
+        if (!sh || sh.balanceZMW < amountZMW) throw new Error("Insufficient balance");
+        state.withdrawalRequests.push({ id: Date.now(), date: new Date().toISOString(), shareholderId, shareholderName: sh.name, amountZMW, status: "pending" });
+        persist();
+    }
+
+    function approveWithdrawal(reqId) {
+        const req = state.withdrawalRequests.find(r => r.id === reqId);
+        if (!req || req.status !== "pending") return false;
+        const shareholder = state.shareholders.find(s => s.id === req.shareholderId);
+        if (!shareholder || shareholder.balanceZMW < req.amountZMW || state.companyCashZMW < req.amountZMW) return false;
+        shareholder.balanceZMW -= req.amountZMW;
+        state.companyCashZMW -= req.amountZMW;
+        req.status = "approved";
+        logCashTransaction("WITHDRAWAL", -req.amountZMW, 0, `Withdrawal by ${shareholder.name}`);
+        persist();
+        return true;
+    }
+
+    function exchangeCurrency(fromCurr, amount, rate) {
+        if (fromCurr === "ZMW") {
+            if (state.companyCashZMW < amount) throw new Error("Insufficient ZMW");
+            const usdReceived = amount / rate;
+            state.companyCashZMW -= amount;
+            state.companyCashUSD += usdReceived;
+            logCashTransaction("EXCHANGE", -amount, usdReceived, `ZMW → USD at rate ${rate}`);
+        } else {
+            if (state.companyCashUSD < amount) throw new Error("Insufficient USD");
+            const zmwReceived = amount * rate;
+            state.companyCashUSD -= amount;
+            state.companyCashZMW += zmwReceived;
+            logCashTransaction("EXCHANGE", zmwReceived, -amount, `USD → ZMW at rate ${rate}`);
+        }
+        state.exchangeRate = rate;
+        persist();
+    }
+
+    function getCashTransactionHistory() { return state.cashTransactions; }
+
+    // ---------- RENDER ----------
+    function render() {
+        const root = document.getElementById('root');
+        if (!currentUser) {
+            root.innerHTML = renderLogin();
+            document.getElementById('loginBtn')?.addEventListener('click', doLogin);
+        } else {
+            root.innerHTML = renderApp();
+            attachEvents();
+        }
+        if (modalData) renderModal();
+    }
+
+    function renderLogin() {
+        return `<div class="login-screen"><div class="login-card">
+            <h1>🏦 Gold Trade Pro</h1>
+            <div class="field"><label>Username</label><input id="loginUser" placeholder="Admin / Samatar / Yuusuf" /></div>
+            <div class="field"><label>Password</label><input id="loginPass" type="password" /></div>
+            <button class="btn-gold" id="loginBtn">Access System</button>
+            <div id="loginError" class="error-msg"></div>
+        </div></div>`;
+    }
+
+    function doLogin() {
+        const user = document.getElementById('loginUser').value.trim();
+        const pwd = document.getElementById('loginPass').value;
+        if (user === state.adminUser.name && pwd === state.adminUser.password) { currentUser = { name: "Admin", role: "admin" }; render(); return; }
+        if (user === state.managerUser.name && pwd === state.managerUser.password) { currentUser = { name: "Samatar", role: "manager" }; render(); return; }
+        const sh = state.shareholders.find(s => s.name.toLowerCase() === user.toLowerCase() && s.password === pwd);
+        if (sh) { currentUser = { name: sh.name, role: "shareholder", shareholderId: sh.id }; render(); return; }
+        document.getElementById('loginError').innerText = "Invalid credentials";
+    }
+
+    function renderApp() {
+        const isPrivileged = (currentUser.role === 'admin' || currentUser.role === 'manager');
+        const nav = [
+            { id: "dashboard", label: "📊 Dashboard" }, { id: "purchase", label: "💎 Buy Gold" },
+            { id: "sales", label: "💰 Sell Gold" }, { id: "survey", label: "📋 Survey Revenue" },
+            { id: "loans", label: "🏦 Loans & Debts" }, { id: "reports", label: "📅 Monthly Reports" },
+            { id: "withdrawals", label: "🏧 Withdrawals" }
+        ];
+        const navBtns = nav.map(t => `<button class="nav-btn ${activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">${t.label}</button>`).join('');
+        let content = "";
+        if (activeTab === "dashboard") content = dashboardHTML(isPrivileged);
+        else if (activeTab === "purchase") content = purchaseHTML(isPrivileged);
+        else if (activeTab === "sales") content = salesHTML(isPrivileged);
+        else if (activeTab === "survey") content = surveyHTML(isPrivileged);
+        else if (activeTab === "loans") content = loansHTML(isPrivileged);
+        else if (activeTab === "reports") content = reportsHTML(isPrivileged);
+        else if (activeTab === "withdrawals") content = withdrawalsHTML(isPrivileged);
+        return `<div class="mobile-header"><button id="menuToggle" style="background:none;border:none;font-size:1.6rem;">☰</button><span>Gold Ledger</span><div></div></div>
+        <div class="sidebar" id="sidebar"><div class="logo-area"><h2>⚜️ GOLD PRO</h2></div><div class="nav-menu">${navBtns}</div>
+        <div class="user-section"><div class="user-badge"><div>${currentUser.name}</div><div style="font-size:0.7rem">${currentUser.role}</div></div>
+        <button class="btn-outline" id="logoutBtn">Sign Out</button></div></div>
+        <div class="content-main">${content}</div>`;
+    }
+
+    function dashboardHTML(isPrivileged) {
+        const totalLiab = state.liabilities.reduce((s,l)=> s + l.remainingBalance,0);
+        const totalDebtors = state.debtors.reduce((s,d)=> s + d.remainingBalance,0);
+        return `<div class="stats-row">
+            <div class="stat-card" id="clickZMW"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(state.companyCashZMW)}</div></div>
+            <div class="stat-card" id="clickUSD"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(state.companyCashUSD)}</div></div>
+            <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${formatGrams(state.goldPurchases.reduce((a,b)=>a+b.grams,0) - state.goldSales.reduce((a,b)=>a+b.gramsSold,0))}</div></div>
+            <div class="stat-card"><div class="stat-label">⚖️ Net Equity</div><div class="stat-value">${formatZMW(state.companyCashZMW + (state.companyCashUSD*state.exchangeRate) - totalLiab)}</div></div>
         </div>
-      </div>
-      <div class="content-main">${page}</div>
-    `;
-  }
-
-  function getPageContent(isManager, stats) {
-    if (activeTab === "dashboard") return dashboardHTML(isManager, stats);
-    if (activeTab === "purchase") return purchaseHTML(isManager);
-    if (activeTab === "sales") return salesHTML(isManager);
-    if (activeTab === "exchange") return exchangeHTML(isManager);
-    if (activeTab === "reports") return reportsHTML(isManager, stats);
-    if (activeTab === "withdrawals") return withdrawalsHTML(isManager);
-    return "<div class='card'>Select a section</div>";
-  }
-
-  function dashboardHTML(isManager, stats) {
-    const shList = appState.shareholders.map(sh => `<div class="balance-row" style="display:flex;justify-content:space-between;padding:8px 0"><span>${sh.name}</span><span class="green">${formatZMW(sh.balanceZMW)}</span></div>`).join('');
-    return `<div class="stats-row">
-      <div class="stat-card"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(appState.companyCashZMW)}</div></div>
-      <div class="stat-card"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(appState.companyCashUSD)}</div></div>
-      <div class="stat-card"><div class="stat-label">📦 Gold Inv.</div><div class="stat-value">${formatGrams(stats.inventory)}</div></div>
-      <div class="stat-card"><div class="stat-label">⚙️ Mashiin Total</div><div class="stat-value">${formatZMW(stats.totalMashiinCollected)}</div></div>
-    </div>
-    <div class="card"><div class="card-title">👥 Shareholder Balances (ZMW)</div>${shList || '<div class="muted">—</div>'}</div>
-    <div class="card"><div class="card-title">🔁 Exchange Rate (1 USD → ZMW)</div><div class="stat-value" style="font-size:1.4rem;">${appState.exchangeRate.toFixed(2)} ZMW</div></div>`;
-  }
-
-  function purchaseHTML(isManager) {
-    if (!isManager) return `<div class="card"><div class="muted">Only Manager (Samatar) can record gold purchases.</div></div>`;
-    const repsOptions = appState.salesReps.map(rep => `<option value="${rep}">${rep}</option>`).join('');
-    return `<div class="card"><div class="card-title">🛒 Buy Gold with Mashiin & Transport</div>
-      <div class="form-group"><label>Grams</label><input id="buyGrams" type="number" placeholder="grams" /></div>
-      <div class="form-group"><label>Rate per Gram (ZMW)</label><input id="buyRate" type="number" placeholder="ZMW/gram" /></div>
-      <div class="form-group"><label>Mashiin amount (ZMW)</label><input id="mashiinAmt" type="number" value="${appState.defaultMashiin}" /></div>
-      <div class="form-group"><label>Transport amount (ZMW)</label><input id="transportAmt" type="number" value="${appState.defaultTransport}" /></div>
-      <div class="form-group"><label>Sales Representative</label><select id="salesRepSelect">${repsOptions}</select></div>
-      <button class="btn-action" id="executePurchase">Record Purchase (Net Paid)</button>
-    </div>`;
-  }
-
-  function salesHTML(isManager) {
-    if (!isManager) return `<div class="card"><div class="muted">Manager only: record gold sale in USD and decide conversion.</div></div>`;
-    return `<div class="card"><div class="card-title">📈 Sell Gold (USD)</div>
-      <div class="form-group"><label>Grams to sell</label><input id="sellGrams" type="number" /></div>
-      <div class="form-group"><label>Sell Rate (USD/gram)</label><input id="sellRateUSD" type="number" /></div>
-      <div class="form-group"><label>Conversion Decision</label><select id="convDecision">
-        <option value="convert_all">Convert all USD → ZMW</option>
-        <option value="keep_all">Keep all as USD</option>
-        <option value="partial">Partial: convert specific USD amount</option>
-      </select></div>
-      <div class="form-group" id="partialDiv" style="display:none"><label>Amount USD to convert to ZMW</label><input id="partialUsd" type="number" placeholder="0" /></div>
-      <button class="btn-action" id="executeSale">Execute Sale & Distribute Profit (ZMW)</button>
-    </div>`;
-  }
-
-  function exchangeHTML(isManager) {
-    return `<div class="card"><div class="card-title">💱 Currency Exchange (ZMW ↔ USD)</div>
-      <div class="form-group"><label>Exchange Direction</label><select id="exDir"><option value="ZMWtoUSD">ZMW → USD</option><option value="USDtoZMW">USD → ZMW</option></select></div>
-      <div class="form-group"><label>Amount (in source currency)</label><input id="exAmount" type="number" /></div>
-      <div class="form-group"><label>Exchange Rate (1 USD = X ZMW)</label><input id="exRate" type="number" value="${appState.exchangeRate}" step="0.01" /></div>
-      <button class="btn-action" id="doExchange">Execute Exchange</button>
-      <div class="muted" style="margin-top:10px">Last rate: ${appState.exchangeRate} ZMW/USD</div>
-    </div>`;
-  }
-
-  function reportsHTML(isManager, stats) {
-    const repRows = Object.entries(stats.salesRepStats).map(([rep,data]) => `<tr><td>${rep}</td><td>${data.count} purchases</td><td>${formatGrams(data.totalGrams)}</td><td>${formatZMW(data.totalMashiin)}</td></tr>`).join('');
-    const surveyRows = appState.surveyRevenues.map(s => `<tr><td>${s.customerName}</td><td>${formatZMW(s.amountZMW)}</td><td>${new Date(s.date).toLocaleDateString()}</td></tr>`).join('');
-    return `<div class="two-col">
-      <div class="card"><div class="card-title">📊 Sales Rep Performance</div><table><thead><tr><th>Rep</th><th>Purchases</th><th>Grams</th><th>Total Mashiin</th></tr></thead><tbody>${repRows || '<tr><td colspan="4">—</td></tr>'}</tbody></table></div>
-      <div class="card"><div class="card-title">⚙️ Mashiin + Transport Summary</div><div>Total Mashiin: ${formatZMW(stats.totalMashiinCollected)}</div><div>Total Transport: ${formatZMW(stats.totalTransportCollected)}</div><div>Gold Profit (USD): ${formatUSD(stats.goldProfitUSD)}</div><div>Net Profit ZMW: ${formatZMW(stats.netProfitZMW)}</div></div>
-      <div class="card"><div class="card-title">👥 Survey Revenue by Customer</div><table><thead><tr><th>Customer</th><th>Amount ZMW</th><th>Date</th></tr></thead><tbody>${surveyRows || '<tr><td colspan="3">—</td></tr>'}</tbody></table></div>
-    </div>`;
-  }
-
-  function withdrawalsHTML(isManager) {
-    const userReqs = appState.withdrawalRequests.filter(r => isManager || r.shareholderId === currentUser.shareholderId);
-    const rows = userReqs.map(r => `<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td class="${r.status === 'pending' ? 'badge-pending' : 'badge-success'}">${r.status}</td>${isManager && r.status === 'pending' ? `<td><button class="btn-sm" data-approve="${r.id}">Approve</button></td>` : '<td>—</td>'}</tr>`).join('');
-    return `<div class="card"><div class="card-title">🏧 Withdrawal Requests (ZMW)</div>
-      ${!isManager ? `<button class="btn-sm" id="reqWithdrawBtn" style="margin-bottom:16px;">+ Request Withdrawal (ZMW)</button>` : ''}
-      <div class="table-wrap"><table><thead><tr><th>Shareholder</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody>${rows || '<tr><td colspan="4">No requests</td></tr>'}</tbody></table></div>
-    </div>`;
-  }
-
-  // EVENT HANDLERS
-  function attachLoginEvents() {
-    document.getElementById('doLoginBtn')?.addEventListener('click', () => {
-      const un = document.getElementById('loginUser').value.trim();
-      const pw = document.getElementById('loginPass').value;
-      if (un === appState.manager.name && pw === appState.manager.password) {
-        currentUser = { name: appState.manager.name, role: 'manager' };
-        activeTab = "dashboard";
-        render(); return;
-      }
-      const sh = appState.shareholders.find(s => s.name.toLowerCase() === un.toLowerCase() && s.password === pw);
-      if (sh) { currentUser = { name: sh.name, role: 'shareholder', shareholderId: sh.id }; render(); return; }
-      document.getElementById('loginError').innerText = "Invalid credentials";
-    });
-  }
-
-  function attachAppEvents() {
-    document.querySelectorAll('[data-nav]').forEach(btn => btn.addEventListener('click', (e) => { activeTab = btn.dataset.nav; render(); }));
-    document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; render(); });
-    const isMgr = currentUser?.role === 'manager';
-    if (isMgr) {
-      document.getElementById('executePurchase')?.addEventListener('click', () => {
-        const grams = parseFloat(document.getElementById('buyGrams').value);
-        const rate = parseFloat(document.getElementById('buyRate').value);
-        const mashiin = parseFloat(document.getElementById('mashiinAmt').value) || appState.defaultMashiin;
-        const transport = parseFloat(document.getElementById('transportAmt').value) || appState.defaultTransport;
-        const rep = document.getElementById('salesRepSelect').value;
-        if (!grams || !rate) return alert("Enter grams and rate");
-        try { recordPurchase(grams, rate, mashiin, transport, rep); alert("Purchase recorded."); render(); } catch(e){ alert(e.message); }
-      });
-      document.getElementById('executeSale')?.addEventListener('click', () => {
-        const grams = parseFloat(document.getElementById('sellGrams').value);
-        const rateUSD = parseFloat(document.getElementById('sellRateUSD').value);
-        const decision = document.getElementById('convDecision').value;
-        let partial = null;
-        if (decision === 'partial') partial = parseFloat(document.getElementById('partialUsd').value) || 0;
-        if (!grams || !rateUSD) return alert("Enter grams & sell rate");
-        try { recordSale(grams, rateUSD, decision, partial); alert("Sale recorded. Profit distributed in ZMW"); render(); } catch(e){ alert(e.message); }
-      });
-      document.getElementById('convDecision')?.addEventListener('change', (e) => {
-        document.getElementById('partialDiv').style.display = e.target.value === 'partial' ? 'block' : 'none';
-      });
-      document.getElementById('doExchange')?.addEventListener('click', () => {
-        const dir = document.getElementById('exDir').value;
-        const amount = parseFloat(document.getElementById('exAmount').value);
-        const rate = parseFloat(document.getElementById('exRate').value);
-        if (!amount || !rate) return;
-        try { exchangeCurrency(dir === 'ZMWtoUSD' ? 'ZMW' : 'USD', amount, rate); alert("Exchange done"); render(); } catch(e){ alert(e.message); }
-      });
-      document.querySelectorAll('[data-approve]').forEach(btn => btn.addEventListener('click', (e) => {
-        const id = parseInt(btn.dataset.approve);
-        try { approveWithdrawal(id); render(); } catch(e){ alert(e.message); }
-      }));
+        <div class="two-col">
+            <div class="card"><div class="card-title">🏛️ Liabilities (Loans)</div><div class="stat-value" style="font-size:1.2rem">${formatZMW(totalLiab)}</div><div>${state.liabilities.length} active loans</div></div>
+            <div class="card"><div class="card-title">👥 Debtors (Owe us)</div><div class="stat-value" style="font-size:1.2rem">${formatZMW(totalDebtors)}</div><div>${state.debtors.length} customers</div></div>
+        </div>
+        <div class="card"><div class="card-title">👤 Shareholders (ZMW)</div>${state.shareholders.map(s => `<div style="display:flex;justify-content:space-between"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>`;
     }
-    // withdrawal request for shareholders
-    if (currentUser?.role === 'shareholder') {
-      document.getElementById('reqWithdrawBtn')?.addEventListener('click', () => {
-        const amt = parseFloat(prompt("Enter amount to withdraw (ZMW):", "0"));
-        if (!amt || amt <= 0) return;
-        try { requestWithdrawalZMW(currentUser.shareholderId, amt); alert("Request submitted"); render(); } catch(e){ alert(e.message); }
-      });
-    }
-  }
 
-  function attachMobileToggle() {
-    const btn = document.getElementById('mobileMenuBtn');
-    const sidebar = document.getElementById('mainSidebar');
-    const overlay = document.getElementById('mobileOverlay');
-    if (btn && sidebar) {
-      btn.onclick = () => { sidebar.classList.toggle('open'); if(overlay) overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none'; };
-      if (overlay) overlay.onclick = () => { sidebar.classList.remove('open'); overlay.style.display = 'none'; };
+    function purchaseHTML(isPrivileged) {
+        if (!isPrivileged) return `<div class="card"><div class="muted">Only Admin/Manager can record purchases</div></div>`;
+        const repOpts = state.salesReps.map(r => `<option>${r}</option>`).join('');
+        return `<div class="card"><div class="card-title">🛒 Buy Gold (ZMW) + Mashiin/Transport</div>
+            <div class="form-group"><label>Grams</label><input id="grams" type="number" /></div>
+            <div class="form-group"><label>Rate (ZMW/gram)</label><input id="rate" type="number" /></div>
+            <div class="form-group"><label>Mashiin (ZMW)</label><input id="mashiin" value="${state.defaultMashiin}" /></div>
+            <div class="form-group"><label>Transport (ZMW)</label><input id="transport" value="${state.defaultTransport}" /></div>
+            <div class="form-group"><label>Sales Rep</label><select id="rep">${repOpts}</select></div>
+            <button class="btn-action" id="doPurchase">Record Purchase</button></div>`;
     }
-  }
 
-  render();
+    function salesHTML(isPrivileged) {
+        if (!isPrivileged) return `<div class="card"><div class="muted">Manager/Admin only</div></div>`;
+        return `<div class="card"><div class="card-title">📈 Sell Gold (USD)</div>
+            <div class="form-group"><label>Grams</label><input id="sellGrams" type="number" /></div>
+            <div class="form-group"><label>Sell Rate (USD/g)</label><input id="sellRate" type="number" /></div>
+            <div class="form-group"><label>Conversion</label><select id="conv"><option value="convert_all">All to ZMW</option><option value="keep_all">Keep USD</option><option value="partial">Partial to ZMW</option></select></div>
+            <div id="partialBox" style="display:none"><div class="form-group"><label>USD to convert</label><input id="partialUsd" type="number" /></div></div>
+            <button class="btn-action" id="doSale">Sell & Distribute Profit (ZMW)</button></div>`;
+    }
+
+    function surveyHTML(isPrivileged) {
+        if (!isPrivileged) return `<div class="card"><div class="muted">Manager/Admin only</div></div>`;
+        return `<div class="card"><div class="card-title">📋 Survey Revenue (ZMW)</div>
+            <div class="form-group"><label>Customer Name</label><input id="custName" placeholder="Customer" /></div>
+            <div class="form-group"><label>Amount (ZMW)</label><input id="survAmt" type="number" /></div>
+            <button class="btn-action" id="doSurvey">Add & Distribute to Shareholders</button></div>
+            <div class="card"><div class="card-title">📜 Past Survey Revenue</div>${state.surveyRevenues.map(s => `<div>${s.customerName} : ${formatZMW(s.amountZMW)} (${new Date(s.date).toLocaleDateString()})</div>`).join('') || '<div class="muted">None</div>'}</div>`;
+    }
+
+    function loansHTML(isPrivileged) {
+        if (!isPrivileged) return `<div class="card"><div class="muted">Admin/Manager only</div></div>`;
+        return `<div class="two-col">
+            <div class="card"><div class="card-title">➕ New Liability (Loan Received)</div>
+                <div class="form-group"><label>Lender Name</label><input id="lender" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="loanAmt" type="number" /></div>
+                <div class="form-group"><label>Interest Rate (%)</label><input id="interest" value="0" /></div><div class="form-group"><label>Due Date</label><input id="dueDate" type="date" /></div>
+                <button class="btn-action" id="addLiability">Add Loan</button></div>
+            <div class="card"><div class="card-title">➕ New Debtor (Customer Owes)</div>
+                <div class="form-group"><label>Customer</label><input id="debtCust" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="debtAmt" type="number" /></div>
+                <div class="form-group"><label>Due Date</label><input id="debtDue" type="date" /></div>
+                <button class="btn-action" id="addDebtor">Add Debtor</button></div>
+        </div>
+        <div class="card"><div class="card-title">📋 Active Loans</div>${state.liabilities.map(l => `<div style="display:flex;justify-content:space-between">${l.lender}: ${formatZMW(l.remainingBalance)} / ${formatZMW(l.amountZMW)} <button class="btn-sm" data-repay="${l.id}">Repay</button></div>`).join('')}</div>
+        <div class="card"><div class="card-title">📋 Debtors</div>${state.debtors.map(d => `<div style="display:flex;justify-content:space-between">${d.customerName}: ${formatZMW(d.remainingBalance)} <button class="btn-sm" data-paydebt="${d.id}">Receive Payment</button></div>`).join('')}</div>`;
+    }
+
+    function reportsHTML(isPrivileged) {
+        const months = [...new Set(state.cashTransactions.map(t => new Date(t.date).toLocaleString('default', { year:'numeric', month:'long' })))];
+        return `<div class="card"><div class="card-title">📆 Monthly Report</div>
+            <select id="monthSelect">${months.map(m => `<option>${m}</option>`).join('')}</select>
+            <button class="btn-sm" id="generateReport" style="margin-top:10px">Generate & Print PDF</button>
+            <div id="reportPreview" style="margin-top:20px"></div></div>`;
+    }
+
+    function withdrawalsHTML(isPrivileged) {
+        const reqs = state.withdrawalRequests.filter(r => isPrivileged || r.shareholderId === currentUser.shareholderId);
+        return `<div class="card"><div class="card-title">🏧 Withdrawals (ZMW)</div>
+            ${!isPrivileged ? `<button class="btn-sm" id="requestWBtn">Request Withdrawal</button>` : ''}
+            <table><thead><tr><th>User</th><th>Amount</th><th>Status</th>${isPrivileged ? '<th>Action</th>' : ''}</tr></thead>
+            <tbody>${reqs.map(r => `<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td class="${r.status}">${r.status}</td>${isPrivileged && r.status === 'pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></td>` : ''}</tr>`).join('')}</tbody></table></div>`;
+    }
+
+    function attachEvents() {
+        document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', (e) => { activeTab = btn.dataset.tab; render(); }));
+        document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; render(); });
+        const isPriv = currentUser.role === 'admin' || currentUser.role === 'manager';
+        if (isPriv) {
+            document.getElementById('doPurchase')?.addEventListener('click', () => {
+                const g=parseFloat(document.getElementById('grams').value), r=parseFloat(document.getElementById('rate').value);
+                const m=parseFloat(document.getElementById('mashiin').value)||0, t=parseFloat(document.getElementById('transport').value)||0, rep=document.getElementById('rep').value;
+                if(!g||!r) return alert("Invalid");
+                recordPurchase(g,r,m,t,rep); render();
+            });
+            document.getElementById('doSale')?.addEventListener('click', () => {
+                const g=parseFloat(document.getElementById('sellGrams').value), rate=parseFloat(document.getElementById('sellRate').value);
+                const conv=document.getElementById('conv').value, partial=parseFloat(document.getElementById('partialUsd').value)||0;
+                if(!g||!rate) return;
+                recordSale(g,rate,conv,partial); render();
+            });
+            document.getElementById('conv')?.addEventListener('change', e => document.getElementById('partialBox').style.display = e.target.value === 'partial' ? 'block' : 'none');
+            document.getElementById('doSurvey')?.addEventListener('click', () => { 
+                const cust=document.getElementById('custName').value, amt=parseFloat(document.getElementById('survAmt').value);
+                if(!cust||!amt) return; addSurveyRevenue(amt,cust); render();
+            });
+            document.getElementById('addLiability')?.addEventListener('click', () => {
+                const lender=document.getElementById('lender').value, amt=parseFloat(document.getElementById('loanAmt').value);
+                if(!lender||!amt) return; addLiability(lender,amt,0,document.getElementById('dueDate').value,""); render();
+            });
+            document.getElementById('addDebtor')?.addEventListener('click', () => {
+                const cust=document.getElementById('debtCust').value, amt=parseFloat(document.getElementById('debtAmt').value);
+                if(!cust||!amt) return; addDebtor(cust,amt,document.getElementById('debtDue').value,""); render();
+            });
+            document.querySelectorAll('[data-repay]').forEach(btn => btn.addEventListener('click', (e) => {
+                const id=parseInt(btn.dataset.repay);
+                const amt=parseFloat(prompt("Repay amount (ZMW)"));
+                if(amt) repayLiability(id,amt); render();
+            }));
+            document.querySelectorAll('[data-paydebt]').forEach(btn => btn.addEventListener('click', (e) => {
+                const id=parseInt(btn.dataset.paydebt);
+                const amt=parseFloat(prompt("Receive payment (ZMW)"));
+                if(amt) receiveDebtPayment(id,amt); render();
+            }));
+            document.querySelectorAll('[data-apr]').forEach(btn => btn.addEventListener('click', (e) => { approveWithdrawal(parseInt(btn.dataset.apr)); render(); }));
+            document.getElementById('generateReport')?.addEventListener('click', () => {
+                const month = document.getElementById('monthSelect').value;
+                const filtered = state.cashTransactions.filter(t => new Date(t.date).toLocaleString('default',{month:'long',year:'numeric'}) === month);
+                const html = `<h3>Report ${month}</h3>${filtered.map(t => `<div>${new Date(t.date).toLocaleDateString()} ${t.type}: ZMW ${t.amountZMW.toFixed(2)} | USD ${t.amountUSD.toFixed(2)} | ${t.description}</div>`).join('')}`;
+                const win = window.open(); win.document.write(`<html><head><title>Gold Report</title><style>body{font-family:monospace;padding:20px}</style></head><body>${html}</body></html>`); win.print();
+            });
+        }
+        if(currentUser.role === 'shareholder') document.getElementById('requestWBtn')?.addEventListener('click', () => { const amt=parseFloat(prompt("Amount ZMW")); if(amt) requestWithdrawalZMW(currentUser.shareholderId, amt); render(); });
+        document.getElementById('clickZMW')?.addEventListener('click', () => modalData = { title: "ZMW Cash History", items: state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} ${t.type}: ${formatZMW(t.amountZMW)} | ${t.description} | Balance: ${formatZMW(t.runningBalanceZMW)}`) });
+        document.getElementById('clickUSD')?.addEventListener('click', () => modalData = { title: "USD Cash History", items: state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} ${t.type}: ${formatUSD(t.amountUSD)} | ${t.description} | Balance: ${formatUSD(t.runningBalanceUSD)}`) });
+        document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
+    }
+
+    function renderModal() {
+        const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>${modalData.title}</h3><div style="max-height:60vh;overflow-y:auto">${modalData.items.map(i=>`<div style="border-bottom:1px solid #333;padding:6px 0">${i}</div>`).join('')}</div><button class="btn-sm" onclick="closeModal()">Close</button></div>`;
+        document.body.appendChild(div); window.closeModal = () => { modalData = null; document.body.removeChild(div); render(); };
+    }
+
+    render();
 </script>
 </body>
 </html>
