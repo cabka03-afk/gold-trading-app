@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gold Trading Pro | FULL COMPLETE VERSION</title>
+    <title>Gold Trading Pro | COMPLETE with Cash Calculation</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
-        /* FULL CSS - NOTHING REMOVED */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0a0a07; font-family: 'Inter', system-ui, sans-serif; color: #ece3cf; }
         .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at 30% 40%, #131210, #020202); padding: 1.5rem; }
@@ -21,7 +20,6 @@
         .sidebar { width: 280px; background: #0e0e0b; border-right: 1px solid #2a261d; position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; overflow-y: auto; }
         .logo-area { padding: 24px 20px; border-bottom: 1px solid #2f2b20; }
         .logo-area h2 { color: #e8c87a; font-size: 1.3rem; }
-        .nav-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
         .nav-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
         .nav-btn { background: none; border: none; padding: 10px 16px; text-align: left; font-size: 0.85rem; color: #cbbf97; border-radius: 34px; cursor: pointer; }
         .nav-btn.active, .nav-btn:hover { background: #25231c; color: #f5de9c; }
@@ -44,38 +42,27 @@
         .btn-action { background: linear-gradient(100deg, #9e7d30, #d6ae5a); border: none; padding: 12px; border-radius: 40px; font-weight: bold; color: #0c0a04; cursor: pointer; width: 100%; }
         .btn-sm { background: #2a271f; border: 1px solid #7a6b47; padding: 6px 14px; border-radius: 30px; color: #f0daa0; cursor: pointer; font-size: 0.7rem; }
         .btn-danger { background: #5a1e1e; border-color: #a54a4a; color: #ffb4b4; }
-        .btn-danger:hover { background: #7a2a2a; }
         .green { color: #8bcb8b; }
         .red { color: #e69474; }
         .muted { color: #8e8160; }
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; }
         .modal-content { background: #181714; border-radius: 28px; padding: 28px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; }
         .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #2f2b20; }
-        .user-row:hover { background: #1c1b16; }
         .mobile-header { display: none; }
         .loading { text-align: center; padding: 50px; color: #e2bc6e; font-size: 1.2rem; }
         .sync-status { position: fixed; bottom: 10px; right: 10px; background: #1a1a17; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; z-index: 100; }
         
-        /* ========== BRIGHT REPORTS STYLES ========== */
+        /* BRIGHT REPORTS */
         .report-container { background: #fef9ef; border-radius: 20px; padding: 20px; color: #1e1b15; margin-top: 15px; }
         .report-header { background: linear-gradient(135deg, #1e5631, #3a7d2c); color: white; padding: 18px 22px; border-radius: 16px; margin-bottom: 20px; }
         .report-header h3 { color: white; font-size: 1.3rem; margin-bottom: 6px; }
-        .report-header p { color: rgba(255,255,255,0.85); font-size: 0.8rem; }
-        .report-summary { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2d5bd; }
+        .report-summary { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; border: 1px solid #e2d5bd; }
         .summary-card { flex: 1; background: #faf7f0; padding: 12px; border-radius: 12px; text-align: center; }
-        .summary-card .label { font-size: 0.7rem; color: #7a6846; text-transform: uppercase; letter-spacing: 0.05em; }
-        .summary-card .value { font-size: 1.6rem; font-weight: bold; }
-        .summary-card .value.positive { color: #2b6e2f; }
-        .summary-card .value.negative { color: #c0392b; }
-        .mashiin-card { background: #fff8e7; border: 1px solid #e8dcc8; border-radius: 16px; padding: 16px; margin-bottom: 20px; }
-        .mashiin-card .label { color: #b8860b; font-size: 0.7rem; text-transform: uppercase; }
-        .mashiin-card .value { font-size: 1.3rem; font-weight: bold; color: #8b6914; }
-        .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; }
-        .transaction-list-header { background: #efe5d5; padding: 12px 15px; font-weight: bold; color: #5c4a2e; }
-        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; transition: background 0.2s; }
-        .transaction-item:hover { background: #fef7e8; }
-        .transaction-date { font-size: 0.7rem; color: #8b7a5c; min-width: 140px; }
-        .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; margin: 0 10px; min-width: 120px; text-align: center; }
+        .summary-card .value.positive { color: #2b6e2f; font-size: 1.6rem; font-weight: bold; }
+        .summary-card .value.negative { color: #c0392b; font-size: 1.6rem; font-weight: bold; }
+        .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; max-height: 500px; overflow-y: auto; }
+        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; }
+        .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; }
         .transaction-type.PURCHASE { background: #fff3e0; color: #e65100; }
         .transaction-type.SALE { background: #e8f5e9; color: #2e7d32; }
         .transaction-type.SURVEY { background: #e3f2fd; color: #1565c0; }
@@ -83,19 +70,13 @@
         .transaction-type.DEPOSIT { background: #e0f2f1; color: #00695c; }
         .transaction-type.WITHDRAWAL { background: #fce4ec; color: #ad1457; }
         .transaction-type.EXCHANGE { background: #f3e5f5; color: #6a1b9a; }
-        .transaction-desc { flex: 2; font-size: 0.85rem; color: #2c2c2c; margin: 0 10px; }
-        .transaction-amount { font-weight: bold; font-size: 1rem; min-width: 100px; text-align: right; }
-        .transaction-amount.positive { color: #2e7d32; }
-        .transaction-amount.negative { color: #c62828; }
         .report-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; background: #f5efe3; padding: 12px; border-radius: 16px; }
-        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; color: #4a3e2c; transition: all 0.2s; }
-        .filter-btn:hover, .filter-btn.active { background: #c8a96e; color: white; border-color: #c8a96e; }
+        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; color: #4a3e2c; }
+        .filter-btn:hover { background: #c8a96e; color: white; }
         .type-filter-bar { background: #f5efe3; padding: 12px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .type-filter-bar select { width: auto; background: white; padding: 6px 12px; }
         
         @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col, .three-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; z-index: 15; } }
-        
-        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, .btn-action, nav, .user-section, .sync-status { display: none !important; } .report-container { background: white !important; padding: 0 !important; margin: 0 !important; } .content-main { margin: 0 !important; padding: 0 !important; } }
+        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, nav, .user-section { display: none !important; } .report-container { background: white !important; } }
     </style>
 </head>
 <body>
@@ -131,8 +112,6 @@
     let isLoading = true;
     let showPasswords = false;
     let appData = {
-        companyCashZMW: 0,
-        companyCashUSD: 0,
         exchangeRate: 26.5,
         goldPurchases: [],
         goldSales: [],
@@ -143,41 +122,43 @@
         shareholders: []
     };
     
+    // These will be calculated dynamically
+    let companyCashZMW = 0;
+    let companyCashUSD = 0;
+    
     const formatZMW = (v) => 'K' + (parseFloat(v)||0).toFixed(2);
     const formatUSD = (v) => '$' + (parseFloat(v)||0).toFixed(2);
     const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
     
-    // Core function to dynamically calculate live cash metrics from data sources
+    // ========== CORE: Recalculate cash from transactions ==========
     function recalculateLiveBalances() {
         let zmwInflows = 0;
         let zmwOutflows = 0;
         let usdInflows = 0;
         let usdOutflows = 0;
-
-        // 1. Process structured cash history transaction entries
+        
         appData.cashTransactions.forEach(t => {
             const zAmt = parseFloat(t.amountZMW) || 0;
             const uAmt = parseFloat(t.amountUSD) || 0;
-
+            
             if (zAmt > 0) zmwInflows += zAmt;
             else if (zAmt < 0) zmwOutflows += Math.abs(zAmt);
-
+            
             if (uAmt > 0) usdInflows += uAmt;
             else if (uAmt < 0) usdOutflows += Math.abs(uAmt);
         });
-
-        appData.companyCashZMW = zmwInflows - zmwOutflows;
-        appData.companyCashUSD = usdInflows - usdOutflows;
+        
+        companyCashZMW = zmwInflows - zmwOutflows;
+        companyCashUSD = usdInflows - usdOutflows;
     }
-
-    // Load all data from Firestore
+    
     async function loadAllData() {
         try {
             const settingsDoc = await settingsRef.doc('main').get();
             if (settingsDoc.exists) {
                 appData.exchangeRate = settingsDoc.data().exchangeRate || 26.5;
             } else {
-                await settingsRef.doc('main').set({ companyCashZMW: 0, companyCashUSD: 0, exchangeRate: 26.5 });
+                await settingsRef.doc('main').set({ exchangeRate: 26.5 });
             }
             
             const shareholdersSnap = await shareholdersRef.get();
@@ -218,7 +199,7 @@
             appData.cashTransactions = transactionsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             
             recalculateLiveBalances();
-
+            
             isLoading = false;
             document.getElementById('syncStatus').innerHTML = '✅ Cloud Connected';
             setTimeout(() => { const s = document.getElementById('syncStatus'); if(s) s.style.opacity = '0.6'; }, 2000);
@@ -226,36 +207,27 @@
             if (currentUser) { renderApp(); } else { showLogin(); }
         } catch(e) {
             console.error(e);
-            document.getElementById('syncStatus').innerHTML = '⚠️ Offline Mode';
             isLoading = false;
             if (currentUser) { renderApp(); } else { showLogin(); }
         }
     }
     
-    async function saveSettings() {
-        await settingsRef.doc('main').set({
-            companyCashZMW: appData.companyCashZMW,
-            companyCashUSD: appData.companyCashUSD,
-            exchangeRate: appData.exchangeRate
-        });
+    async function saveExchangeRate() {
+        await settingsRef.doc('main').set({ exchangeRate: appData.exchangeRate });
     }
     
     async function addCashTransaction(type, amountZMW, amountUSD, description, date) {
-        const trans = { id: Date.now().toString(), date: date || new Date().toISOString(), type, amountZMW, amountUSD, description, runningBalanceZMW: appData.companyCashZMW, runningBalanceUSD: appData.companyCashUSD };
+        const trans = { id: Date.now().toString(), date: date || new Date().toISOString(), type, amountZMW, amountUSD, description, runningBalanceZMW: companyCashZMW, runningBalanceUSD: companyCashUSD };
         appData.cashTransactions.unshift(trans);
         await cashTransactionsRef.doc(trans.id).set(trans);
         recalculateLiveBalances();
     }
     
     async function deleteTransaction(transId) {
-        if (!confirm("⚠️ Delete this transaction? This cannot be undone.")) return;
-        const transaction = appData.cashTransactions.find(t => t.id === transId);
-        if (!transaction) return;
-        
-        appData.cashTransactions = appData.cashTransactions.filter(t => t.id !== transId);
+        if (!confirm("⚠️ Delete this transaction? Cannot be undone.")) return;
         await cashTransactionsRef.doc(transId).delete();
+        appData.cashTransactions = appData.cashTransactions.filter(t => t.id !== transId);
         recalculateLiveBalances();
-        await saveSettings();
         renderApp();
         alert("✅ Transaction deleted");
     }
@@ -280,6 +252,16 @@
         return true;
     }
     
+    async function changeUserPassword(targetName, newPassword) {
+        const sh = appData.shareholders.find(s => s.name === targetName);
+        if (sh) {
+            sh.password = newPassword;
+            await shareholdersRef.doc(sh.id.toString()).update({ password: newPassword });
+            return true;
+        }
+        throw new Error("User not found");
+    }
+    
     // Business Functions
     async function addDeposit(type, source, amount, desc, date) {
         if (amount <= 0) throw new Error("Amount positive");
@@ -288,12 +270,8 @@
             if (!sh) throw new Error("Shareholder not found");
             sh.balanceZMW += amount;
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-            appData.companyCashZMW += amount;
-            await saveSettings();
             await addCashTransaction("DEPOSIT", amount, 0, `Deposit from ${source}`, date);
         } else {
-            appData.companyCashZMW += amount;
-            await saveSettings();
             await addCashTransaction("DEPOSIT", amount, 0, `External: ${desc || source}`, date);
         }
         renderApp();
@@ -302,22 +280,14 @@
     async function exchangeCurrency(fromCurr, amount, rate, date) {
         if (amount <= 0 || rate <= 0) throw new Error("Invalid");
         if (fromCurr === "ZMW") {
-            if (appData.companyCashZMW < amount) throw new Error("Insufficient ZMW");
             const usdReceived = amount / rate;
-            appData.companyCashZMW -= amount;
-            appData.companyCashUSD += usdReceived;
-            await saveSettings();
             await addCashTransaction("EXCHANGE", -amount, usdReceived, `ZMW → USD at ${rate}`, date);
         } else {
-            if (appData.companyCashUSD < amount) throw new Error("Insufficient USD");
             const zmwReceived = amount * rate;
-            appData.companyCashUSD -= amount;
-            appData.companyCashZMW += zmwReceived;
-            await saveSettings();
             await addCashTransaction("EXCHANGE", zmwReceived, -amount, `USD → ZMW at ${rate}`, date);
         }
         appData.exchangeRate = rate;
-        await saveSettings();
+        await saveExchangeRate();
         renderApp();
     }
     
@@ -325,12 +295,9 @@
         const gross = g * r;
         const net = gross - (m + t);
         if (net < 0) throw new Error("Deductions exceed value");
-        if (appData.companyCashZMW < net) throw new Error("Insufficient ZMW");
         const purchase = { id: Date.now().toString(), date, grams: g, ratePerGram: r, grossAmount: gross, mashiinFee: m, transportFee: t, netPaid: net, salesRep: rep, remainingGrams: g };
         await purchasesRef.doc(purchase.id).set(purchase);
         appData.goldPurchases.unshift(purchase);
-        appData.companyCashZMW -= net;
-        await saveSettings();
         await addCashTransaction("PURCHASE", -net, 0, `Buy ${g}g @ ${r} ZMW/g, Mashiin:${m}, Transport:${t}, Rep:${rep}`, date);
         renderApp();
     }
@@ -360,33 +327,29 @@
         }
         
         let usdKept = 0, zmwConverted = 0;
-        if (convChoice === "keep_all") { usdKept = revenueUSD; appData.companyCashUSD += revenueUSD; }
-        else if (convChoice === "convert_all") { zmwConverted = revenueUSD * appData.exchangeRate; appData.companyCashZMW += zmwConverted; }
+        if (convChoice === "keep_all") { usdKept = revenueUSD; }
+        else if (convChoice === "convert_all") { zmwConverted = revenueUSD * appData.exchangeRate; }
         else if (convChoice === "partial" && partialUsd > 0) {
             const convertUSD = Math.min(partialUsd, revenueUSD);
             zmwConverted = convertUSD * appData.exchangeRate;
             usdKept = revenueUSD - convertUSD;
-            appData.companyCashZMW += zmwConverted;
-            appData.companyCashUSD += usdKept;
         }
-        await saveSettings();
         
-        await salesRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, gramsSold: g, sellRateUSD: rate, revenueUSD, profitUSD });
+        const sale = { id: Date.now().toString(), date, gramsSold: g, sellRateUSD: rate, revenueUSD, profitUSD };
+        await salesRef.doc(sale.id).set(sale);
+        appData.goldSales.unshift(sale);
         await addCashTransaction("SALE", zmwConverted, usdKept, `Sold ${g}g @ ${rate} USD/g, Profit: ${profitUSD.toFixed(2)} USD`, date);
         renderApp();
     }
     
     async function addExpense(desc, amt, date) {
         if (amt <= 0) throw new Error("Positive amount");
-        if (appData.companyCashZMW < amt) throw new Error("Insufficient ZMW");
         const perShare = amt / appData.shareholders.length;
         for (const sh of appData.shareholders) {
             sh.balanceZMW -= perShare;
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
         }
         await expensesRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, description: desc, amountZMW: amt });
-        appData.companyCashZMW -= amt;
-        await saveSettings();
         await addCashTransaction("EXPENSE", -amt, 0, desc, date);
         renderApp();
     }
@@ -398,8 +361,6 @@
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
         }
         await surveysRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, amountZMW: amt, customerName: cust });
-        appData.companyCashZMW += amt;
-        await saveSettings();
         await addCashTransaction("SURVEY", amt, 0, `Survey from ${cust}`, date);
         renderApp();
     }
@@ -417,631 +378,289 @@
         const req = appData.withdrawalRequests.find(r => r.id === reqId);
         if (!req || req.status !== "pending") return;
         const sh = appData.shareholders.find(s => s.id === req.shareholderId);
-        if (!sh || sh.balanceZMW < req.amountZMW || appData.companyCashZMW < req.amountZMW) return;
+        if (!sh || sh.balanceZMW < req.amountZMW) return;
         sh.balanceZMW -= req.amountZMW;
         await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-        appData.companyCashZMW -= req.amountZMW;
-        await saveSettings();
         req.status = "approved";
         await withdrawalsRef.doc(req.id).update({ status: "approved" });
         await addCashTransaction("WITHDRAWAL", -req.amountZMW, 0, `Withdrawal by ${sh.name}`, new Date().toISOString());
         renderApp();
     }
     
-    // Reports variables
-    let currentStart = null, currentEnd = null, currentType = "all";
+    // Report variables
+    let currentReportStart = null;
+    let currentReportEnd = null;
+    let currentTypeFilter = "all";
     
-    function getRange(filter) {
+    function getDateRange(filter) {
         const today = new Date();
-        if (filter === 'today') { let s=new Date(); s.setHours(0,0,0,0); let e=new Date(); e.setHours(23,59,59,999); return {start:s, end:e}; }
-        if (filter === 'yesterday') { let s=new Date(); s.setDate(today.getDate()-1); s.setHours(0,0,0,0); let e=new Date(s); e.setHours(23,59,59,999); return {start:s, end:e}; }
-        if (filter === 'thisMonth') { return {start: new Date(today.getFullYear(), today.getMonth(), 1), end: new Date(today.getFullYear(), today.getMonth()+1, 0)}; }
-        if (filter === 'lastMonth') { return {start: new Date(today.getFullYear(), today.getMonth()-1, 1), end: new Date(today.getFullYear(), today.getMonth(), 0)}; }
-        if (filter === 'thisYear') { return {start: new Date(today.getFullYear(), 0, 1), end: new Date(today.getFullYear(), 11, 31)}; }
-        return {start: new Date(0), end: new Date()};
+        let start, end;
+        if (filter === 'today') { start = new Date(); start.setHours(0,0,0,0); end = new Date(); end.setHours(23,59,59,999); }
+        else if (filter === 'yesterday') { start = new Date(); start.setDate(today.getDate()-1); start.setHours(0,0,0,0); end = new Date(start); end.setHours(23,59,59,999); }
+        else if (filter === 'thisMonth') { start = new Date(today.getFullYear(), today.getMonth(), 1); end = new Date(today.getFullYear(), today.getMonth()+1, 0); end.setHours(23,59,59,999); }
+        else if (filter === 'lastMonth') { start = new Date(today.getFullYear(), today.getMonth()-1, 1); end = new Date(today.getFullYear(), today.getMonth(), 0); end.setHours(23,59,59,999); }
+        else if (filter === 'thisYear') { start = new Date(today.getFullYear(), 0, 1); end = new Date(today.getFullYear(), 11, 31); end.setHours(23,59,59,999); }
+        else { start = new Date(0); end = new Date(); }
+        return { start, end };
     }
     
     function generateReport() {
         let filtered = appData.cashTransactions.filter(t => {
-            if (!currentStart || !currentEnd) return true;
+            if (!currentReportStart || !currentReportEnd) return true;
             const d = new Date(t.date);
-            return d >= currentStart && d <= currentEnd;
+            return d >= currentReportStart && d <= currentReportEnd;
         });
-        if (currentType !== "all") filtered = filtered.filter(t => t.type === currentType);
+        if (currentTypeFilter !== "all") {
+            filtered = filtered.filter(t => t.type === currentTypeFilter);
+        }
         
         const totalIn = filtered.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
         const totalOut = filtered.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
         
-        const filteredPurchases = appData.goldPurchases.filter(p => {
-            const d = new Date(p.date);
-            return (!currentStart || !currentEnd) || (d >= currentStart && d <= currentEnd);
-        });
-        const periodMashiin = filteredPurchases.reduce((s,p)=> s + (p.mashiinFee||0), 0);
-        const periodTransport = filteredPurchases.reduce((s,p)=> s + (p.transportFee||0), 0);
         const totalMashiin = appData.goldPurchases.reduce((s,p)=> s + (p.mashiinFee||0), 0);
         const totalTransport = appData.goldPurchases.reduce((s,p)=> s + (p.transportFee||0), 0);
         
         const repSummary = {};
-        filteredPurchases.forEach(p => {
-            if (!repSummary[p.salesRep]) repSummary[p.salesRep] = { count: 0, totalGrams: 0, totalMashiin: 0 };
+        appData.goldPurchases.forEach(p => {
+            if (!repSummary[p.salesRep]) repSummary[p.salesRep] = { count: 0, totalGrams: 0 };
             repSummary[p.salesRep].count++;
             repSummary[p.salesRep].totalGrams += p.grams;
-            repSummary[p.salesRep].totalMashiin += (p.mashiinFee||0);
         });
         
         const customerSummary = {};
-        const filteredSurveys = appData.surveyRevenues.filter(s => {
-            const d = new Date(s.date);
-            return (!currentStart || !currentEnd) || (d >= currentStart && d <= currentEnd);
-        });
-        filteredSurveys.forEach(s => {
+        appData.surveyRevenues.forEach(s => {
             if (!customerSummary[s.customerName]) customerSummary[s.customerName] = { count: 0, total: 0 };
             customerSummary[s.customerName].count++;
             customerSummary[s.customerName].total += s.amountZMW;
         });
         
         document.getElementById('reportOutput').innerHTML = `<div class="report-container">
-            <div class="report-header">
-                <h3>📊 Financial Report</h3>
-                <p>${currentStart && currentEnd ? currentStart.toLocaleDateString() + ' → ' + currentEnd.toLocaleDateString() : 'All Time'} | Type: ${currentType === 'all' ? 'All' : currentType}</p>
-            </div>
+            <div class="report-header"><h3>📊 Financial Report</h3></div>
             <div class="report-summary">
-                <div class="summary-card"><div class="label">💰 Total Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
-                <div class="summary-card"><div class="label">📉 Total Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
-                <div class="summary-card"><div class="label">📈 Net Profit</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
+                <div class="summary-card"><div>💰 Total Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
+                <div class="summary-card"><div>📉 Total Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
+                <div class="summary-card"><div>📈 Net</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
             </div>
-            <div class="mashiin-card">
-                <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
-                    <div><div class="label">⚙️ TOTAL MASHIIN (All Time)</div><div class="value">${formatZMW(totalMashiin)}</div></div>
-                    <div><div class="label">🚚 TOTAL TRANSPORT (All Time)</div><div class="value">${formatZMW(totalTransport)}</div></div>
-                </div>
-                ${periodMashiin > 0 || periodTransport > 0 ? `<div style="margin-top:15px; padding-top:12px; border-top:1px solid #e8dcc8; display:flex; gap:20px;"><div><span class="label">📅 Mashiin (this period):</span> <strong style="color:#2e7d32;">${formatZMW(periodMashiin)}</strong></div><div><span class="label">📅 Transport (this period):</span> <strong style="color:#2e7d32;">${formatZMW(periodTransport)}</strong></div></div>` : ''}
+            <div style="background:#fff8e7; padding:15px; border-radius:16px; margin-bottom:20px; display:flex; gap:20px;">
+                <div>⚙️ Total Mashiin: ${formatZMW(totalMashiin)}</div>
+                <div>🚚 Total Transport: ${formatZMW(totalTransport)}</div>
+                <div>💱 Rate: 1 USD = ${appData.exchangeRate.toFixed(2)} ZMW</div>
             </div>
             <div class="three-col" style="margin-bottom:20px;">
-                <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
-                    <h4>👥 Sales Rep Performance</h4>
-                    ${Object.entries(repSummary).map(([rep, d]) => `<div style="display:flex; justify-content:space-between; padding:5px 0;"><span>${rep}</span><span>${d.count} buys | ${d.totalGrams.toFixed(2)}g | Mashiin: ${formatZMW(d.totalMashiin)}</span></div>`).join('') || '<div class="muted">No purchases in this period</div>'}
-                </div>
-                <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
-                    <h4>📋 Survey by Customer</h4>
-                    ${Object.entries(customerSummary).map(([cust, d]) => `<div style="display:flex; justify-content:space-between; padding:5px 0;"><span>${cust}</span><span>${d.count} surveys | ${formatZMW(d.total)}</span></div>`).join('') || '<div class="muted">No surveys in this period</div>'}
-                </div>
-                <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
-                    <h4>💱 Exchange Rate</h4>
-                    <div style="font-size:1.3rem; font-weight:bold; color:#2b6e2f;">1 USD = ${appData.exchangeRate.toFixed(2)} ZMW</div>
-                    <div class="muted">ZMW: ${formatZMW(appData.companyCashZMW)} | USD: ${formatUSD(appData.companyCashUSD)}</div>
-                </div>
+                <div style="background:white; border-radius:16px; padding:15px;"><h4>👥 Sales Reps</h4>${Object.entries(repSummary).map(([r,d]) => `<div>${r}: ${d.count} buys, ${d.totalGrams.toFixed(2)}g</div>`).join('') || 'None'}</div>
+                <div style="background:white; border-radius:16px; padding:15px;"><h4>📋 Survey by Customer</h4>${Object.entries(customerSummary).map(([c,d]) => `<div>${c}: ${d.count} surveys, ${formatZMW(d.total)}</div>`).join('') || 'None'}</div>
+                <div style="background:white; border-radius:16px; padding:15px;"><h4>💰 Balances</h4><div>ZMW: ${formatZMW(companyCashZMW)}</div><div>USD: ${formatUSD(companyCashUSD)}</div></div>
             </div>
-            <div class="transaction-list">
-                <div class="transaction-list-header">📋 TRANSACTION HISTORY (${filtered.length} records)</div>
-                ${filtered.map(t => `<div class="transaction-item">
-                    <div class="transaction-date">${new Date(t.date).toLocaleString()}</div>
-                    <div class="transaction-type ${t.type}">${t.type}</div>
-                    <div class="transaction-desc">${t.description || ''}</div>
-                    <div class="transaction-amount ${(t.amountZMW >= 0 && t.amountUSD >= 0) ? 'positive' : 'negative'}">
-                        ${t.amountZMW !== 0 ? formatZMW(t.amountZMW) : ''} 
-                        ${t.amountUSD !== 0 ? ' (' + formatUSD(t.amountUSD) + ')' : ''}
-                    </div>
-                    <div>
-                        ${currentUser && currentUser.role === 'admin' ? `<button class="btn-sm btn-danger" onclick="deleteTransaction('${t.id}')">❌</button>` : ''}
-                    </div>
-                </div>`).join('')}
+            <div class="transaction-list"><div style="background:#efe5d5; padding:12px;">📋 TRANSACTIONS</div>
+            ${filtered.map(t => `<div class="transaction-item"><div>${new Date(t.date).toLocaleString()}</div><div class="transaction-type ${t.type}">${t.type}</div><div>${t.description}</div><div class="${t.amountZMW>=0?'positive':'negative'}">${t.amountZMW>=0?'+':''}${formatZMW(t.amountZMW)}</div><button class="btn-sm btn-danger" onclick="deleteTransaction('${t.id}')">🗑️</button></div>`).join('')}
             </div>
         </div>`;
     }
-
-    // Auth & Navigation Engine UI Hooks
+    
     function showLogin() {
-        let options = appData.shareholders.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
-        document.getElementById('root').innerHTML = `
-            <div class="login-screen">
-                <div class="login-card">
-                    <h1>🏆 Gold Trading Pro</h1>
-                    <p style="text-align:center; color:#8e8160; font-size:0.8rem; margin-bottom:20px;">Secure Corporate Ledger Gateway</p>
-                    <div id="loginError" class="error-msg"></div>
-                    <div class="field">
-                        <label>ACCESS CONTEXT</label>
-                        <select id="loginRole" onchange="toggleRoleContext(this.value)">
-                            <option value="shareholder">Shareholder Authentication</option>
-                            <option value="admin">System Administration</option>
-                        </select>
-                    </div>
-                    <div class="field" id="userSelectGroup">
-                        <label>SELECT SHAREHOLDER PROFILE</label>
-                        <select id="loginUser">${options}</select>
-                    </div>
-                    <div class="field" id="adminInputGroup" style="display:none;">
-                        <label>ADMINISTRATOR IDENTITY</label>
-                        <input type="text" id="loginAdminName" value="Admin" readonly>
-                    </div>
-                    <div class="field">
-                        <label>SECURE ACCOUNT KEYPASS</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••">
-                    </div>
-                    <button class="btn-gold" onclick="handleAuthSubmit()">INITIALIZE SESSlON</button>
-                </div>
-            </div>`;
-    }
-
-    function toggleRoleContext(val) {
-        if(val === 'admin') {
-            document.getElementById('userSelectGroup').style.display = 'none';
-            document.getElementById('adminInputGroup').style.display = 'block';
-        } else {
-            document.getElementById('userSelectGroup').style.display = 'block';
-            document.getElementById('adminInputGroup').style.display = 'none';
-        }
-    }
-
-    function handleAuthSubmit() {
-        const role = document.getElementById('loginRole').value;
-        const pass = document.getElementById('loginPassword').value;
-        const errMsg = document.getElementById('loginError');
+        document.getElementById('root').innerHTML = `<div class="login-screen"><div class="login-card">
+            <h1>🏦 Gold Trade Pro</h1>
+            <div class="field"><label>Username</label><input id="loginUser" placeholder="Username" /></div>
+            <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="Password" /></div>
+            <button class="btn-gold" id="loginBtn">🔓 Access System</button>
+            <div id="loginError" class="error-msg"></div>
+            <div class="muted" style="margin-top:15px; text-align:center;">Admin / Muhiim1998 | Samatar / samatar123 | Yuusuf / yuusuf123</div>
+        </div></div>`;
         
-        if (role === 'admin') {
-            if (pass === 'admin123') {
-                currentUser = { name: "Administrator", role: "admin" };
-                renderApp();
-            } else {
-                errMsg.innerText = "❌ Master password clearance rejected.";
-            }
-        } else {
-            const name = document.getElementById('loginUser').value;
-            const match = appData.shareholders.find(s => s.name === name && s.password === pass);
-            if (match) {
-                currentUser = { ...match, role: "shareholder" };
-                renderApp();
-            } else {
-                errMsg.innerText = "❌ Security key verification failed.";
-            }
-        }
-    }
-
-    function handleLogout() {
-        currentUser = null;
-        showLogin();
-    }
-
-    function switchTab(t) {
-        activeTab = t;
-        renderApp();
-    }
-
-    // Dynamic UI Main Engine Rendering
-    function renderApp() {
-        const totalStockGrams = appData.goldPurchases.reduce((s, p) => s + (parseFloat(p.remainingGrams) || 0), 0);
-        let userBalanceLabel = "";
-        
-        if (currentUser.role === 'shareholder') {
-            const shObj = appData.shareholders.find(s => s.id === currentUser.id);
-            userBalanceLabel = shObj ? formatZMW(shObj.balanceZMW) : "K0.00";
-        }
-
-        let mainViewHtml = "";
-        if (activeTab === "dashboard") {
-            mainViewHtml = `
-                <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="stat-label">🇿🇲 COMPANY CASH (ZMW)</div>
-                        <div class="stat-value">${formatZMW(appData.companyCashZMW)}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">🇺🇸 VAULT TREASURY (USD)</div>
-                        <div class="stat-value">${formatUSD(appData.companyCashUSD)}</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">⚖️ LIVE STOCK INVENTORY</div>
-                        <div class="stat-value">${formatGrams(totalStockGrams)}</div>
-                    </div>
-                    <div class="stat-card">
-                        ${currentUser.role === 'shareholder' ? `
-                            <div class="stat-label">💰 ACCOUNT BAL (YOUR SHARE)</div>
-                            <div class="stat-value" style="color:#8bcb8b;">${userBalanceLabel}</div>
-                        ` : `
-                            <div class="stat-label">🛡️ CONTEXT BADGE</div>
-                            <div class="stat-value" style="font-size:1.1rem; padding-top:6px; color:#e0b867;">SYSTEM MASTER</div>
-                        `}
-                    </div>
-                </div>
-                
-                <div class="two-col">
-                    <div class="card">
-                        <div class="card-title">📥 Log Capital Inflow (Deposit)</div>
-                        <div class="form-group">
-                            <label>Deposit Source Context</label>
-                            <select id="depType" onchange="document.getElementById('shSourceGroup').style.display = this.value==='shareholder'?'block':'none'">
-                                <option value="external">External / Revenue Funding Stream</option>
-                                <option value="shareholder">Shareholder Equity Injection</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="shSourceGroup" style="display:none;">
-                            <label>Shareholder Entity</label>
-                            <select id="depSourceSh">${appData.shareholders.map(s=>`<option value="${s.name}">${s.name}</option>`).join('')}</select>
-                        </div>
-                        <div class="form-group">
-                            <label>Inflow Reference Label (For External)</label>
-                            <input type="text" id="depDesc" placeholder="e.g. Supplementary liquidity">
-                        </div>
-                        <div class="form-group">
-                            <label>Cash Quantity (ZMW)</label>
-                            <input type="number" id="depAmt" step="any">
-                        </div>
-                        <div class="form-group">
-                            <label>Posting Timeline Date</label>
-                            <input type="datetime-local" id="depDate">
-                        </div>
-                        <button class="btn-action" onclick="submitDeposit()">EXECUTE CAPITAL INFLOW</button>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-title">💱 Live Forex Board (Currency Swap)</div>
-                        <div class="form-group">
-                            <label>Source Account Outflow</label>
-                            <select id="exFrom"><option value="ZMW">ZMW Wallet Pool</option><option value="USD">USD Vault Pool</option></select>
-                        </div>
-                        <div class="form-group">
-                            <label>Liquidity Amount to Swap</label>
-                            <input type="number" id="exAmt" step="any">
-                        </div>
-                        <div class="form-group">
-                            <label>Executed Conversion Rate</label>
-                            <input type="number" id="exRate" value="${appData.exchangeRate}" step="any">
-                        </div>
-                        <div class="form-group">
-                            <label>Posting Timeline Date</label>
-                            <input type="datetime-local" id="exDate">
-                        </div>
-                        <button class="btn-action" onclick="submitExchange()">CONVERT RESERVES</button>
-                    </div>
-                </div>`;
-        } else if (activeTab === "purchases") {
-            mainViewHtml = `
-                <div class="card">
-                    <div class="card-title">⚖️ Log Minefield Gold Procurement</div>
-                    <div class="three-col">
-                        <div class="form-group"><label>Gross Mass (Grams)</label><input type="number" id="purGrams" step="any"></div>
-                        <div class="form-group"><label>Negotiated Local Rate (ZMW / g)</label><input type="number" id="purRate" step="any"></div>
-                        <div class="form-group"><label>Sales Rep Handler Assignment</label><input type="text" id="purRep" placeholder="Name of field rep"></div>
-                    </div>
-                    <div class="two-col">
-                        <div class="form-group"><label>Mashiin Smelting Deductions (ZMW)</label><input type="number" id="purMashiin" value="0" step="any"></div>
-                        <div class="form-group"><label>Logistics / Transport Costs (ZMW)</label><input type="number" id="purTransport" value="0" step="any"></div>
-                    </div>
-                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="purDate"></div>
-                    <button class="btn-action" onclick="submitPurchase()">AUTHORIZE POOL PURCHASE</button>
-                </div>
-                <div class="card">
-                    <div class="card-title">📜 Open Active Procurement Batches (FIFO Inventory Ledger)</div>
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
-                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;">
-                                <th style="padding:8px;">Date</th><th>Rep</th><th>Gross Grams</th><th>Remaining</th><th>Rate</th><th>Net Cost</th>
-                            </tr></thead>
-                            <tbody>
-                                ${appData.goldPurchases.map(p => `
-                                    <tr style="border-bottom:1px solid #1f1d18;">
-                                        <td style="padding:8px;">${new Date(p.date).toLocaleDateString()}</td>
-                                        <td>${p.salesRep||'N/A'}</td>
-                                        <td>${formatGrams(p.grams)}</td>
-                                        <td class="${p.remainingGrams>0?'green':'muted'}">${formatGrams(p.remainingGrams)}</td>
-                                        <td>${formatZMW(p.ratePerGram)}</td>
-                                        <td>${formatZMW(p.netPaid)}</td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>`;
-        } else if (activeTab === "sales") {
-            mainViewHtml = `
-                <div class="card">
-                    <div class="card-title">🛫 Record Bullion Export / International Trade Sale</div>
-                    <div class="two-col">
-                        <div class="form-group"><label>Mass Sold (Grams)</label><input type="number" id="saleGrams" step="any"></div>
-                        <div class="form-group"><label>Global Market Selling Rate (USD / g)</label><input type="number" id="saleRate" step="any"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Revenue Conversion Architecture Strategy</label>
-                        <select id="saleConv" onchange="document.getElementById('partialUsdGroup').style.display=this.value==='partial'?'block':'none'">
-                            <option value="keep_all">Retain 100% Inflows in International Vault (USD)</option>
-                            <option value="convert_all">Instantly Swap Entire Value to Local Cash (ZMW)</option>
-                            <option value="partial">Execute Hybrid Structural Split Distribution</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="partialUsdGroup" style="display:none;">
-                        <label>Amount to Retain in Vault (USD)</label>
-                        <input type="number" id="salePartialUsd" value="0" step="any">
-                    </div>
-                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="saleDate"></div>
-                    <button class="btn-action" onclick="submitSale()">EXECUTE BULLION LIQUIDATION</button>
-                </div>`;
-        } else if (activeTab === "expenses") {
-            mainViewHtml = `
-                <div class="card">
-                    <div class="card-title">📉 Record Shared Operational Costs / Expenses</div>
-                    <div class="form-group"><label>Expense Category / Ledger Description</label><input type="text" id="expDesc" placeholder="e.g. Fuel, Mine maintenance, Licenses"></div>
-                    <div class="form-group"><label>Total Disbursement (ZMW)</label><input type="number" id="expAmt" step="any"></div>
-                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="expDate"></div>
-                    <p style="font-size:0.75rem; color:#a3946b; margin-bottom:12px;">ℹ️ This deployment will auto-distribute liability fractions equally across all registered shareholder equity shares.</p>
-                    <button class="btn-action" onclick="submitExpense()">POST CORPORATE EXPENSE</button>
-                </div>
-                <div class="card">
-                    <div class="card-title">⚒️ Geological Surveys / Auxiliary Enterprise Inflows</div>
-                    <div class="form-group"><label>Client / Quarry Destination Entity Name</label><input type="text" id="srvCust" placeholder="e.g. Kansanshi Exploration Block B"></div>
-                    <div class="form-group"><label>Gross Fee Collected (ZMW)</label><input type="number" id="srvAmt" step="any"></div>
-                    <div class="form-group"><label>Posting Timeline Date</label><input type="datetime-local" id="srvDate"></div>
-                    <p style="font-size:0.75rem; color:#a3946b; margin-bottom:12px;">ℹ️ Revenue profits from operations will be credited symmetrically to active shareholder dynamic tracking sheets.</p>
-                    <button class="btn-action" onclick="submitSurvey()">POST SURVEY REVENUE</button>
-                </div>`;
-        } else if (activeTab === "payouts") {
-            mainViewHtml = `
-                <div class="card">
-                    <div class="card-title">💸 Dispatch Capital Equity Distributions (Withdrawals)</div>
-                    ${currentUser.role === 'shareholder' ? `
-                        <div class="form-group"><label>Target Outflow Quantity (ZMW)</label><input type="number" id="witAmt" step="any"></div>
-                        <button class="btn-action" onclick="submitWithdrawalRequest()">DISPATCH DISBURSEMENT VOUCHER</button>
-                    ` : `
-                        <p class="muted">System Master access active. Switch context profiles to prompt individual user balance requests.</p>
-                    `}
-                </div>
-                <div class="card">
-                    <div class="card-title">🚦 Administrative Verification Gate (Pending Capital Routing Queue)</div>
-                    <div style="overflow-x:auto;">
-                        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
-                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;"><th style="padding:8px;">Date</th><th>Entity</th><th>Disbursement Request</th><th>Status</th><th>Verification Authorization</th></tr></thead>
-                            <tbody>
-                                ${appData.withdrawalRequests.map(r => `
-                                    <tr style="border-bottom:1px solid #1f1d18;">
-                                        <td style="padding:8px;">${new Date(r.date).toLocaleDateString()}</td>
-                                        <td><strong>${r.shareholderName}</strong></td>
-                                        <td>${formatZMW(r.amountZMW)}</td>
-                                        <td class="${r.status==='approved'?'green':'red'}">${r.status.toUpperCase()}</td>
-                                        <td>
-                                            ${(r.status === 'pending' && currentUser.role === 'admin') ? `<button class="btn-sm" style="background:#1e3a1e; border-color:#2e7d32; color:#fff;" onclick="executeApproval('${r.id}')">APPROVE OUTFLOW</button>` : `<span class="muted">Processed</span>`}
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>`;
-        } else if (activeTab === "reports") {
-            mainViewHtml = `
-                <div class="card">
-                    <div class="card-title">🎛️ Report Generation Control Dashboard</div>
-                    <div class="report-filters">
-                        <button class="filter-btn" id="f-all" onclick="setPeriodFilter('all')">All Time</button>
-                        <button class="filter-btn" id="f-today" onclick="setPeriodFilter('today')">Today</button>
-                        <button class="filter-btn" id="f-yesterday" onclick="setPeriodFilter('yesterday')">Yesterday</button>
-                        <button class="filter-btn" id="f-thisMonth" onclick="setPeriodFilter('thisMonth')">This Month</button>
-                        <button class="filter-btn" id="f-lastMonth" onclick="setPeriodFilter('lastMonth')">Last Month</button>
-                        <button class="filter-btn" id="f-thisYear" onclick="setPeriodFilter('thisYear')">This Year</button>
-                    </div>
-                    <div class="type-filter-bar">
-                        <div>
-                            <label style="font-size:0.75rem; color:#a3946b; margin-right:8px;">Filter by Module</label>
-                            <select id="filterTypeDropdown" onchange="setTypeFilter(this.value)">
-                                <option value="all">All Ledgers Combined</option>
-                                <option value="PURCHASE">Procurements Only</option>
-                                <option value="SALE">Sales Realization Only</option>
-                                <option value="EXPENSE">Operational Expenses Only</option>
-                                <option value="SURVEY">Auxiliary Operations Only</option>
-                                <option value="DEPOSIT">Capital Liquidity Funding</option>
-                                <option value="WITHDRAWAL">Equity Outflows</option>
-                                <option value="EXCHANGE">Reserve Swaps</option>
-                            </select>
-                        </div>
-                        <button class="btn-sm" onclick="window.print()" style="margin-left:auto; background:#4a3e2c;">🖨️ Export Hardcopy PDF</button>
-                    </div>
-                    <div id="reportOutput"></div>
-                </div>`;
-        } else if (activeTab === "settings") {
-            mainViewHtml = `
-                <div class="card">
-                    <div class="card-title">👥 Shareholder Equity Structure Ledger Configuration</div>
-                    ${currentUser.role === 'admin' ? `
-                        <div class="two-col" style="margin-bottom:20px;">
-                            <div class="form-group"><label>New Entity Name</label><input type="text" id="newShName"></div>
-                            <div class="form-group"><label>Secure Access Keypass</label><input type="text" id="newShPass"></div>
-                        </div>
-                        <button class="btn-action" onclick="submitCreateShareholder()" style="margin-bottom:24px;">REGISTER PARTNER STRUCT</button>
-                    ` : `
-                        <p class="muted" style="margin-bottom:15px;">⚠️ Master clearance privileges required to inject or remove structural equity entities.</p>
-                    `}
-                    <div class="form-group">
-                        <button class="btn-sm" onclick="showPasswords = !showPasswords; renderApp();">${showPasswords ? '🙈 Mask Secure Access Credentials' : '👁️ Audit Clear Passwords'}</button>
-                    </div>
-                    <div style="overflow-x:auto; margin-top:15px;">
-                        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
-                            <thead><tr style="border-bottom:1px solid #333; color:#a3946b;"><th style="padding:8px;">ID</th><th>Name</th><th>Keypass</th><th>Balance</th><th>Action Context</th></tr></thead>
-                            <tbody>
-                                ${appData.shareholders.map(s => `
-                                    <tr style="border-bottom:1px solid #1f1d18;">
-                                        <td style="padding:8px;">${s.id}</td>
-                                        <td><strong>${s.name}</strong></td>
-                                        <td><code>${showPasswords ? s.password : '••••••••'}</code></td>
-                                        <td class="green">${formatZMW(s.balanceZMW)}</td>
-                                        <td>
-                                            ${currentUser.role === 'admin' ? `<button class="btn-sm btn-danger" onclick="submitDeleteShareholder(${s.id})">REVOKE PRIVILEGES</button>` : `<span class="muted">No Access</span>`}
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>`;
-        }
-
-        document.getElementById('root').innerHTML = `
-            <div class="mobile-header">
-                <h2>Gold Trading Pro</h2>
-                <button class="btn-sm" onclick="document.getElementById('sidebarWidget').classList.toggle('open')">☰ Menu</button>
-            </div>
-            <div class="sidebar" id="sidebarWidget">
-                <div class="logo-area">
-                    <h2>Gold Trading Pro</h2>
-                    <p style="font-size:0.65rem; color:#7a6d4e; letter-spacing:1px; margin-top:2px;">ENTERPRISE COMPILATION</p>
-                </div>
-                <nav class="nav-menu">
-                    <button class="nav-btn ${activeTab==='dashboard'?'active':''}" onclick="switchTab('dashboard')">📊 Main Board Dashboard</button>
-                    <button class="nav-btn ${activeTab==='purchases'?'active':''}" onclick="switchTab('purchases')">⚖️ Mine Procurements</button>
-                    <button class="nav-btn ${activeTab==='sales'?'active':''}" onclick="switchTab('sales')">🛫 Bullion Exports</button>
-                    <button class="nav-btn ${activeTab==='expenses'?'active':''}" onclick="switchTab('expenses')">📉 Costs & Auxiliary Inflows</button>
-                    <button class="nav-btn ${activeTab==='payouts'?'active':''}" onclick="switchTab('payouts')">💸 Capital Payout Routing</button>
-                    <button class="nav-btn ${activeTab==='reports'?'active':''}" onclick="switchTab('reports')">📋 Audit Trial Ledger Records</button>
-                    <button class="nav-btn ${activeTab==='settings'?'active':''}" onclick="switchTab('settings')">👥 Shareholder Config Engine</button>
-                </nav>
-                <div class="user-section">
-                    <div class="user-badge">
-                        <div style="font-size:0.65rem; color:#a3946b;">AUTHENTICATED CONTEXT</div>
-                        <div style="font-size:0.9rem; font-weight:bold; color:#f0daa0; margin-top:2px;">${currentUser.name}</div>
-                        <div style="font-size:0.7rem; color:#6b6247; margin-top:1px;">Role Context: ${currentUser.role.toUpperCase()}</div>
-                    </div>
-                    <button class="btn-outline" onclick="handleLogout()">TERMINATE SESSION</button>
-                </div>
-            </div>
-            <main class="content-main">${mainViewHtml}</main>
-        `;
-        
-        // Post-render UI updates
-        const inputs = document.querySelectorAll('input[type="datetime-local"]');
-        const nowStr = new Date().toISOString().substring(0,16);
-        inputs.forEach(i => { if(!i.value) i.value = nowStr; });
-        
-        if (activeTab === "reports") {
-            const range = getRange(currentTypeFilterPeriod);
-            currentStart = range.start;
-            currentEnd = range.end;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            const activeBtn = document.getElementById('f-' + currentTypeFilterPeriod);
-            if (activeBtn) activeBtn.classList.add('active');
-            const drop = document.getElementById('filterTypeDropdown');
-            if (drop) drop.value = currentType;
-            generateReport();
-        }
-    }
-
-    let currentTypeFilterPeriod = "all";
-    function setPeriodFilter(p) {
-        currentTypeFilterPeriod = p;
-        const range = getRange(p);
-        currentStart = range.start;
-        currentEnd = range.end;
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('f-' + p).classList.add('active');
-        generateReport();
+        document.getElementById('loginBtn')?.addEventListener('click', () => {
+            const user = document.getElementById('loginUser').value.trim();
+            const pwd = document.getElementById('loginPass').value;
+            if (user === "Admin" && pwd === "Muhiim1998") { currentUser = { name: "Admin", role: "admin" }; loadAllData(); return; }
+            if (user === "Samatar" && pwd === "samatar123") { currentUser = { name: "Samatar", role: "manager" }; loadAllData(); return; }
+            const sh = appData.shareholders.find(s => s.name === user && s.password === pwd);
+            if (sh) { currentUser = { name: sh.name, role: "shareholder", shareholderId: sh.id }; loadAllData(); return; }
+            document.getElementById('loginError').innerText = "❌ Invalid credentials";
+        });
     }
     
-    function setTypeFilter(val) {
-        currentType = val;
-        generateReport();
+    function renderApp() {
+        const root = document.getElementById('root');
+        const isPriv = currentUser?.role === 'admin' || currentUser?.role === 'manager';
+        const stock = appData.goldPurchases.reduce((a,b)=>a+(b.grams||0),0) - (appData.goldSales?.reduce((a,b)=>a+(b.gramsSold||0),0)||0);
+        
+        const repMap = {};
+        appData.goldPurchases.forEach(p => { if(p.salesRep) repMap[p.salesRep] = (repMap[p.salesRep]||0) + (p.grams||0); });
+        const custMap = {};
+        appData.surveyRevenues.forEach(s => { if(s.customerName) custMap[s.customerName] = (custMap[s.customerName]||0) + (s.amountZMW||0); });
+        
+        const nav = ["dashboard", "purchase", "sales", "exchange", "survey", "expenses", "deposits", "users", "reports", "withdrawals"].map(t => 
+            `<button class="nav-btn ${activeTab===t?'active':''}" data-tab="${t}">${t.charAt(0).toUpperCase()+t.slice(1)}</button>`
+        ).join('');
+        
+        const today = new Date().toISOString().slice(0,10);
+        let content = '';
+        
+        if (activeTab === 'dashboard') {
+            content = `<div class="stats-row">
+                <div class="stat-card" id="clickZMW"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(companyCashZMW)}</div></div>
+                <div class="stat-card" id="clickUSD"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(companyCashUSD)}</div></div>
+                <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${formatGrams(stock)}</div></div>
+                <div class="stat-card"><div class="stat-label">💱 Rate</div><div class="stat-value">1 USD = ${appData.exchangeRate.toFixed(2)}</div></div>
+            </div>
+            <div class="three-col">
+                <div class="card"><div class="card-title">👤 Shareholders</div>${appData.shareholders.map(s=>`<div style="display:flex;justify-content:space-between;padding:8px 0"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>
+                <div class="card"><div class="card-title">📊 Purchases by Rep</div>${Object.entries(repMap).map(([r,g]) => `<div>${r}: ${formatGrams(g)}</div>`).join('') || 'No purchases'}</div>
+                <div class="card"><div class="card-title">📋 Survey by Customer</div>${Object.entries(custMap).map(([c,a]) => `<div>${c}: ${formatZMW(a)}</div>`).join('') || 'No surveys'}</div>
+            </div>
+            <div class="card"><div class="card-title">🕐 Recent Transactions</div>${appData.cashTransactions.slice(0,10).map(t=>`<div style="padding:8px 0;border-bottom:1px solid #2a261d;display:flex;justify-content:space-between;"><span>${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)}</span><button class="btn-sm btn-danger" onclick="deleteTransaction('${t.id}')">🗑️</button></div>`).join('') || 'No transactions'}</div>`;
+        }
+        else if (activeTab === 'purchase' && isPriv) {
+            content = `<div class="card"><div class="card-title">🛒 Buy Gold</div><div class="form-group"><label>Date</label><input type="date" id="pDate" value="${today}" /></div><div class="form-group"><label>Grams</label><input id="grams" type="number" /></div><div class="form-group"><label>Rate (ZMW/g)</label><input id="rate" type="number" /></div><div class="form-group"><label>Mashiin</label><input id="mashiin" value="750" /></div><div class="form-group"><label>Transport</label><input id="transport" value="150" /></div><div class="form-group"><label>Sales Rep</label><select id="rep">${["Samatar","Yuusuf","Abdirisak","Jamal"].map(r=>`<option>${r}</option>`).join('')}</select></div><button class="btn-action" id="doPurchase">Record</button></div>`;
+        }
+        else if (activeTab === 'sales' && isPriv) {
+            content = `<div class="card"><div class="card-title">💰 Sell Gold</div><div class="form-group"><label>Date</label><input type="date" id="saleDate" value="${today}" /></div><div class="form-group"><label>Grams</label><input id="sellGrams" type="number" /></div><div class="form-group"><label>Sell Rate (USD/g)</label><input id="sellRate" type="number" /></div><div class="form-group"><label>Conversion</label><select id="conv"><option value="convert_all">All to ZMW</option><option value="keep_all">Keep USD</option><option value="partial">Partial</option></select></div><div id="partialBox" style="display:none"><div class="form-group"><label>USD to Convert</label><input id="partialUsd" type="number" /></div></div><button class="btn-action" id="doSale">Sell</button></div>`;
+        }
+        else if (activeTab === 'exchange' && isPriv) {
+            content = `<div class="card"><div class="card-title">🔄 Exchange</div><div class="form-group"><label>Date</label><input type="date" id="exDate" value="${today}" /></div><div class="form-group"><label>Direction</label><select id="exDir"><option value="ZMW">ZMW → USD</option><option value="USD">USD → ZMW</option></select></div><div class="form-group"><label>Amount</label><input id="exAmount" type="number" /></div><div class="form-group"><label>Rate</label><input id="exRate" value="${appData.exchangeRate}" /></div><button class="btn-action" id="doExchange">Exchange</button></div>`;
+        }
+        else if (activeTab === 'survey' && isPriv) {
+            content = `<div class="card"><div class="card-title">📋 Survey Revenue</div><div class="form-group"><label>Date</label><input type="date" id="survDate" value="${today}" /></div><div class="form-group"><label>Customer</label><input id="custName" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="survAmt" type="number" /></div><button class="btn-action" id="doSurvey">Add</button></div>`;
+        }
+        else if (activeTab === 'expenses' && isPriv) {
+            content = `<div class="card"><div class="card-title">📉 Expenses</div><div class="form-group"><label>Date</label><input type="date" id="expDate" value="${today}" /></div><div class="form-group"><label>Description</label><input id="expDesc" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="expAmt" type="number" /></div><button class="btn-action" id="doExpense">Record</button></div>`;
+        }
+        else if (activeTab === 'deposits' && isPriv) {
+            content = `<div class="card"><div class="card-title">💵 Deposits</div><div class="form-group"><label>Date</label><input type="date" id="depDate" value="${today}" /></div><div class="form-group"><label>Type</label><select id="depType"><option value="shareholder">Shareholder</option><option value="external">External</option></select></div><div class="form-group"><label>Source</label><select id="depSource">${appData.shareholders.map(s=>`<option>${s.name}</option>`).join('')}</select></div><div class="form-group"><label>Amount (ZMW)</label><input id="depAmt" type="number" /></div><button class="btn-action" id="doDeposit">Record</button></div>`;
+        }
+        else if (activeTab === 'users' && isPriv) {
+            content = `<div class="card"><div class="card-title">👥 Users</div><button class="btn-sm" id="togglePasswords">${showPasswords ? 'Hide' : 'Show'} Passwords</button>${appData.shareholders.map(s=>`<div class="user-row"><div>${s.name} (shareholder) ${formatZMW(s.balanceZMW)}</div><div>${showPasswords ? s.password : '••••'}</div><div><button class="btn-sm" data-change="${s.name}">Change</button><button class="btn-sm btn-danger" data-del="${s.id}">Delete</button></div></div>`).join('')}<div><h4>Add Shareholder</h4><input id="newName" /><input id="newPwd" /><button class="btn-action" id="addUserBtn">Add</button></div></div>`;
+        }
+        else if (activeTab === 'reports' && isPriv) {
+            content = `<div class="card"><div class="card-title">📅 Reports</div>
+                <div class="report-filters">
+                    <button class="filter-btn" data-filter="today">Today</button>
+                    <button class="filter-btn" data-filter="yesterday">Yesterday</button>
+                    <button class="filter-btn" data-filter="thisMonth">This Month</button>
+                    <button class="filter-btn" data-filter="lastMonth">Last Month</button>
+                    <button class="filter-btn" data-filter="thisYear">This Year</button>
+                    <button class="filter-btn" data-filter="all">All Time</button>
+                </div>
+                <div class="type-filter-bar">
+                    <select id="reportTypeFilter">
+                        <option value="all">All</option>
+                        <option value="PURCHASE">Purchases</option>
+                        <option value="SALE">Sales</option>
+                        <option value="SURVEY">Survey</option>
+                        <option value="EXPENSE">Expenses</option>
+                        <option value="DEPOSIT">Deposits</option>
+                        <option value="WITHDRAWAL">Withdrawals</option>
+                        <option value="EXCHANGE">Exchange</option>
+                    </select>
+                    <button class="btn-sm" id="applyTypeFilter">Apply</button>
+                </div>
+                <div id="reportOutput"></div>
+                <button class="btn-sm" id="printReport">Print</button>
+            </div>`;
+        }
+        else if (activeTab === 'withdrawals') {
+            const reqs = appData.withdrawalRequests.filter(r => isPriv || r.shareholderId === currentUser?.shareholderId);
+            content = `<div class="card"><div class="card-title">🏧 Withdrawals</div>${!isPriv ? `<button class="btn-sm" id="reqBtn">Request</button>` : ''}<table><thead><tr><th>User</th><th>Amount</th><th>Status</th>${isPriv?'<th></th>':''}</tr></thead><tbody>${reqs.map(r=>`<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td>${r.status}</td>${isPriv && r.status==='pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></td>` : '<td>—</td>'}</tr>`).join('')}</tbody></table></div>`;
+        }
+        
+        root.innerHTML = `<div class="mobile-header"><button id="menuToggle">☰</button><span>GOLD PRO</span></div>
+        <div class="sidebar" id="sidebar"><div class="logo-area"><h2>⚜️ GOLD PRO</h2></div><div class="nav-menu">${nav}</div>
+        <div class="user-section"><div class="user-badge"><div>👤 ${currentUser?.name}</div><div>${currentUser?.role}</div></div>
+        <button class="btn-outline" id="logoutBtn">Sign Out</button></div></div>
+        <div class="content-main">${content}</div>`;
+        
+        document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { activeTab = b.dataset.tab; renderApp(); }));
+        document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; showLogin(); });
+        document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
+        
+        // Event bindings for all actions
+        if (activeTab === 'purchase' && isPriv) {
+            document.getElementById('doPurchase')?.addEventListener('click', async () => {
+                try { await recordPurchase(parseFloat(document.getElementById('grams').value), parseFloat(document.getElementById('rate').value), parseFloat(document.getElementById('mashiin').value)||0, parseFloat(document.getElementById('transport').value)||0, document.getElementById('rep').value, document.getElementById('pDate').value); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'sales' && isPriv) {
+            document.getElementById('conv')?.addEventListener('change', e => document.getElementById('partialBox').style.display = e.target.value === 'partial' ? 'block' : 'none');
+            document.getElementById('doSale')?.addEventListener('click', async () => {
+                try { await recordSale(parseFloat(document.getElementById('sellGrams').value), parseFloat(document.getElementById('sellRate').value), document.getElementById('conv').value, parseFloat(document.getElementById('partialUsd').value)||0, document.getElementById('saleDate').value); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'exchange' && isPriv) {
+            document.getElementById('doExchange')?.addEventListener('click', async () => {
+                try { await exchangeCurrency(document.getElementById('exDir').value, parseFloat(document.getElementById('exAmount').value), parseFloat(document.getElementById('exRate').value), document.getElementById('exDate').value); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'survey' && isPriv) {
+            document.getElementById('doSurvey')?.addEventListener('click', async () => {
+                try { await addSurveyRevenue(parseFloat(document.getElementById('survAmt').value), document.getElementById('custName').value, document.getElementById('survDate').value); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'expenses' && isPriv) {
+            document.getElementById('doExpense')?.addEventListener('click', async () => {
+                try { await addExpense(document.getElementById('expDesc').value, parseFloat(document.getElementById('expAmt').value), document.getElementById('expDate').value); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'deposits' && isPriv) {
+            document.getElementById('doDeposit')?.addEventListener('click', async () => {
+                try { await addDeposit(document.getElementById('depType').value, document.getElementById('depSource').value, parseFloat(document.getElementById('depAmt').value), document.getElementById('depDesc')?.value || '', document.getElementById('depDate').value); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'users' && isPriv) {
+            document.getElementById('togglePasswords')?.addEventListener('click', () => { showPasswords = !showPasswords; renderApp(); });
+            document.querySelectorAll('[data-change]').forEach(btn => btn.addEventListener('click', async () => {
+                const target = btn.dataset.change;
+                const newPwd = prompt(`New password for ${target}:`);
+                if (newPwd) try { await changeUserPassword(target, newPwd); alert("Changed!"); renderApp(); } catch(e) { alert(e.message); }
+            }));
+            document.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', async () => {
+                const id = parseInt(btn.dataset.del);
+                if (confirm("Delete?")) try { await deleteShareholder(id); renderApp(); } catch(e) { alert(e.message); }
+            }));
+            document.getElementById('addUserBtn')?.addEventListener('click', async () => {
+                const name = document.getElementById('newName').value.trim();
+                const pwd = document.getElementById('newPwd').value.trim();
+                if (!name || !pwd) return alert("Enter name and password");
+                try { await addShareholder(name, pwd); alert("Added!"); renderApp(); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'withdrawals' && !isPriv) {
+            document.getElementById('reqBtn')?.addEventListener('click', async () => {
+                const amt = parseFloat(prompt("Amount ZMW:")); if(amt) try { await requestWithdrawal(currentUser.shareholderId, amt); renderApp(); } catch(e) { alert(e.message); }
+            });
+        }
+        if (activeTab === 'withdrawals' && isPriv) {
+            document.querySelectorAll('[data-apr]').forEach(b => b.addEventListener('click', async () => { await approveWithdrawal(parseInt(b.dataset.apr)); renderApp(); }));
+        }
+        if (activeTab === 'reports' && isPriv) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const { start, end } = getDateRange(btn.dataset.filter);
+                    currentReportStart = start;
+                    currentReportEnd = end;
+                    generateReport();
+                });
+            });
+            document.getElementById('applyTypeFilter')?.addEventListener('click', () => {
+                currentTypeFilter = document.getElementById('reportTypeFilter').value;
+                generateReport();
+            });
+            document.getElementById('printReport')?.addEventListener('click', () => window.print());
+            currentReportStart = null;
+            currentReportEnd = null;
+            currentTypeFilter = "all";
+            generateReport();
+        }
+        
+        document.getElementById('clickZMW')?.addEventListener('click', () => {
+            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>💰 ZMW History</h3>${appData.cashTransactions.map(t=>`<div>${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)} | Balance: ${formatZMW(t.runningBalanceZMW)}</div>`).join('')}<button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
+            document.body.appendChild(div);
+        });
+        document.getElementById('clickUSD')?.addEventListener('click', () => {
+            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>💵 USD History</h3>${appData.cashTransactions.map(t=>`<div>${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatUSD(t.amountUSD)} | Balance: ${formatUSD(t.runningBalanceUSD)}</div>`).join('')}<button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
+            document.body.appendChild(div);
+        });
     }
-
-    // Dynamic UI Execution Methods
-    async function submitDeposit() {
-        try {
-            const type = document.getElementById('depType').value;
-            const source = type === 'shareholder' ? document.getElementById('depSourceSh').value : 'External Stream';
-            const desc = document.getElementById('depDesc').value;
-            const amt = parseFloat(document.getElementById('depAmt').value) || 0;
-            const date = new Date(document.getElementById('depDate').value).toISOString();
-            await addDeposit(type, source, amt, desc, date);
-            alert("✅ Deposit initialized successfully.");
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function submitExchange() {
-        try {
-            const from = document.getElementById('exFrom').value;
-            const amt = parseFloat(document.getElementById('exAmt').value) || 0;
-            const rate = parseFloat(document.getElementById('exRate').value) || 0;
-            const date = new Date(document.getElementById('exDate').value).toISOString();
-            await exchangeCurrency(from, amt, rate, date);
-            alert("✅ Reserves swapped successfully.");
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function submitPurchase() {
-        try {
-            const g = parseFloat(document.getElementById('purGrams').value) || 0;
-            const r = parseFloat(document.getElementById('purRate').value) || 0;
-            const m = parseFloat(document.getElementById('purMashiin').value) || 0;
-            const t = parseFloat(document.getElementById('purTransport').value) || 0;
-            const rep = document.getElementById('purRep').value;
-            const date = new Date(document.getElementById('purDate').value).toISOString();
-            await recordPurchase(g, r, m, t, rep, date);
-            alert("✅ Purchase finalized.");
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function submitSale() {
-        try {
-            const g = parseFloat(document.getElementById('saleGrams').value) || 0;
-            const r = parseFloat(document.getElementById('saleRate').value) || 0;
-            const conv = document.getElementById('saleConv').value;
-            const partialUsd = parseFloat(document.getElementById('salePartialUsd').value) || 0;
-            const date = new Date(document.getElementById('saleDate').value).toISOString();
-            await recordSale(g, r, conv, partialUsd, date);
-            alert("✅ Export transaction realized.");
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function submitExpense() {
-        try {
-            const desc = document.getElementById('expDesc').value;
-            const amt = parseFloat(document.getElementById('expAmt').value) || 0;
-            const date = new Date(document.getElementById('expDate').value).toISOString();
-            await addExpense(desc, amt, date);
-            alert("✅ Expense posted to ledgers.");
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function submitSurvey() {
-        try {
-            const cust = document.getElementById('srvCust').value;
-            const amt = parseFloat(document.getElementById('srvAmt').value) || 0;
-            const date = new Date(document.getElementById('srvDate').value).toISOString();
-            await addSurveyRevenue(amt, cust, date);
-            alert("✅ Survey project tracking realized.");
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function submitWithdrawalRequest() {
-        try {
-            const amt = parseFloat(document.getElementById('witAmt').value) || 0;
-            await requestWithdrawal(currentUser.id, amt);
-            alert("✅ Request sent to pending routing queue.");
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function executeApproval(id) {
-        try {
-            await approveWithdrawal(id);
-            alert("✅ Outflow approved.");
-        } catch(e) { alert("❌ Execution failed: " + e.message); }
-    }
-
-    async function submitCreateShareholder() {
-        try {
-            const n = document.getElementById('newShName').value;
-            const p = document.getElementById('newShPass').value;
-            await addShareholder(n, p);
-            alert("✅ Registered structural entity.");
-            renderApp();
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    async function submitDeleteShareholder(id) {
-        try {
-            if(confirm("⚠️ Completely drop this partner structure configuration from database records?")) {
-                await deleteShareholder(id);
-                alert("✅ Dropped entity.");
-                renderApp();
-            }
-        } catch(e) { alert("❌ " + e.message); }
-    }
-
-    // Initialize System Engine Application on start
+    
+    window.deleteTransaction = deleteTransaction;
     loadAllData();
 </script>
 </body>
