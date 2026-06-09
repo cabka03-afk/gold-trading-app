@@ -3,54 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gold Trading Pro | COMPLETE with Cash Calculation</title>
+    <title>Gold Trading Pro | COMPLETE with Theme Toggle</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0a0a07; font-family: 'Inter', system-ui, sans-serif; color: #ece3cf; }
+        body { background: #0a0a07; font-family: 'Inter', system-ui, sans-serif; color: #ece3cf; transition: background 0.3s ease, color 0.3s ease; }
+        
+        /* ========== THEME TOGGLE BUTTON ========== */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: #2a271f;
+            border: 1px solid #7a6b47;
+            border-radius: 40px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        .theme-toggle:hover {
+            background: #c8a96e;
+            color: #0c0b07;
+        }
+        
+        /* ========== LIGHT THEME STYLES ========== */
+        body.light-theme {
+            background: #f5f0e8;
+            color: #1e1b15;
+        }
+        body.light-theme .login-card {
+            background: #ffffff;
+            border-color: rgba(139, 105, 20, 0.3);
+        }
+        body.light-theme .login-card h1 {
+            color: #8b6914;
+        }
+        body.light-theme .field input {
+            background: #ffffff;
+            border-color: #d4c5a8;
+            color: #1e1b15;
+        }
+        body.light-theme .sidebar {
+            background: #ffffff;
+            border-right-color: #e0d5c0;
+        }
+        body.light-theme .logo-area h2 {
+            color: #8b6914;
+        }
+        body.light-theme .nav-btn {
+            color: #5c4a2e;
+        }
+        body.light-theme .nav-btn.active, body.light-theme .nav-btn:hover {
+            background: #f0e8d8;
+            color: #8b6914;
+        }
+        body.light-theme .user-badge {
+            background: #f5efe3;
+        }
+        body.light-theme .btn-outline {
+            border-color: #d4c5a8;
+            color: #5c4a2e;
+        }
+        body.light-theme .btn-outline:hover {
+            background: #f0e8d8;
+        }
+        body.light-theme .stat-card, body.light-theme .card {
+            background: #ffffff;
+            border-color: #e2d5bd;
+        }
+        body.light-theme .stat-label {
+            color: #8b7a5c;
+        }
+        body.light-theme .stat-value {
+            color: #5c4a2e;
+        }
+        body.light-theme .card-title {
+            color: #5c4a2e;
+            border-left-color: #c8a96e;
+        }
+        body.light-theme .form-group label {
+            color: #8b7a5c;
+        }
+        body.light-theme input, body.light-theme select {
+            background: #ffffff;
+            border-color: #d4c5a8;
+            color: #1e1b15;
+        }
+        body.light-theme .muted {
+            color: #a09070;
+        }
+        body.light-theme .green {
+            color: #2b6e2f;
+        }
+        body.light-theme .red {
+            color: #c0392b;
+        }
+        body.light-theme .sync-status {
+            background: #ffffff;
+            color: #5c4a2e;
+            border: 1px solid #e2d5bd;
+        }
+        body.light-theme .modal-content {
+            background: #ffffff;
+            color: #1e1b15;
+        }
+        body.light-theme .user-row {
+            border-bottom-color: #e0d5c0;
+        }
+        body.light-theme .user-row:hover {
+            background: #f5efe3;
+        }
+        body.light-theme .transaction-list {
+            border-color: #e2d5bd;
+        }
+        body.light-theme .transaction-item {
+            background: #ffffff;
+        }
+        body.light-theme .transaction-item:hover {
+            background: #fef7e8;
+        }
+        body.light-theme .transaction-date {
+            color: #8b7a5c;
+        }
+        body.light-theme .transaction-desc {
+            color: #2c2c2c;
+        }
+        body.light-theme .btn-sm {
+            background: #f0e8d8;
+            color: #5c4a2e;
+            border-color: #d4c5a8;
+        }
+        body.light-theme .btn-sm:hover {
+            background: #e0d5c0;
+        }
+        body.light-theme .btn-action {
+            background: linear-gradient(100deg, #c8a96e, #e0b867);
+            color: #0c0a04;
+        }
+        body.light-theme .report-container {
+            background: #fef9ef;
+        }
+        body.light-theme .report-header {
+            background: linear-gradient(135deg, #1e5631, #3a7d2c);
+        }
+        body.light-theme .report-summary {
+            background: white;
+        }
+        body.light-theme .summary-card {
+            background: #faf7f0;
+        }
+        body.light-theme .mashiin-card {
+            background: #fff8e7;
+        }
+        body.light-theme .filter-btn {
+            background: white;
+            border-color: #d4c5a8;
+            color: #4a3e2c;
+        }
+        body.light-theme .filter-btn:hover {
+            background: #c8a96e;
+            color: white;
+        }
+        body.light-theme .type-filter-bar {
+            background: #f5efe3;
+        }
+        
         .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at 30% 40%, #131210, #020202); padding: 1.5rem; }
+        body.light-theme .login-screen { background: #e8e0d0; }
         .login-card { background: #131210e6; backdrop-filter: blur(6px); border: 1px solid rgba(218, 185, 105, 0.4); border-radius: 2rem; padding: 2rem; width: 100%; max-width: 420px; }
+        body.light-theme .login-card { background: #ffffff; border-color: #c8a96e; }
         .login-card h1 { font-size: 1.9rem; color: #e2bc6e; text-align: center; }
         .field { margin-bottom: 1rem; }
         .field label { font-size: 0.7rem; color: #cdbc8f; display: block; margin-bottom: 6px; }
+        body.light-theme .field label { color: #8b7a5c; }
         .field input { width: 100%; background: #1f1e1a; border: 1px solid #3a3528; padding: 12px 18px; border-radius: 40px; color: #f7efdb; font-size: 1rem; }
         .btn-gold { width: 100%; background: linear-gradient(135deg, #a8822c, #e0b867); border: none; padding: 13px; border-radius: 40px; font-weight: bold; color: #0c0b07; cursor: pointer; font-size: 1rem; }
         .error-msg { color: #f5a67b; font-size: 0.8rem; margin-top: 12px; text-align: center; }
-        .sidebar { width: 280px; background: #0e0e0b; border-right: 1px solid #2a261d; position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; overflow-y: auto; }
+        .sidebar { width: 280px; background: #0e0e0b; border-right: 1px solid #2a261d; position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; overflow-y: auto; transition: background 0.3s ease; }
         .logo-area { padding: 24px 20px; border-bottom: 1px solid #2f2b20; }
         .logo-area h2 { color: #e8c87a; font-size: 1.3rem; }
         .nav-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
-        .nav-btn { background: none; border: none; padding: 10px 16px; text-align: left; font-size: 0.85rem; color: #cbbf97; border-radius: 34px; cursor: pointer; }
+        .nav-btn { background: none; border: none; padding: 10px 16px; text-align: left; font-size: 0.85rem; color: #cbbf97; border-radius: 34px; cursor: pointer; transition: all 0.2s; }
         .nav-btn.active, .nav-btn:hover { background: #25231c; color: #f5de9c; }
         .user-section { padding: 20px; border-top: 1px solid #2b271f; }
         .user-badge { background: #191814; border-radius: 28px; padding: 12px; margin-bottom: 14px; }
-        .btn-outline { width: 100%; background: none; border: 1px solid #5f553b; padding: 8px; border-radius: 40px; color: #dcceaa; cursor: pointer; }
+        .btn-outline { width: 100%; background: none; border: 1px solid #5f553b; padding: 8px; border-radius: 40px; color: #dcceaa; cursor: pointer; transition: all 0.2s; }
         .content-main { margin-left: 280px; padding: 28px 32px; flex: 1; }
         .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
         .stat-card { background: #12120f; border: 1px solid #2b271f; border-radius: 28px; padding: 1.2rem; cursor: pointer; transition: 0.2s; }
         .stat-card:hover { border-color: #e0b867; }
         .stat-label { font-size: 0.7rem; color: #a3946b; }
         .stat-value { font-size: 1.6rem; font-weight: 700; color: #e9cf8b; }
-        .card { background: #11110e; border: 1px solid #2b281f; border-radius: 26px; padding: 1.5rem; margin-bottom: 1.8rem; }
+        .card { background: #11110e; border: 1px solid #2b281f; border-radius: 26px; padding: 1.5rem; margin-bottom: 1.8rem; transition: background 0.3s ease; }
         .card-title { font-size: 1.1rem; border-left: 3px solid #e0b867; padding-left: 12px; margin-bottom: 20px; }
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .form-group { margin-bottom: 16px; }
         .form-group label { font-size: 0.7rem; color: #c7b584; display: block; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; background: #1e1d18; border: 1px solid #3f392b; padding: 10px 14px; border-radius: 36px; color: #f2e7cf; }
-        .btn-action { background: linear-gradient(100deg, #9e7d30, #d6ae5a); border: none; padding: 12px; border-radius: 40px; font-weight: bold; color: #0c0a04; cursor: pointer; width: 100%; }
-        .btn-sm { background: #2a271f; border: 1px solid #7a6b47; padding: 6px 14px; border-radius: 30px; color: #f0daa0; cursor: pointer; font-size: 0.7rem; }
+        input, select, textarea { width: 100%; background: #1e1d18; border: 1px solid #3f392b; padding: 10px 14px; border-radius: 36px; color: #f2e7cf; transition: background 0.3s ease; }
+        .btn-action { background: linear-gradient(100deg, #9e7d30, #d6ae5a); border: none; padding: 12px; border-radius: 40px; font-weight: bold; color: #0c0a04; cursor: pointer; width: 100%; transition: all 0.2s; }
+        .btn-sm { background: #2a271f; border: 1px solid #7a6b47; padding: 6px 14px; border-radius: 30px; color: #f0daa0; cursor: pointer; font-size: 0.7rem; transition: all 0.2s; }
         .btn-danger { background: #5a1e1e; border-color: #a54a4a; color: #ffb4b4; }
+        .btn-danger:hover { background: #7a2a2a; }
         .green { color: #8bcb8b; }
         .red { color: #e69474; }
         .muted { color: #8e8160; }
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; }
-        .modal-content { background: #181714; border-radius: 28px; padding: 28px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; }
-        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #2f2b20; }
+        .modal-content { background: #181714; border-radius: 28px; padding: 28px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; transition: background 0.3s ease; }
+        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #2f2b20; transition: background 0.2s; }
         .mobile-header { display: none; }
         .loading { text-align: center; padding: 50px; color: #e2bc6e; font-size: 1.2rem; }
-        .sync-status { position: fixed; bottom: 10px; right: 10px; background: #1a1a17; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; z-index: 100; }
+        .sync-status { position: fixed; bottom: 10px; right: 10px; background: #1a1a17; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; z-index: 100; transition: background 0.3s ease; }
         
         /* BRIGHT REPORTS */
         .report-container { background: #fef9ef; border-radius: 20px; padding: 20px; color: #1e1b15; margin-top: 15px; }
@@ -61,7 +231,7 @@
         .summary-card .value.positive { color: #2b6e2f; font-size: 1.6rem; font-weight: bold; }
         .summary-card .value.negative { color: #c0392b; font-size: 1.6rem; font-weight: bold; }
         .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; max-height: 500px; overflow-y: auto; }
-        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; }
+        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; transition: background 0.2s; }
         .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; }
         .transaction-type.PURCHASE { background: #fff3e0; color: #e65100; }
         .transaction-type.SALE { background: #e8f5e9; color: #2e7d32; }
@@ -71,20 +241,58 @@
         .transaction-type.WITHDRAWAL { background: #fce4ec; color: #ad1457; }
         .transaction-type.EXCHANGE { background: #f3e5f5; color: #6a1b9a; }
         .report-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; background: #f5efe3; padding: 12px; border-radius: 16px; }
-        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; color: #4a3e2c; }
+        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; color: #4a3e2c; transition: all 0.2s; }
         .filter-btn:hover { background: #c8a96e; color: white; }
         .type-filter-bar { background: #f5efe3; padding: 12px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         
-        @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col, .three-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; z-index: 15; } }
-        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, nav, .user-section { display: none !important; } .report-container { background: white !important; } }
+        @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col, .three-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; z-index: 15; } body.light-theme .mobile-header { background: #ffffff; border-bottom: 1px solid #e0d5c0; } }
+        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, nav, .user-section, .sync-status, .theme-toggle { display: none !important; } .report-container { background: white !important; } }
     </style>
 </head>
 <body>
 <div id="root"><div class="loading">☁️ Loading cloud data...</div></div>
 <div id="syncStatus" class="sync-status">🔄 Connecting...</div>
+<button class="theme-toggle" id="themeToggleBtn">
+    <span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span>
+</button>
 
 <script>
-    // ========== FIREBASE CONFIG ==========
+    // ========== THEME TOGGLE FUNCTION ==========
+    function toggleTheme() {
+        const body = document.body;
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        
+        if (body.classList.contains('light-theme')) {
+            body.classList.remove('light-theme');
+            localStorage.setItem('gold_theme', 'dark');
+            if (themeIcon) themeIcon.innerHTML = '🌙';
+            if (themeText) themeText.innerHTML = 'Dark Mode';
+        } else {
+            body.classList.add('light-theme');
+            localStorage.setItem('gold_theme', 'light');
+            if (themeIcon) themeIcon.innerHTML = '☀️';
+            if (themeText) themeText.innerHTML = 'Light Mode';
+        }
+    }
+    
+    function loadSavedTheme() {
+        const savedTheme = localStorage.getItem('gold_theme');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+            if (themeIcon) themeIcon.innerHTML = '☀️';
+            if (themeText) themeText.innerHTML = 'Light Mode';
+        } else {
+            document.body.classList.remove('light-theme');
+            if (themeIcon) themeIcon.innerHTML = '🌙';
+            if (themeText) themeText.innerHTML = 'Dark Mode';
+        }
+    }
+    
+    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyB4uA5m3_1Ps-zaPLF6UWD5X4VOoHn0JxY",
         authDomain: "gold-trading-app-203b8.firebaseapp.com",
@@ -122,7 +330,6 @@
         shareholders: []
     };
     
-    // These will be calculated dynamically
     let companyCashZMW = 0;
     let companyCashUSD = 0;
     
@@ -130,7 +337,6 @@
     const formatUSD = (v) => '$' + (parseFloat(v)||0).toFixed(2);
     const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
     
-    // ========== CORE: Recalculate cash from transactions ==========
     function recalculateLiveBalances() {
         let zmwInflows = 0;
         let zmwOutflows = 0;
@@ -140,14 +346,11 @@
         appData.cashTransactions.forEach(t => {
             const zAmt = parseFloat(t.amountZMW) || 0;
             const uAmt = parseFloat(t.amountUSD) || 0;
-            
             if (zAmt > 0) zmwInflows += zAmt;
             else if (zAmt < 0) zmwOutflows += Math.abs(zAmt);
-            
             if (uAmt > 0) usdInflows += uAmt;
             else if (uAmt < 0) usdOutflows += Math.abs(uAmt);
         });
-        
         companyCashZMW = zmwInflows - zmwOutflows;
         companyCashUSD = usdInflows - usdOutflows;
     }
@@ -232,7 +435,6 @@
         alert("✅ Transaction deleted");
     }
     
-    // User Management
     async function addShareholder(name, password) {
         if (!name || !password) throw new Error("Name and password required");
         if (appData.shareholders.some(s => s.name === name)) throw new Error("Name exists");
@@ -262,7 +464,6 @@
         throw new Error("User not found");
     }
     
-    // Business Functions
     async function addDeposit(type, source, amount, desc, date) {
         if (amount <= 0) throw new Error("Amount positive");
         if (type === "shareholder") {
@@ -270,7 +471,7 @@
             if (!sh) throw new Error("Shareholder not found");
             sh.balanceZMW += amount;
             await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-            await addCashTransaction("DEPOSIT", amount, 0, `Deposit from ${source}`, date);
+            await addCashTransaction("DEPOSIT", amount, 0, `Deposit from shareholder ${source}`, date);
         } else {
             await addCashTransaction("DEPOSIT", amount, 0, `External: ${desc || source}`, date);
         }
@@ -387,7 +588,6 @@
         renderApp();
     }
     
-    // Report variables
     let currentReportStart = null;
     let currentReportEnd = null;
     let currentTypeFilter = "all";
@@ -559,7 +759,7 @@
         }
         else if (activeTab === 'withdrawals') {
             const reqs = appData.withdrawalRequests.filter(r => isPriv || r.shareholderId === currentUser?.shareholderId);
-            content = `<div class="card"><div class="card-title">🏧 Withdrawals</div>${!isPriv ? `<button class="btn-sm" id="reqBtn">Request</button>` : ''}<table><thead><tr><th>User</th><th>Amount</th><th>Status</th>${isPriv?'<th></th>':''}</tr></thead><tbody>${reqs.map(r=>`<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td>${r.status}</td>${isPriv && r.status==='pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></td>` : '<td>—</td>'}</tr>`).join('')}</tbody></table></div>`;
+            content = `<div class="card"><div class="card-title">🏧 Withdrawals</div>${!isPriv ? `<button class="btn-sm" id="reqBtn">Request</button>` : ''}<table><thead><tr><th>User</th><th>Amount</th><th>Status</th>${isPriv?'<th></th>':''}</tr></thead><tbody>${reqs.map(r=>`<tr><td>${r.shareholderName}侧<td>${formatZMW(r.amountZMW)}侧<td>${r.status}侧${isPriv && r.status==='pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></table>` : '<td>—</td>'}</tr>`).join('')}</tbody></table></div>`;
         }
         
         root.innerHTML = `<div class="mobile-header"><button id="menuToggle">☰</button><span>GOLD PRO</span></div>
@@ -572,7 +772,6 @@
         document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; showLogin(); });
         document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
         
-        // Event bindings for all actions
         if (activeTab === 'purchase' && isPriv) {
             document.getElementById('doPurchase')?.addEventListener('click', async () => {
                 try { await recordPurchase(parseFloat(document.getElementById('grams').value), parseFloat(document.getElementById('rate').value), parseFloat(document.getElementById('mashiin').value)||0, parseFloat(document.getElementById('transport').value)||0, document.getElementById('rep').value, document.getElementById('pDate').value); } catch(e) { alert(e.message); }
@@ -661,37 +860,39 @@
     }
     
     window.deleteTransaction = deleteTransaction;
+    
+    document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
+    loadSavedTheme();
     loadAllData();
+   recalculateLiveBalances();
     async function fixYuusufBalance() {
     const yuusuf = appData.shareholders.find(s => s.name === "Yuusuf");
-    if (yuusuf) {
-        console.log("Yuusuf current balance:", yuusuf.balanceZMW);
-        // Force reset if needed - but let's check transactions first
-        let yuusufDeposits = 0;
-        let yuusufWithdrawals = 0;
-        
-        // Calculate from transactions
-        appData.cashTransactions.forEach(t => {
-            if (t.description && t.description.includes("Yuusuf")) {
-                if (t.type === "DEPOSIT" && t.description.includes("Deposit from Yuusuf")) {
-                    yuusufDeposits += t.amountZMW;
-                }
-                if (t.type === "WITHDRAWAL" && t.description.includes("Yuusuf")) {
-                    yuusufWithdrawals += Math.abs(t.amountZMW);
-                }
+    if (!yuusuf) return;
+    
+    // Calculate correct balance from transactions
+    let yuusufDeposits = 0;
+    let yuusufWithdrawals = 0;
+    
+    appData.cashTransactions.forEach(t => {
+        if (t.description && t.description.includes("Yuusuf")) {
+            if (t.type === "DEPOSIT" && t.description.includes("Deposit from Yuusuf")) {
+                yuusufDeposits += t.amountZMW;
             }
-        });
-        
-        const calculatedBalance = yuusufDeposits - yuusufWithdrawals;
-        console.log("Calculated from transactions:", calculatedBalance);
-        
-        if (yuusuf.balanceZMW !== calculatedBalance) {
-            yuusuf.balanceZMW = calculatedBalance;
-            await shareholdersRef.doc(yuusuf.id.toString()).update({ balanceZMW: calculatedBalance });
-            console.log("✅ Fixed Yuusuf balance to:", calculatedBalance);
-            renderApp();
+            if (t.type === "WITHDRAWAL" && t.description.includes("Yuusuf")) {
+                yuusufWithdrawals += Math.abs(t.amountZMW);
+            }
         }
+    });
+    
+    const calculatedBalance = yuusufDeposits - yuusufWithdrawals;
+    
+    if (yuusuf.balanceZMW !== calculatedBalance) {
+        yuusuf.balanceZMW = calculatedBalance;
+        await shareholdersRef.doc(yuusuf.id.toString()).update({ balanceZMW: calculatedBalance });
+        console.log("✅ Fixed Yuusuf balance to:", formatZMW(calculatedBalance));
+        return true;
     }
+    return false;
 }
 </script>
 </body>
