@@ -662,6 +662,37 @@
     
     window.deleteTransaction = deleteTransaction;
     loadAllData();
+    async function fixYuusufBalance() {
+    const yuusuf = appData.shareholders.find(s => s.name === "Yuusuf");
+    if (yuusuf) {
+        console.log("Yuusuf current balance:", yuusuf.balanceZMW);
+        // Force reset if needed - but let's check transactions first
+        let yuusufDeposits = 0;
+        let yuusufWithdrawals = 0;
+        
+        // Calculate from transactions
+        appData.cashTransactions.forEach(t => {
+            if (t.description && t.description.includes("Yuusuf")) {
+                if (t.type === "DEPOSIT" && t.description.includes("Deposit from Yuusuf")) {
+                    yuusufDeposits += t.amountZMW;
+                }
+                if (t.type === "WITHDRAWAL" && t.description.includes("Yuusuf")) {
+                    yuusufWithdrawals += Math.abs(t.amountZMW);
+                }
+            }
+        });
+        
+        const calculatedBalance = yuusufDeposits - yuusufWithdrawals;
+        console.log("Calculated from transactions:", calculatedBalance);
+        
+        if (yuusuf.balanceZMW !== calculatedBalance) {
+            yuusuf.balanceZMW = calculatedBalance;
+            await shareholdersRef.doc(yuusuf.id.toString()).update({ balanceZMW: calculatedBalance });
+            console.log("✅ Fixed Yuusuf balance to:", calculatedBalance);
+            renderApp();
+        }
+    }
+}
 </script>
 </body>
 </html>
