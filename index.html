@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gold Trading Pro | Full Reports + User Management</title>
+    <title>Gold Trading Pro | Complete System</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: #0a0a07; font-family: 'Inter', system-ui, sans-serif; color: #ece3cf; }
@@ -15,7 +15,6 @@
         .field input { width: 100%; background: #1f1e1a; border: 1px solid #3a3528; padding: 12px 18px; border-radius: 40px; color: #f7efdb; }
         .btn-gold { width: 100%; background: linear-gradient(135deg, #a8822c, #e0b867); border: none; padding: 13px; border-radius: 40px; font-weight: bold; color: #0c0b07; cursor: pointer; }
         .error-msg { color: #f5a67b; font-size: 0.75rem; margin-top: 12px; text-align: center; }
-        .app-layout { display: flex; min-height: 100vh; }
         .sidebar { width: 280px; background: #0e0e0b; border-right: 1px solid #2a261d; position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; overflow-y: auto; }
         .logo-area { padding: 24px 20px; border-bottom: 1px solid #2f2b20; }
         .logo-area h2 { color: #e8c87a; font-size: 1.3rem; }
@@ -46,48 +45,35 @@
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; }
         .modal-content { background: #181714; border-radius: 28px; padding: 28px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
         .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #2f2b20; }
-        .user-row:hover { background: #1c1b16; }
         .mobile-header { display: none; }
         
-        /* ========== BRIGHT REPORTS STYLES ========== */
+        /* Bright Reports */
         .report-container { background: #fef9ef; border-radius: 20px; padding: 20px; color: #1e1b15; margin-top: 15px; }
         .report-header { background: linear-gradient(135deg, #1e5631, #3a7d2c); color: white; padding: 18px 22px; border-radius: 16px; margin-bottom: 20px; }
-        .report-header h3 { color: white; font-size: 1.3rem; margin-bottom: 6px; }
-        .report-summary { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e2d5bd; }
+        .report-header h3 { color: white; }
+        .report-summary { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; }
         .summary-card { flex: 1; background: #faf7f0; padding: 12px; border-radius: 12px; text-align: center; }
-        .summary-card .label { font-size: 0.7rem; color: #7a6846; text-transform: uppercase; }
         .summary-card .value { font-size: 1.6rem; font-weight: bold; }
         .summary-card .value.positive { color: #2b6e2f; }
         .summary-card .value.negative { color: #c0392b; }
         .mashiin-card { background: #fff8e7; border: 1px solid #e8dcc8; border-radius: 16px; padding: 16px; margin-bottom: 20px; }
-        .mashiin-card .label { color: #b8860b; font-size: 0.7rem; }
-        .mashiin-card .value { font-size: 1.3rem; font-weight: bold; color: #8b6914; }
         .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; }
-        .transaction-list-header { background: #efe5d5; padding: 12px 15px; font-weight: bold; color: #5c4a2e; }
+        .transaction-list-header { background: #efe5d5; padding: 12px 15px; font-weight: bold; }
         .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; }
-        .transaction-item:hover { background: #fef7e8; }
-        .transaction-date { font-size: 0.7rem; color: #8b7a5c; min-width: 140px; }
-        .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; margin: 0 10px; min-width: 130px; text-align: center; }
+        .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; }
         .transaction-type.GOLD_PURCHASE { background: #fff3e0; color: #e65100; }
         .transaction-type.GOLD_SALE { background: #e8f5e9; color: #2e7d32; }
         .transaction-type.SURVEY_REVENUE { background: #e3f2fd; color: #1565c0; }
         .transaction-type.EXPENSE { background: #ffebee; color: #c62828; }
-        .transaction-type.DEPOSIT_SHAREHOLDER,
-        .transaction-type.DEPOSIT_LOAN,
-        .transaction-type.DEPOSIT_EXTERNAL { background: #e0f2f1; color: #00695c; }
+        .transaction-type.DEPOSIT_SHAREHOLDER { background: #e0f2f1; color: #00695c; }
         .transaction-type.WITHDRAWAL { background: #fce4ec; color: #ad1457; }
         .transaction-type.EXCHANGE { background: #f3e5f5; color: #6a1b9a; }
-        .transaction-desc { flex: 2; font-size: 0.85rem; color: #2c2c2c; margin: 0 10px; }
-        .transaction-amount { font-weight: bold; font-size: 1rem; min-width: 100px; text-align: right; }
-        .transaction-amount.positive { color: #2e7d32; }
-        .transaction-amount.negative { color: #c62828; }
         .report-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; background: #f5efe3; padding: 12px; border-radius: 16px; }
-        .filter-btn { background: white; border: 1px solid #d4c5a8; color: #4a3e2c; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; }
+        .filter-btn { background: white; border: 1px solid #d4c5a8; color: #4a3e2c; padding: 8px 16px; border-radius: 40px; cursor: pointer; }
         .filter-btn:hover { background: #c8a96e; color: white; }
-        .filter-btn.active { background: #c8a96e; color: white; }
         .type-filter-bar { background: #f5efe3; padding: 12px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         
-        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, nav, .user-section { display: none !important; } .report-container { background: white !important; } }
+        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, nav { display: none !important; } }
         @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; } }
     </style>
 </head>
@@ -95,12 +81,11 @@
 <div id="root"></div>
 
 <script>
-    // ==================== COMPLETE STATE ====================
+    // ==================== STATE ====================
     const defaultState = {
         companyCashZMW: 0,
         companyCashUSD: 0,
         exchangeRate: 26.5,
-        exchangeLogs: [],
         goldPurchases: [],
         goldSales: [],
         expenses: [],
@@ -121,14 +106,12 @@
         nextShareholderId: 4
     };
 
-    let state = JSON.parse(localStorage.getItem('gold_pro_full')) || JSON.parse(JSON.stringify(defaultState));
+    let state = JSON.parse(localStorage.getItem('gold_pro_complete')) || JSON.parse(JSON.stringify(defaultState));
     let currentUser = null;
     let activeTab = "dashboard";
-    let modalData = null;
     let showPasswords = false;
 
-    function persist() { localStorage.setItem('gold_pro_full', JSON.stringify(state)); }
-
+    function persist() { localStorage.setItem('gold_pro_complete', JSON.stringify(state)); }
     const formatZMW = (v) => 'K' + (parseFloat(v)||0).toFixed(2);
     const formatUSD = (v) => '$' + (parseFloat(v)||0).toFixed(2);
 
@@ -144,20 +127,16 @@
     // ==================== USER MANAGEMENT ====================
     function getAllUsers() {
         const users = [
-            { id: 'admin', name: state.adminUser.name, role: 'admin', password: state.adminUser.password, isSystem: true },
-            { id: 'manager', name: state.managerUser.name, role: 'manager', password: state.managerUser.password, isSystem: true }
+            { id: 'admin', name: state.adminUser.name, role: 'admin', password: state.adminUser.password },
+            { id: 'manager', name: state.managerUser.name, role: 'manager', password: state.managerUser.password }
         ];
-        state.shareholders.forEach(sh => {
-            users.push({ id: sh.id, name: sh.name, role: 'shareholder', password: sh.password, balanceZMW: sh.balanceZMW, isSystem: false });
-        });
+        state.shareholders.forEach(sh => users.push({ id: sh.id, name: sh.name, role: 'shareholder', password: sh.password, balanceZMW: sh.balanceZMW }));
         return users;
     }
 
     function changeUserPassword(targetName, newPassword, currentUserRole) {
-        if (currentUserRole !== 'admin') {
-            const targetIsAdminOrManager = targetName === state.adminUser.name || targetName === state.managerUser.name;
-            if (targetIsAdminOrManager) throw new Error("Only Admin can change Admin or Manager passwords");
-        }
+        if (currentUserRole !== 'admin' && (targetName === state.adminUser.name || targetName === state.managerUser.name)) 
+            throw new Error("Only Admin can change Admin/Manager passwords");
         if (state.adminUser.name === targetName) { state.adminUser.password = newPassword; persist(); return true; }
         if (state.managerUser.name === targetName) { state.managerUser.password = newPassword; persist(); return true; }
         const shareholder = state.shareholders.find(s => s.name === targetName);
@@ -167,10 +146,9 @@
 
     function addShareholder(name, password) {
         if (!name || !password) throw new Error("Name and password required");
-        if (state.shareholders.some(s => s.name.toLowerCase() === name.toLowerCase())) throw new Error("Shareholder name already exists");
-        if (state.adminUser.name.toLowerCase() === name.toLowerCase() || state.managerUser.name.toLowerCase() === name.toLowerCase()) throw new Error("Name conflicts with system user");
+        if (state.shareholders.some(s => s.name.toLowerCase() === name.toLowerCase())) throw new Error("Name already exists");
         const newId = state.nextShareholderId++;
-        state.shareholders.push({ id: newId, name: name, password: password, balanceZMW: 0 });
+        state.shareholders.push({ id: newId, name, password, balanceZMW: 0 });
         if (!state.salesReps.includes(name)) state.salesReps.push(name);
         persist();
         return true;
@@ -181,9 +159,9 @@
         const shareholder = state.shareholders.find(s => s.id === shareholderId);
         if (!shareholder) throw new Error("Shareholder not found");
         if (shareholder.balanceZMW !== 0) throw new Error(`Cannot delete ${shareholder.name} - balance is ${formatZMW(shareholder.balanceZMW)}`);
+        state.shareholders = state.shareholders.filter(s => s.id !== shareholderId);
         const repIndex = state.salesReps.indexOf(shareholder.name);
         if (repIndex !== -1) state.salesReps.splice(repIndex, 1);
-        state.shareholders = state.shareholders.filter(s => s.id !== shareholderId);
         persist();
         return true;
     }
@@ -197,14 +175,10 @@
             shareholder.balanceZMW += amountZMW;
             state.companyCashZMW += amountZMW;
             addToCashTransactions("DEPOSIT_SHAREHOLDER", amountZMW, 0, `Deposit from shareholder ${source}`, transDate);
-        } else if (type === "loan_payment") {
-            state.companyCashZMW += amountZMW;
-            addToCashTransactions("DEPOSIT_LOAN", amountZMW, 0, `Loan payment from ${source}`, transDate);
         } else {
             state.companyCashZMW += amountZMW;
-            addToCashTransactions("DEPOSIT_EXTERNAL", amountZMW, 0, `External: ${description || source}`, transDate);
+            addToCashTransactions("DEPOSIT_EXTERNAL", amountZMW, 0, `Deposit: ${description || source}`, transDate);
         }
-        state.deposits.push({ id: Date.now(), date: transDate, type, source, amountZMW, description });
         persist();
     }
 
@@ -224,7 +198,6 @@
             addToCashTransactions("EXCHANGE", zmwReceived, -amount, `USD → ZMW at rate ${rate}`, transDate);
         }
         state.exchangeRate = rate;
-        state.exchangeLogs.push({ id: Date.now(), date: transDate, fromCurr, amount, rate });
         persist();
     }
 
@@ -277,17 +250,23 @@
         persist();
     }
 
-    function addExpense(desc, amountZMW, transDate) {
-        if (state.companyCashZMW < amountZMW) throw new Error(`Insufficient ZMW`);
+    // ===== EXPENSE FUNCTION =====
+    function addExpense(description, amountZMW, transDate) {
+        if (amountZMW <= 0) throw new Error("Amount must be positive");
+        if (state.companyCashZMW < amountZMW) throw new Error(`Insufficient ZMW. Available: ${formatZMW(state.companyCashZMW)}`);
+        
+        // Reduce each shareholder's balance equally
         const perShare = amountZMW / state.shareholders.length;
         state.shareholders.forEach(sh => sh.balanceZMW -= perShare);
-        state.expenses.push({ id: Date.now(), date: transDate, description: desc, amountZMW });
+        
+        state.expenses.push({ id: Date.now(), date: transDate, description, amountZMW });
         state.companyCashZMW -= amountZMW;
-        addToCashTransactions("EXPENSE", -amountZMW, 0, desc, transDate);
+        addToCashTransactions("EXPENSE", -amountZMW, 0, `Expense: ${description}`, transDate);
         persist();
     }
 
     function addSurveyRevenue(amountZMW, customerName, transDate) {
+        if (amountZMW <= 0) throw new Error("Amount must be positive");
         const perShare = amountZMW / state.shareholders.length;
         state.shareholders.forEach(sh => sh.balanceZMW += perShare);
         state.surveyRevenues.push({ id: Date.now(), date: transDate, amountZMW, customerName });
@@ -317,8 +296,7 @@
     }
 
     // ==================== REPORT GENERATION ====================
-    let currentReportStart = null;
-    let currentReportEnd = null;
+    let currentReportStart = null, currentReportEnd = null;
     
     function generateReport(startDate, endDate) {
         const typeFilter = document.getElementById('reportTypeFilter')?.value || "all";
@@ -328,10 +306,8 @@
         });
         if (typeFilter !== "all") filtered = filtered.filter(t => t.type === typeFilter);
         
-        const totalInZMW = filtered.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
-        const totalOutZMW = filtered.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
-        const totalInUSD = filtered.reduce((s,t)=> s + (t.amountUSD > 0 ? t.amountUSD : 0), 0);
-        const totalOutUSD = filtered.reduce((s,t)=> s + (t.amountUSD < 0 ? -t.amountUSD : 0), 0);
+        const totalIn = filtered.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
+        const totalOut = filtered.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
         
         const filteredPurchases = state.goldPurchases.filter(p => { const d = new Date(p.date); return d >= startDate && d <= endDate; });
         const periodMashiin = filteredPurchases.reduce((sum, p) => sum + (p.mashiinFee || 0), 0);
@@ -339,102 +315,59 @@
         const totalMashiinAll = state.goldPurchases.reduce((sum, p) => sum + (p.mashiinFee || 0), 0);
         const totalTransportAll = state.goldPurchases.reduce((sum, p) => sum + (p.transportFee || 0), 0);
         
-        const typeLabel = typeFilter === "all" ? "All Transactions" : typeFilter.replace(/_/g, ' ');
-        
         const html = `<div class="report-container">
-            <div class="report-header">
-                <h3>📊 Financial Report</h3>
-                <div>${startDate.toLocaleDateString('en-GB')} → ${endDate.toLocaleDateString('en-GB')}</div>
-                <div style="font-size:0.8rem; opacity:0.9;">Filter: ${typeLabel}</div>
-            </div>
+            <div class="report-header"><h3>📊 Financial Report</h3><div>${startDate.toLocaleDateString()} → ${endDate.toLocaleDateString()}</div></div>
             <div class="report-summary">
-                <div class="summary-card"><div class="label">💰 ZMW Inflows</div><div class="value positive">${formatZMW(totalInZMW)}</div></div>
-                <div class="summary-card"><div class="label">📉 ZMW Outflows</div><div class="value negative">${formatZMW(totalOutZMW)}</div></div>
-                <div class="summary-card"><div class="label">📈 ZMW Net</div><div class="value ${(totalInZMW-totalOutZMW)>=0?'positive':'negative'}">${formatZMW(totalInZMW-totalOutZMW)}</div></div>
+                <div class="summary-card"><div class="label">💰 Total Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
+                <div class="summary-card"><div class="label">📉 Total Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
+                <div class="summary-card"><div class="label">📈 Net</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
             </div>
             <div class="mashiin-card">
                 <div style="display:flex; justify-content:space-between; flex-wrap:wrap;">
-                    <div><div class="label">⚙️ TOTAL MASHIIN (All Time)</div><div class="value">${formatZMW(totalMashiinAll)}</div></div>
-                    <div><div class="label">🚚 TOTAL TRANSPORT (All Time)</div><div class="value">${formatZMW(totalTransportAll)}</div></div>
+                    <div><div class="label">⚙️ TOTAL MASHIIN</div><div class="value">${formatZMW(totalMashiinAll)}</div></div>
+                    <div><div class="label">🚚 TOTAL TRANSPORT</div><div class="value">${formatZMW(totalTransportAll)}</div></div>
                 </div>
-                ${(periodMashiin > 0 || periodTransport > 0) ? `<div style="margin-top:15px; padding-top:12px; border-top:1px solid #e8dcc8; display:flex; gap:20px;">
-                    <div><span class="label">📅 Mashiin (this period):</span> <strong style="color:#2e7d32;">${formatZMW(periodMashiin)}</strong></div>
-                    <div><span class="label">📅 Transport (this period):</span> <strong style="color:#2e7d32;">${formatZMW(periodTransport)}</strong></div>
-                </div>` : ''}
+                ${(periodMashiin > 0 || periodTransport > 0) ? `<div style="margin-top:15px; display:flex; gap:20px;"><div>📅 Mashiin this period: ${formatZMW(periodMashiin)}</div><div>📅 Transport this period: ${formatZMW(periodTransport)}</div></div>` : ''}
             </div>
             <div class="transaction-list">
-                <div class="transaction-list-header">📋 TRANSACTION HISTORY (${filtered.length} records)</div>
-                ${filtered.map(t => `
-                <div class="transaction-item">
-                    <div class="transaction-date">${new Date(t.date).toLocaleString()}</div>
-                    <div class="transaction-type ${t.type}">${t.type.replace(/_/g, ' ')}</div>
-                    <div class="transaction-desc">${t.description || '-'}</div>
-                    <div class="transaction-amount ${t.amountZMW >= 0 ? 'positive' : 'negative'}">
-                        ${t.amountZMW >= 0 ? '+' : ''}${formatZMW(t.amountZMW)}
-                    </div>
-                </div>
-                `).join('')}
-                ${filtered.length === 0 ? '<div style="text-align:center; padding: 50px; color: #8b7a5c;">📭 No transactions found for this period and type</div>' : ''}
+                <div class="transaction-list-header">📋 TRANSACTION HISTORY (${filtered.length})</div>
+                ${filtered.map(t => `<div class="transaction-item"><div style="font-size:0.7rem;">${new Date(t.date).toLocaleString()}</div><div class="transaction-type ${t.type}">${t.type.replace(/_/g,' ')}</div><div style="flex:1;">${t.description}</div><div class="${t.amountZMW>=0?'positive':'negative'}">${t.amountZMW>=0?'+':''}${formatZMW(t.amountZMW)}</div></div>`).join('')}
+                ${filtered.length === 0 ? '<div style="text-align:center;padding:40px;">No transactions</div>' : ''}
             </div>
         </div>`;
         document.getElementById('reportOutput').innerHTML = html;
     }
 
     function setupReportEvents() {
-        const dateBtns = ['today', 'yesterday', 'thisMonth', 'lastMonth', 'thisYear', 'custom'];
-        let currentStart = null, currentEnd = null;
-        
-        const getDateRange = (filter) => {
+        const getRange = (filter) => {
             const today = new Date();
-            let start, end;
-            if (filter === 'today') { start = new Date(); start.setHours(0,0,0,0); end = new Date(); end.setHours(23,59,59,999); }
-            else if (filter === 'yesterday') { start = new Date(); start.setDate(today.getDate()-1); start.setHours(0,0,0,0); end = new Date(start); end.setHours(23,59,59,999); }
-            else if (filter === 'thisMonth') { start = new Date(today.getFullYear(), today.getMonth(), 1); end = new Date(today.getFullYear(), today.getMonth()+1, 0); end.setHours(23,59,59,999); }
-            else if (filter === 'lastMonth') { start = new Date(today.getFullYear(), today.getMonth()-1, 1); end = new Date(today.getFullYear(), today.getMonth(), 0); end.setHours(23,59,59,999); }
-            else if (filter === 'thisYear') { start = new Date(today.getFullYear(), 0, 1); end = new Date(today.getFullYear(), 11, 31); end.setHours(23,59,59,999); }
-            return { start, end };
+            if (filter === 'today') { let s=new Date(); s.setHours(0,0,0,0); let e=new Date(); e.setHours(23,59,59,999); return {start:s, end:e}; }
+            if (filter === 'yesterday') { let s=new Date(); s.setDate(today.getDate()-1); s.setHours(0,0,0,0); let e=new Date(s); e.setHours(23,59,59,999); return {start:s, end:e}; }
+            if (filter === 'thisMonth') { return {start: new Date(today.getFullYear(), today.getMonth(), 1), end: new Date(today.getFullYear(), today.getMonth()+1, 0)}; }
+            if (filter === 'lastMonth') { return {start: new Date(today.getFullYear(), today.getMonth()-1, 1), end: new Date(today.getFullYear(), today.getMonth(), 0)}; }
+            if (filter === 'thisYear') { return {start: new Date(today.getFullYear(), 0, 1), end: new Date(today.getFullYear(), 11, 31)}; }
+            return {start: new Date(), end: new Date()};
         };
-        
-        document.querySelectorAll('[data-date-filter]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const filter = btn.dataset.dateFilter;
-                if (filter === 'custom') { 
-                    document.getElementById('customRange').style.display = 'flex'; 
-                    return; 
-                }
-                document.getElementById('customRange').style.display = 'none';
-                const { start, end } = getDateRange(filter);
-                currentStart = start;
-                currentEnd = end;
-                generateReport(start, end);
-            });
-        });
-        
+        document.querySelectorAll('[data-date-filter]').forEach(btn => btn.addEventListener('click', () => {
+            const filter = btn.dataset.dateFilter;
+            if (filter === 'custom') { document.getElementById('customRange').style.display = 'flex'; return; }
+            document.getElementById('customRange').style.display = 'none';
+            const {start, end} = getRange(filter);
+            currentReportStart = start; currentReportEnd = end;
+            generateReport(start, end);
+        }));
         document.getElementById('applyCustom')?.addEventListener('click', () => {
             const start = new Date(document.getElementById('startDate').value); start.setHours(0,0,0,0);
             const end = new Date(document.getElementById('endDate').value); end.setHours(23,59,59,999);
-            if (!isNaN(start) && !isNaN(end)) {
-                currentStart = start;
-                currentEnd = end;
-                generateReport(start, end);
-                document.getElementById('customRange').style.display = 'none';
-            } else { alert("Select valid dates"); }
+            if (!isNaN(start) && !isNaN(end)) { currentReportStart = start; currentReportEnd = end; generateReport(start, end); document.getElementById('customRange').style.display = 'none'; }
         });
-        
         document.getElementById('applyTypeFilter')?.addEventListener('click', () => {
-            if (currentStart && currentEnd) generateReport(currentStart, currentEnd);
-            else {
-                const { start, end } = getDateRange('thisMonth');
-                generateReport(start, end);
-            }
+            if (currentReportStart && currentReportEnd) generateReport(currentReportStart, currentReportEnd);
+            else { const {start,end} = getRange('thisMonth'); generateReport(start, end); }
         });
-        
         document.getElementById('printReport')?.addEventListener('click', () => window.print());
-        
-        // Load default report (this month)
-        const { start, end } = getDateRange('thisMonth');
-        currentStart = start;
-        currentEnd = end;
+        const {start,end} = getRange('thisMonth');
+        currentReportStart = start; currentReportEnd = end;
         generateReport(start, end);
     }
 
@@ -465,57 +398,94 @@
         const navItems = [
             { id: "dashboard", label: "📊 Dashboard" }, { id: "purchase", label: "💎 Buy Gold" },
             { id: "sales", label: "💰 Sell Gold" }, { id: "survey", label: "📋 Survey" },
-            { id: "deposits", label: "💵 Deposits" }, { id: "exchange", label: "🔄 Exchange" },
-            { id: "users", label: "👥 Users" }, { id: "reports", label: "📅 Reports" }, 
-            { id: "withdrawals", label: "🏧 Withdrawals" }
+            { id: "expenses", label: "📉 Expenses" }, { id: "deposits", label: "💵 Deposits" },
+            { id: "exchange", label: "🔄 Exchange" }, { id: "users", label: "👥 Users" },
+            { id: "reports", label: "📅 Reports" }, { id: "withdrawals", label: "🏧 Withdrawals" }
         ];
         const navBtns = navItems.map(t => `<button class="nav-btn ${activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">${t.label}</button>`).join('');
         
         let content = "";
+        const today = new Date().toISOString().slice(0,10);
         
         if (activeTab === "dashboard") {
             const totalGoldStock = state.goldPurchases.reduce((a,b)=>a+b.grams,0) - state.goldSales.reduce((a,b)=>a+b.gramsSold,0);
             content = `<div class="stats-row">
                 <div class="stat-card" id="clickZMW"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(state.companyCashZMW)}</div></div>
                 <div class="stat-card" id="clickUSD"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(state.companyCashUSD)}</div></div>
-                <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${(parseFloat(totalGoldStock)||0).toFixed(2)} g</div></div>
-                <div class="stat-card"><div class="stat-label">💱 Exchange Rate</div><div class="stat-value">1 USD = ${state.exchangeRate.toFixed(2)} ZMW</div></div>
+                <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${totalGoldStock.toFixed(2)} g</div></div>
+                <div class="stat-card"><div class="stat-label">💱 Rate</div><div class="stat-value">1 USD = ${state.exchangeRate.toFixed(2)}</div></div>
             </div>
             <div class="two-col">
-                <div class="card"><div class="card-title">👤 Shareholder Balances (ZMW)</div>${state.shareholders.map(s => `<div style="display:flex;justify-content:space-between;padding:8px 0"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>
-                <div class="card"><div class="card-title">📊 Recent Activity</div>${state.cashTransactions.slice(0,6).map(t => `<div style="border-bottom:1px solid #2a261d;padding:6px 0;font-size:0.8rem">${new Date(t.date).toLocaleString().slice(0,10)} | ${t.type.slice(0,15)} | ${formatZMW(t.amountZMW)}</div>`).join('') || '<div class="muted">No transactions</div>'}</div>
+                <div class="card"><div class="card-title">👤 Shareholders</div>${state.shareholders.map(s => `<div style="display:flex;justify-content:space-between;padding:8px 0"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>
+                <div class="card"><div class="card-title">📊 Recent</div>${state.cashTransactions.slice(0,5).map(t => `<div style="padding:6px 0;font-size:0.8rem">${new Date(t.date).toLocaleString().slice(0,10)} | ${t.type.slice(0,12)} | ${formatZMW(t.amountZMW)}</div>`).join('') || '<div class="muted">No transactions</div>'}</div>
             </div>`;
+        }
+        else if (activeTab === "purchase" && isPriv) {
+            content = `<div class="card"><div class="card-title">🛒 Buy Gold</div>
+                <div class="form-group"><label>Date</label><input type="date" id="purchaseDate" value="${today}" /></div>
+                <div class="form-group"><label>Grams</label><input id="grams" type="number" /></div>
+                <div class="form-group"><label>Rate (ZMW/g)</label><input id="rate" type="number" /></div>
+                <div class="form-group"><label>Mashiin (ZMW)</label><input id="mashiin" value="${state.defaultMashiin}" /></div>
+                <div class="form-group"><label>Transport (ZMW)</label><input id="transport" value="${state.defaultTransport}" /></div>
+                <div class="form-group"><label>Sales Rep</label><select id="rep">${state.salesReps.map(r=>`<option>${r}</option>`).join('')}</select></div>
+                <button class="btn-action" id="doPurchase">Record Purchase</button></div>`;
+        }
+        else if (activeTab === "sales" && isPriv) {
+            content = `<div class="card"><div class="card-title">💰 Sell Gold (USD)</div>
+                <div class="form-group"><label>Date</label><input type="date" id="saleDate" value="${today}" /></div>
+                <div class="form-group"><label>Grams</label><input id="sellGrams" type="number" /></div>
+                <div class="form-group"><label>Sell Rate (USD/g)</label><input id="sellRate" type="number" /></div>
+                <div class="form-group"><label>Conversion</label><select id="conv"><option value="convert_all">All to ZMW</option><option value="keep_all">Keep as USD</option><option value="partial">Partial to ZMW</option></select></div>
+                <div id="partialBox" style="display:none"><div class="form-group"><label>USD to Convert</label><input id="partialUsd" type="number" /></div></div>
+                <button class="btn-action" id="doSale">Sell & Distribute Profit</button></div>`;
+        }
+        else if (activeTab === "survey" && isPriv) {
+            content = `<div class="card"><div class="card-title">📋 Survey Revenue</div>
+                <div class="form-group"><label>Date</label><input type="date" id="surveyDate" value="${today}" /></div>
+                <div class="form-group"><label>Customer Name</label><input id="custName" /></div>
+                <div class="form-group"><label>Amount (ZMW)</label><input id="survAmt" type="number" /></div>
+                <button class="btn-action" id="doSurvey">Add & Distribute</button></div>`;
+        }
+        else if (activeTab === "expenses" && isPriv) {
+            content = `<div class="card"><div class="card-title">📉 Expenses</div>
+                <div class="form-group"><label>Date</label><input type="date" id="expenseDate" value="${today}" /></div>
+                <div class="form-group"><label>Description</label><input id="expDesc" placeholder="e.g., Rent, Utilities, Salaries" /></div>
+                <div class="form-group"><label>Amount (ZMW)</label><input id="expAmount" type="number" /></div>
+                <button class="btn-action" id="doExpense">Record Expense</button>
+                <div class="muted" style="margin-top:12px;">⚠️ Expense reduces company cash AND reduces each shareholder's balance equally.</div>
+                <div style="margin-top:15px;"><strong>Recent Expenses:</strong></div>
+                ${state.expenses.slice(0,5).map(e => `<div style="border-bottom:1px solid #2a261d;padding:8px 0">${new Date(e.date).toLocaleDateString()} | ${e.description} | ${formatZMW(e.amountZMW)}</div>`).join('') || '<div class="muted">No expenses recorded yet</div>'}
+            </div>`;
+        }
+        else if (activeTab === "deposits" && isPriv) {
+            const shareholderOptions = state.shareholders.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+            content = `<div class="card"><div class="card-title">💵 Cash Deposits</div>
+                <div class="form-group"><label>Date</label><input type="date" id="depositDate" value="${today}" /></div>
+                <div class="form-group"><label>Type</label><select id="depositType"><option value="shareholder">Shareholder Deposit</option><option value="external">External Deposit</option></select></div>
+                <div class="form-group"><label id="sourceLabel">Select Shareholder</label><select id="depositSource">${shareholderOptions}</select></div>
+                <div class="form-group"><label>Amount (ZMW)</label><input id="depositAmount" type="number" /></div>
+                <div class="form-group"><label>Description</label><input id="depositDesc" /></div>
+                <button class="btn-action" id="doDeposit">Record Deposit</button></div>`;
+        }
+        else if (activeTab === "exchange" && isPriv) {
+            content = `<div class="card"><div class="card-title">🔄 Currency Exchange</div>
+                <div class="form-group"><label>Date</label><input type="date" id="exDate" value="${today}" /></div>
+                <div class="form-group"><label>Direction</label><select id="exDir"><option value="ZMW">ZMW → USD</option><option value="USD">USD → ZMW</option></select></div>
+                <div class="form-group"><label>Amount (source currency)</label><input id="exAmount" type="number" /></div>
+                <div class="form-group"><label>Rate (1 USD = X ZMW)</label><input id="exRate" value="${state.exchangeRate}" /></div>
+                <button class="btn-action" id="doExchange">Execute Exchange</button></div>`;
         }
         else if (activeTab === "users" && isPriv) {
             const users = getAllUsers();
-            const canDelete = currentUser.role === 'admin';
             content = `<div class="card"><div class="card-title">👥 User Management</div>
-                <div style="margin-bottom:20px; padding:12px; background:#1a1a17; border-radius:16px;">
-                    <span class="muted">🔐 Admin can change any password & delete shareholders.</span>
-                    <button class="btn-sm" id="togglePasswords" style="margin-left:15px;">${showPasswords ? '🙈 Hide' : '👁️ Show'} Passwords</button>
-                </div>
-                <div style="max-height:400px; overflow-y:auto;">
-                ${users.map(u => `
-                    <div class="user-row">
-                        <div><strong>${u.name}</strong> <span class="muted">(${u.role})</span> ${u.balanceZMW !== undefined ? `<span class="green">${formatZMW(u.balanceZMW)}</span>` : ''}</div>
-                        <div class="password-dots" style="font-family:monospace;">${showPasswords ? u.password : '••••••••'}</div>
-                        <div><button class="btn-sm" data-change-pwd="${u.name}">Change</button>
-                        ${(u.role === 'shareholder' && canDelete) ? `<button class="btn-sm btn-danger" data-del-user="${u.id}" style="margin-left:8px;">Delete</button>` : ''}
-                        </div>
-                    </div>
-                `).join('')}
-                </div>
-                ${canDelete ? `<div style="margin-top:20px; padding-top:15px; border-top:1px solid #2f2b20;">
-                    <h4>➕ Add New Shareholder</h4>
-                    <div class="form-group"><label>Full Name</label><input id="newUserName" placeholder="e.g., Hassan" /></div>
-                    <div class="form-group"><label>Password</label><input id="newUserPass" type="text" placeholder="password123" /></div>
-                    <button class="btn-action" id="addUserBtn">Add Shareholder</button>
-                </div>` : ''}
+                <div style="margin-bottom:15px;"><button class="btn-sm" id="togglePasswords">${showPasswords ? '🙈 Hide' : '👁️ Show'} Passwords</button></div>
+                ${users.map(u => `<div class="user-row"><div><strong>${u.name}</strong> <span class="muted">(${u.role})</span> ${u.balanceZMW !== undefined ? `<span class="green">${formatZMW(u.balanceZMW)}</span>` : ''}</div><div>${showPasswords ? u.password : '••••••••'}</div><div><button class="btn-sm" data-change-pwd="${u.name}">Change</button>${u.role === 'shareholder' && currentUser.role === 'admin' ? `<button class="btn-sm btn-danger" data-del-user="${u.id}" style="margin-left:8px;">Delete</button>` : ''}</div></div>`).join('')}
+                ${currentUser.role === 'admin' ? `<div style="margin-top:20px; padding-top:15px; border-top:1px solid #333;"><h4>➕ Add Shareholder</h4><div class="form-group"><input id="newUserName" placeholder="Name" /></div><div class="form-group"><input id="newUserPass" placeholder="Password" /></div><button class="btn-action" id="addUserBtn">Add</button></div>` : ''}
             </div>`;
         }
         else if (activeTab === "reports" && isPriv) {
-            const totalMashiin = state.goldPurchases.reduce((s,p) => s + (p.mashiinFee||0), 0);
-            const totalTransport = state.goldPurchases.reduce((s,p) => s + (p.transportFee||0), 0);
+            const totalMashiin = state.goldPurchases.reduce((s,p)=>s+(p.mashiinFee||0),0);
+            const totalTransport = state.goldPurchases.reduce((s,p)=>s+(p.transportFee||0),0);
             content = `<div class="card"><div class="card-title">📅 Reports</div>
                 <div class="report-filters">
                     <button class="filter-btn" data-date-filter="today">Today</button>
@@ -525,40 +495,20 @@
                     <button class="filter-btn" data-date-filter="thisYear">This Year</button>
                     <button class="filter-btn" data-date-filter="custom">Custom Range</button>
                 </div>
-                <div id="customRange" style="display:none; gap:10px; margin-bottom:15px;">
-                    <input type="date" id="startDate" /> → <input type="date" id="endDate" />
-                    <button class="btn-sm" id="applyCustom">Apply</button>
-                </div>
-                <div style="background:#1a1a17; padding:12px; border-radius:16px; margin-bottom:15px; display:flex; gap:20px; flex-wrap:wrap;">
-                    <div>⚙️ Total Mashiin Collected: <strong style="color:#e9cf8b">${formatZMW(totalMashiin)}</strong></div>
-                    <div>🚚 Total Transport Collected: <strong style="color:#e9cf8b">${formatZMW(totalTransport)}</strong></div>
-                    <div>💱 Current Rate: <strong style="color:#e9cf8b">1 USD = ${state.exchangeRate.toFixed(2)} ZMW</strong></div>
-                </div>
-                <div class="type-filter-bar">
-                    <label style="font-weight:500;">📌 Filter by Type:</label>
-                    <select id="reportTypeFilter" style="width:auto; display:inline-block;">
-                        <option value="all">📊 All Transactions</option>
-                        <option value="GOLD_PURCHASE">💎 Gold Purchases</option>
-                        <option value="GOLD_SALE">💰 Gold Sales</option>
-                        <option value="SURVEY_REVENUE">📋 Survey Revenue</option>
-                        <option value="EXPENSE">📉 Expenses</option>
-                        <option value="DEPOSIT_SHAREHOLDER">💵 Deposits</option>
-                        <option value="WITHDRAWAL">🏧 Withdrawals</option>
-                        <option value="EXCHANGE">🔄 Exchange</option>
-                    </select>
-                    <button class="btn-sm" id="applyTypeFilter">Apply Type Filter</button>
-                </div>
-                <div id="reportOutput"></div>
-                <button class="btn-sm" id="printReport" style="margin-top:15px;">🖨️ Print / Save as PDF</button>
+                <div id="customRange" style="display:none; gap:10px; margin-bottom:15px;"><input type="date" id="startDate" /> → <input type="date" id="endDate" /><button class="btn-sm" id="applyCustom">Apply</button></div>
+                <div style="background:#1a1a17; padding:12px; border-radius:16px; margin-bottom:15px; display:flex; gap:20px;"><div>⚙️ Total Mashiin: ${formatZMW(totalMashiin)}</div><div>🚚 Total Transport: ${formatZMW(totalTransport)}</div><div>💱 Rate: 1 USD = ${state.exchangeRate.toFixed(2)} ZMW</div></div>
+                <div class="type-filter-bar"><label>Filter by Type:</label><select id="reportTypeFilter"><option value="all">All</option><option value="GOLD_PURCHASE">Gold Purchases</option><option value="GOLD_SALE">Gold Sales</option><option value="SURVEY_REVENUE">Survey Revenue</option><option value="EXPENSE">Expenses</option><option value="DEPOSIT_SHAREHOLDER">Deposits</option><option value="WITHDRAWAL">Withdrawals</option><option value="EXCHANGE">Exchange</option></select><button class="btn-sm" id="applyTypeFilter">Apply</button></div>
+                <div id="reportOutput"></div><button class="btn-sm" id="printReport">🖨️ Print</button>
             </div>`;
         }
-        else if (activeTab === "deposits" && isPriv) { content = `<div class="card"><div class="card-title">💵 Deposits</div><div class="muted">Deposit form loaded</div></div>`; }
-        else if (activeTab === "exchange" && isPriv) { content = `<div class="card"><div class="card-title">🔄 Exchange</div><div class="muted">Exchange form loaded</div></div>`; }
-        else if (activeTab === "purchase" && isPriv) { content = `<div class="card"><div class="card-title">🛒 Buy Gold</div><div class="muted">Purchase form loaded</div></div>`; }
-        else if (activeTab === "sales" && isPriv) { content = `<div class="card"><div class="card-title">💰 Sell Gold</div><div class="muted">Sale form loaded</div></div>`; }
-        else if (activeTab === "survey" && isPriv) { content = `<div class="card"><div class="card-title">📋 Survey</div><div class="muted">Survey form loaded</div></div>`; }
-        else if (activeTab === "withdrawals") { content = `<div class="card"><div class="card-title">🏧 Withdrawals</div><div class="muted">Withdrawal section loaded</div></div>`; }
-        else { content = `<div class="card"><div class="muted">Access restricted</div></div>`; }
+        else if (activeTab === "withdrawals") {
+            const reqs = state.withdrawalRequests.filter(r => isPriv || r.shareholderId === currentUser.shareholderId);
+            content = `<div class="card"><div class="card-title">🏧 Withdrawals</div>
+                ${!isPriv ? `<button class="btn-sm" id="requestWBtn" style="margin-bottom:15px;">Request Withdrawal</button>` : ''}
+                <table style="width:100%"><thead><tr><th>User</th><th>Amount</th><th>Status</th>${isPriv ? '<th>Action</th>' : ''}</tr></thead>
+                <tbody>${reqs.map(r => `<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td>${r.status}</td>${isPriv && r.status === 'pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></td>` : '<td>—</td>'}</tr>`).join('')}</tbody></table>
+            </div>`;
+        }
         
         root.innerHTML = `<div class="mobile-header"><button id="menuToggle" style="background:none;border:none;font-size:1.6rem;">☰</button><span>Gold Ledger</span><div></div></div>
         <div class="sidebar" id="sidebar"><div class="logo-area"><h2>⚜️ GOLD PRO</h2></div><div class="nav-menu">${navBtns}</div>
@@ -566,51 +516,83 @@
         <button class="btn-outline" id="logoutBtn">Sign Out</button></div></div>
         <div class="content-main">${content}</div>`;
         
-        // Attach navigation and basic events
-        document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', (e) => { activeTab = btn.dataset.tab; render(); }));
+        // Event listeners
+        document.querySelectorAll('[data-tab]').forEach(btn => btn.addEventListener('click', () => { activeTab = btn.dataset.tab; render(); }));
         document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; render(); });
         document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
         
-        // Setup reports if on reports tab
-        if (activeTab === "reports" && isPriv) { setTimeout(setupReportEvents, 100); }
-        
-        // Cash balance click handlers
-        document.getElementById('clickZMW')?.addEventListener('click', () => {
-            const items = state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | Balance: ${formatZMW(t.runningBalanceZMW)}`);
-            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>ZMW Cash History</h3><div style="max-height:60vh;overflow-y:auto">${items.map(i=>`<div style="padding:6px 0;border-bottom:1px solid #333">${i}</div>`).join('')}</div><button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
-            document.body.appendChild(div);
+        if (activeTab === "reports" && isPriv) setTimeout(setupReportEvents, 100);
+        if (activeTab === "purchase" && isPriv) document.getElementById('doPurchase')?.addEventListener('click', () => {
+            const g=parseFloat(document.getElementById('grams').value), r=parseFloat(document.getElementById('rate').value);
+            const m=parseFloat(document.getElementById('mashiin').value)||0, t=parseFloat(document.getElementById('transport').value)||0, rep=document.getElementById('rep').value, date=document.getElementById('purchaseDate').value;
+            if(!g||!r) return alert("Enter grams and rate");
+            try { recordPurchase(g,r,m,t,rep,date); render(); } catch(e) { alert(e.message); }
         });
-        document.getElementById('clickUSD')?.addEventListener('click', () => {
-            const items = state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | Balance: ${formatUSD(t.runningBalanceUSD)}`);
-            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>USD Cash History</h3><div style="max-height:60vh;overflow-y:auto">${items.map(i=>`<div style="padding:6px 0;border-bottom:1px solid #333">${i}</div>`).join('')}</div><button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
-            document.body.appendChild(div);
+        if (activeTab === "sales" && isPriv) {
+            document.getElementById('doSale')?.addEventListener('click', () => {
+                const g=parseFloat(document.getElementById('sellGrams').value), rate=parseFloat(document.getElementById('sellRate').value);
+                const conv=document.getElementById('conv').value, partial=parseFloat(document.getElementById('partialUsd').value)||0, date=document.getElementById('saleDate').value;
+                if(!g||!rate) return;
+                try { recordSale(g,rate,conv,partial,date); render(); } catch(e) { alert(e.message); }
+            });
+            document.getElementById('conv')?.addEventListener('change', e => document.getElementById('partialBox').style.display = e.target.value === 'partial' ? 'block' : 'none');
+        }
+        if (activeTab === "survey" && isPriv) document.getElementById('doSurvey')?.addEventListener('click', () => {
+            const cust=document.getElementById('custName').value, amt=parseFloat(document.getElementById('survAmt').value), date=document.getElementById('surveyDate').value;
+            if(!cust||!amt) return;
+            try { addSurveyRevenue(amt,cust,date); render(); } catch(e) { alert(e.message); }
         });
-        
-        // User management events
+        if (activeTab === "expenses" && isPriv) document.getElementById('doExpense')?.addEventListener('click', () => {
+            const desc=document.getElementById('expDesc').value, amt=parseFloat(document.getElementById('expAmount').value), date=document.getElementById('expenseDate').value;
+            if(!desc||!amt) return alert("Enter description and amount");
+            try { addExpense(desc,amt,date); render(); } catch(e) { alert(e.message); }
+        });
+        if (activeTab === "deposits" && isPriv) document.getElementById('doDeposit')?.addEventListener('click', () => {
+            const type=document.getElementById('depositType').value, source=document.getElementById('depositSource').value, amt=parseFloat(document.getElementById('depositAmount').value), desc=document.getElementById('depositDesc').value, date=document.getElementById('depositDate').value;
+            if(!source||!amt) return;
+            try { addDeposit(type,source,amt,desc,date); render(); } catch(e) { alert(e.message); }
+        });
+        if (activeTab === "exchange" && isPriv) document.getElementById('doExchange')?.addEventListener('click', () => {
+            const dir=document.getElementById('exDir').value, amt=parseFloat(document.getElementById('exAmount').value), rate=parseFloat(document.getElementById('exRate').value), date=document.getElementById('exDate').value;
+            if(!amt||!rate) return;
+            try { exchangeCurrency(dir,amt,rate,date); render(); } catch(e) { alert(e.message); }
+        });
+        if (activeTab === "withdrawals") {
+            if (!isPriv) document.getElementById('requestWBtn')?.addEventListener('click', () => {
+                const amt=parseFloat(prompt("Amount to withdraw (ZMW):"));
+                if(amt) try { requestWithdrawal(currentUser.shareholderId, amt); render(); } catch(e) { alert(e.message); }
+            });
+            document.querySelectorAll('[data-apr]').forEach(btn => btn.addEventListener('click', () => { approveWithdrawal(parseInt(btn.dataset.apr)); render(); }));
+        }
         if (activeTab === "users" && isPriv) {
             document.getElementById('togglePasswords')?.addEventListener('click', () => { showPasswords = !showPasswords; render(); });
             document.querySelectorAll('[data-change-pwd]').forEach(btn => btn.addEventListener('click', () => {
-                const targetName = btn.dataset.changePwd;
-                const newPwd = prompt(`Enter new password for ${targetName}:`);
-                if (newPwd && newPwd.trim()) {
-                    try { changeUserPassword(targetName, newPwd, currentUser.role); alert(`Password changed!`); render(); } catch(e) { alert(e.message); }
-                }
+                const target = btn.dataset.changePwd;
+                const newPwd = prompt(`New password for ${target}:`);
+                if(newPwd) try { changeUserPassword(target, newPwd, currentUser.role); alert("Password changed!"); render(); } catch(e) { alert(e.message); }
             }));
             if (currentUser.role === 'admin') {
                 document.querySelectorAll('[data-del-user]').forEach(btn => btn.addEventListener('click', () => {
                     const id = parseInt(btn.dataset.delUser);
-                    if (confirm("Delete this shareholder? Balance must be zero.")) {
-                        try { deleteShareholder(id, currentUser.role); render(); } catch(e) { alert(e.message); }
-                    }
+                    if(confirm("Delete shareholder? Balance must be zero.")) try { deleteShareholder(id, currentUser.role); render(); } catch(e) { alert(e.message); }
                 }));
                 document.getElementById('addUserBtn')?.addEventListener('click', () => {
                     const name = document.getElementById('newUserName').value.trim();
                     const pwd = document.getElementById('newUserPass').value.trim();
-                    if (!name || !pwd) return alert("Enter name and password");
-                    try { addShareholder(name, pwd); alert(`Added ${name}!`); render(); } catch(e) { alert(e.message); }
+                    if(!name||!pwd) return alert("Enter name and password");
+                    try { addShareholder(name, pwd); alert("Added!"); render(); } catch(e) { alert(e.message); }
                 });
             }
         }
+        
+        document.getElementById('clickZMW')?.addEventListener('click', () => {
+            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>ZMW History</h3><div>${state.cashTransactions.map(t => `<div style="padding:6px 0;border-bottom:1px solid #333">${new Date(t.date).toLocaleString()} | ${t.type} | ${formatZMW(t.amountZMW)} | Balance: ${formatZMW(t.runningBalanceZMW)}</div>`).join('')}</div><button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
+            document.body.appendChild(div);
+        });
+        document.getElementById('clickUSD')?.addEventListener('click', () => {
+            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>USD History</h3><div>${state.cashTransactions.map(t => `<div style="padding:6px 0;border-bottom:1px solid #333">${new Date(t.date).toLocaleString()} | ${t.type} | ${formatUSD(t.amountUSD)} | Balance: ${formatUSD(t.runningBalanceUSD)}</div>`).join('')}</div><button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
+            document.body.appendChild(div);
+        });
     }
     render();
 </script>
