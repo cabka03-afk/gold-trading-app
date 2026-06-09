@@ -35,16 +35,19 @@
         .card { background: #11110e; border: 1px solid #2b281f; border-radius: 26px; padding: 1.5rem; margin-bottom: 1.8rem; }
         .card-title { font-size: 1.1rem; border-left: 3px solid #e0b867; padding-left: 12px; margin-bottom: 20px; }
         .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .form-group { margin-bottom: 16px; }
         .form-group label { font-size: 0.7rem; color: #c7b584; display: block; margin-bottom: 5px; }
-        input, select { width: 100%; background: #1e1d18; border: 1px solid #3f392b; padding: 10px 14px; border-radius: 36px; color: #f2e7cf; }
+        input, select, textarea { width: 100%; background: #1e1d18; border: 1px solid #3f392b; padding: 10px 14px; border-radius: 36px; color: #f2e7cf; }
         .btn-action { background: linear-gradient(100deg, #9e7d30, #d6ae5a); border: none; padding: 12px; border-radius: 40px; font-weight: bold; color: #0c0a04; cursor: pointer; width: 100%; }
         .btn-sm { background: #2a271f; border: 1px solid #7a6b47; padding: 6px 14px; border-radius: 30px; color: #f0daa0; cursor: pointer; font-size: 0.7rem; }
+        .btn-danger { background: #5a1e1e; border-color: #a54a4a; color: #ffb4b4; }
         .green { color: #8bcb8b; }
         .red { color: #e69474; }
         .muted { color: #8e8160; }
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; }
         .modal-content { background: #181714; border-radius: 28px; padding: 28px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #2f2b20; }
         .mobile-header { display: none; }
         .loading { text-align: center; padding: 50px; color: #e2bc6e; font-size: 1.2rem; }
         .sync-status { position: fixed; bottom: 10px; right: 10px; background: #1a1a17; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; z-index: 100; }
@@ -57,20 +60,21 @@
         .summary-card { flex: 1; background: #faf7f0; padding: 12px; border-radius: 12px; text-align: center; }
         .summary-card .value.positive { color: #2b6e2f; font-size: 1.6rem; font-weight: bold; }
         .summary-card .value.negative { color: #c0392b; font-size: 1.6rem; font-weight: bold; }
-        .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; max-height: 400px; overflow-y: auto; }
-        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; gap: 10px; background: white; justify-content: space-between; }
+        .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; max-height: 500px; overflow-y: auto; }
+        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; gap: 10px; background: white; justify-content: space-between; align-items: center; }
         .transaction-positive { color: #2e7d32; font-weight: bold; }
         .transaction-negative { color: #c62828; font-weight: bold; }
         .report-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; background: #f5efe3; padding: 15px; border-radius: 16px; }
-        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; color: #4a3e2c; }
-        .filter-btn:hover { background: #c8a96e; color: white; }
+        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; color: #4a3e2c; font-size: 0.75rem; }
+        .filter-btn:hover, .filter-btn.active { background: #c8a96e; color: white; }
+        .type-filter-bar { background: #f5efe3; padding: 12px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
         
-        @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; z-index: 15; } }
+        @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col, .three-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; z-index: 15; } }
     </style>
 </head>
 <body>
-<div id="root"><div class="loading">☁️ Loading...</div></div>
-<div id="syncStatus" class="sync-status">🔄 Connecting</div>
+<div id="root"><div class="loading">☁️ Loading cloud data...</div></div>
+<div id="syncStatus" class="sync-status">🔄 Connecting to cloud...</div>
 
 <script>
     // ========== FIREBASE CONFIG ==========
@@ -100,6 +104,7 @@
     let currentUser = null;
     let activeTab = "dashboard";
     let isLoading = true;
+    let showPasswords = false;
     let appData = {
         companyCashZMW: 0,
         companyCashUSD: 0,
@@ -155,19 +160,23 @@
             const surveysSnap = await surveysRef.orderBy('date', 'desc').get();
             appData.surveyRevenues = surveysSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             
+            const depositsSnap = await depositsRef.orderBy('date', 'desc').get();
+            appData.deposits = depositsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+            
             const withdrawalsSnap = await withdrawalsRef.orderBy('date', 'desc').get();
             appData.withdrawalRequests = withdrawalsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             
-            const transactionsSnap = await cashTransactionsRef.orderBy('date', 'desc').limit(200).get();
+            const transactionsSnap = await cashTransactionsRef.orderBy('date', 'desc').limit(500).get();
             appData.cashTransactions = transactionsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
             
             isLoading = false;
-            document.getElementById('syncStatus').innerHTML = '✅ Ready';
+            document.getElementById('syncStatus').innerHTML = '✅ Cloud Connected';
             setTimeout(() => { const s = document.getElementById('syncStatus'); if(s) s.style.opacity = '0.6'; }, 2000);
             
             if (currentUser) { renderApp(); } else { showLogin(); }
         } catch(e) {
             console.error(e);
+            document.getElementById('syncStatus').innerHTML = '⚠️ Offline Mode';
             isLoading = false;
             if (currentUser) { renderApp(); } else { showLogin(); }
         }
@@ -187,6 +196,54 @@
         await cashTransactionsRef.doc(trans.id).set(trans);
     }
     
+    // ========== USER MANAGEMENT ==========
+    function getAllUsers() {
+        const users = [
+            { id: 'admin', name: "Admin", role: 'admin', password: "Muhiim1998" },
+            { id: 'manager', name: "Samatar", role: 'manager', password: "samatar123" }
+        ];
+        appData.shareholders.forEach(sh => {
+            users.push({ id: sh.id, name: sh.name, role: 'shareholder', password: sh.password, balanceZMW: sh.balanceZMW });
+        });
+        return users;
+    }
+    
+    async function changeUserPassword(targetName, newPassword, currentUserRole) {
+        if (currentUserRole !== 'admin' && (targetName === "Admin" || targetName === "Samatar")) {
+            throw new Error("Only Admin can change Admin/Manager passwords");
+        }
+        if (targetName === "Admin") { /* Password is fixed in code for demo */ return true; }
+        if (targetName === "Samatar") { /* Password is fixed */ return true; }
+        const shareholder = appData.shareholders.find(s => s.name === targetName);
+        if (shareholder) {
+            shareholder.password = newPassword;
+            await shareholdersRef.doc(shareholder.id.toString()).update({ password: newPassword });
+            return true;
+        }
+        throw new Error("User not found");
+    }
+    
+    async function addShareholder(name, password) {
+        if (!name || !password) throw new Error("Name and password required");
+        if (appData.shareholders.some(s => s.name.toLowerCase() === name.toLowerCase())) throw new Error("Name already exists");
+        const newId = Math.max(...appData.shareholders.map(s=>s.id), 0) + 1;
+        const newShareholder = { id: newId, name, password, balanceZMW: 0 };
+        await shareholdersRef.doc(newId.toString()).set(newShareholder);
+        appData.shareholders.push(newShareholder);
+        return true;
+    }
+    
+    async function deleteShareholder(shareholderId, currentUserRole) {
+        if (currentUserRole !== 'admin') throw new Error("Only Admin can delete shareholders");
+        const shareholder = appData.shareholders.find(s => s.id === shareholderId);
+        if (!shareholder) throw new Error("Shareholder not found");
+        if (shareholder.balanceZMW !== 0) throw new Error(`Cannot delete ${shareholder.name} - balance is ${formatZMW(shareholder.balanceZMW)}`);
+        await shareholdersRef.doc(shareholderId.toString()).delete();
+        appData.shareholders = appData.shareholders.filter(s => s.id !== shareholderId);
+        return true;
+    }
+    
+    // ========== BUSINESS FUNCTIONS ==========
     async function addDeposit(type, source, amountZMW, description, transDate) {
         if (amountZMW <= 0) throw new Error("Amount must be positive");
         if (type === "shareholder") {
@@ -200,7 +257,7 @@
         } else {
             appData.companyCashZMW += amountZMW;
             await saveSettings();
-            await addCashTransaction("DEPOSIT", amountZMW, 0, `External deposit: ${description || source}`, transDate);
+            await addCashTransaction("DEPOSIT", amountZMW, 0, `External: ${description || source}`, transDate);
         }
         renderApp();
     }
@@ -254,7 +311,7 @@
             await purchasesRef.doc(p.id).update({ remainingGrams: p.remainingGrams });
             remaining -= taken;
         }
-        if (remaining > 0) throw new Error("Insufficient gold inventory. Need to buy more gold first.");
+        if (remaining > 0) throw new Error("Insufficient gold inventory");
         
         const revenueUSD = g * sellRateUSD;
         const costBasisUSD = totalCostBasisZMW / appData.exchangeRate;
@@ -278,10 +335,10 @@
         }
         await saveSettings();
         
-        const sale = { id: Date.now().toString(), date, gramsSold: g, sellRateUSD, revenueUSD, profitUSD, conversionChoice, usdKept, zmwConverted };
+        const sale = { id: Date.now().toString(), date, gramsSold: g, sellRateUSD, revenueUSD, profitUSD };
         await salesRef.doc(sale.id).set(sale);
         appData.goldSales.unshift(sale);
-        await addCashTransaction("SALE", zmwConverted, usdKept, `Sold ${g}g @ ${sellRateUSD} USD/g, Profit: ${formatUSD(profitUSD)}`, date);
+        await addCashTransaction("SALE", zmwConverted, usdKept, `Sold ${g}g @ ${sellRateUSD} USD/g, Profit: ${profitUSD.toFixed(2)} USD`, date);
         renderApp();
     }
     
@@ -337,6 +394,94 @@
         renderApp();
     }
     
+    // ========== REPORT FUNCTIONS ==========
+    let currentReportStart = null;
+    let currentReportEnd = null;
+    let currentTypeFilter = "all";
+    
+    function getDateRange(filter) {
+        const today = new Date();
+        let start, end;
+        if (filter === 'today') { start = new Date(); start.setHours(0,0,0,0); end = new Date(); end.setHours(23,59,59,999); }
+        else if (filter === 'yesterday') { start = new Date(); start.setDate(today.getDate()-1); start.setHours(0,0,0,0); end = new Date(start); end.setHours(23,59,59,999); }
+        else if (filter === 'thisMonth') { start = new Date(today.getFullYear(), today.getMonth(), 1); end = new Date(today.getFullYear(), today.getMonth()+1, 0); end.setHours(23,59,59,999); }
+        else if (filter === 'lastMonth') { start = new Date(today.getFullYear(), today.getMonth()-1, 1); end = new Date(today.getFullYear(), today.getMonth(), 0); end.setHours(23,59,59,999); }
+        else if (filter === 'thisYear') { start = new Date(today.getFullYear(), 0, 1); end = new Date(today.getFullYear(), 11, 31); end.setHours(23,59,59,999); }
+        else { start = new Date(0); end = new Date(); }
+        return { start, end };
+    }
+    
+    function generateReport() {
+        let filtered = appData.cashTransactions.filter(t => {
+            if (!currentReportStart || !currentReportEnd) return true;
+            const d = new Date(t.date);
+            return d >= currentReportStart && d <= currentReportEnd;
+        });
+        if (currentTypeFilter !== "all") {
+            filtered = filtered.filter(t => t.type === currentTypeFilter);
+        }
+        
+        const totalIn = filtered.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
+        const totalOut = filtered.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
+        
+        // Sales Rep Summary
+        const repSummary = {};
+        appData.goldPurchases.forEach(p => {
+            if (!repSummary[p.salesRep]) repSummary[p.salesRep] = { count: 0, totalGrams: 0, totalMashiin: 0 };
+            repSummary[p.salesRep].count++;
+            repSummary[p.salesRep].totalGrams += p.grams;
+            repSummary[p.salesRep].totalMashiin += (p.mashiinFee || 0);
+        });
+        
+        // Customer Survey Summary
+        const customerSummary = {};
+        appData.surveyRevenues.forEach(s => {
+            if (!customerSummary[s.customerName]) customerSummary[s.customerName] = { count: 0, total: 0 };
+            customerSummary[s.customerName].count++;
+            customerSummary[s.customerName].total += s.amountZMW;
+        });
+        
+        const totalMashiin = appData.goldPurchases.reduce((s,p)=>s+(p.mashiinFee||0),0);
+        const totalTransport = appData.goldPurchases.reduce((s,p)=>s+(p.transportFee||0),0);
+        
+        const typeLabel = currentTypeFilter === "all" ? "All Transactions" : currentTypeFilter;
+        const dateLabel = currentReportStart && currentReportEnd ? `${currentReportStart.toLocaleDateString()} → ${currentReportEnd.toLocaleDateString()}` : "All Time";
+        
+        document.getElementById('reportOutput').innerHTML = `<div class="report-container">
+            <div class="report-header"><h3>📊 Financial Report</h3><div>${dateLabel}</div><div style="font-size:0.8rem;">Type: ${typeLabel}</div></div>
+            <div class="report-summary">
+                <div class="summary-card"><div>💰 Total Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
+                <div class="summary-card"><div>📉 Total Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
+                <div class="summary-card"><div>📈 Net Profit</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
+            </div>
+            <div style="background:#fff8e7; border-radius:16px; padding:15px; margin-bottom:20px;">
+                <h4 style="margin-bottom:10px;">⚙️ Mashiin & Transport Summary</h4>
+                <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                    <div>Total Mashiin Collected: <strong style="color:#2b6e2f;">${formatZMW(totalMashiin)}</strong></div>
+                    <div>Total Transport Collected: <strong style="color:#2b6e2f;">${formatZMW(totalTransport)}</strong></div>
+                </div>
+            </div>
+            <div class="three-col" style="margin-bottom:20px;">
+                <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
+                    <h4>👥 Sales Rep Performance</h4>
+                    ${Object.entries(repSummary).map(([rep, data]) => `<div style="display:flex; justify-content:space-between; padding:5px 0;"><span>${rep}</span><span>${data.count} buys | ${data.totalGrams.toFixed(2)}g | Mashiin: ${formatZMW(data.totalMashiin)}</span></div>`).join('') || '<div class="muted">No purchases yet</div>'}
+                </div>
+                <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
+                    <h4>📋 Survey by Customer</h4>
+                    ${Object.entries(customerSummary).map(([cust, data]) => `<div style="display:flex; justify-content:space-between; padding:5px 0;"><span>${cust}</span><span>${data.count} surveys | ${formatZMW(data.total)}</span></div>`).join('') || '<div class="muted">No surveys yet</div>'}
+                </div>
+                <div style="background:white; border-radius:16px; padding:15px; border:1px solid #e2d5bd;">
+                    <h4>💱 Current Exchange Rate</h4>
+                    <div style="font-size:1.5rem; font-weight:bold; color:#2b6e2f;">1 USD = ${appData.exchangeRate.toFixed(2)} ZMW</div>
+                    <div class="muted">ZMW: ${formatZMW(appData.companyCashZMW)} | USD: ${formatUSD(appData.companyCashUSD)}</div>
+                </div>
+            </div>
+            <div class="transaction-list"><div style="background:#efe5d5; padding:12px; font-weight:bold;">📋 TRANSACTION HISTORY (${filtered.length} records)</div>
+            ${filtered.map(t => `<div class="transaction-item"><div>${new Date(t.date).toLocaleString()}</div><div><strong>${t.type}</strong></div><div>${t.description || '-'}</div><div class="${t.amountZMW>=0?'transaction-positive':'transaction-negative'}">${t.amountZMW>=0?'+':''}${formatZMW(t.amountZMW)}</div></div>`).join('')}
+            ${filtered.length === 0 ? '<div style="text-align:center;padding:40px;">No transactions found</div>' : ''}</div>
+        </div>`;
+    }
+    
     function showLogin() {
         document.getElementById('root').innerHTML = `<div class="login-screen"><div class="login-card">
             <h1>🏦 Gold Trade Pro</h1>
@@ -367,21 +512,27 @@
     function renderApp() {
         const root = document.getElementById('root');
         const isPriv = currentUser?.role === 'admin' || currentUser?.role === 'manager';
-        const navItems = ["dashboard", "purchase", "sales", "exchange", "survey", "expenses", "deposits", "reports", "withdrawals"];
+        const navItems = ["dashboard", "purchase", "sales", "exchange", "survey", "expenses", "deposits", "users", "reports", "withdrawals"];
         const nav = navItems.map(t => `<button class="nav-btn ${activeTab===t?'active':''}" data-tab="${t}">${t.charAt(0).toUpperCase()+t.slice(1)}</button>`).join('');
         const today = new Date().toISOString().slice(0,10);
         let content = '';
         
         if (activeTab === 'dashboard') {
             const stock = appData.goldPurchases.reduce((a,b)=>a+b.grams,0) - (appData.goldSales?.reduce((a,b)=>a+b.gramsSold,0)||0);
+            const repSummary = {};
+            appData.goldPurchases.forEach(p => { repSummary[p.salesRep] = (repSummary[p.salesRep] || 0) + p.grams; });
             content = `<div class="stats-row">
                 <div class="stat-card" id="clickZMW"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(appData.companyCashZMW)}</div></div>
                 <div class="stat-card" id="clickUSD"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(appData.companyCashUSD)}</div></div>
                 <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${stock.toFixed(2)} g</div></div>
-                <div class="stat-card"><div class="stat-label">💱 Exchange Rate</div><div class="stat-value">1 USD = ${appData.exchangeRate.toFixed(2)}</div></div>
+                <div class="stat-card"><div class="stat-label">💱 Rate</div><div class="stat-value">1 USD = ${appData.exchangeRate.toFixed(2)}</div></div>
             </div>
-            <div class="two-col"><div class="card"><div class="card-title">👤 Shareholder Balances</div>${appData.shareholders.map(s=>`<div style="display:flex;justify-content:space-between;padding:8px 0"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>
-            <div class="card"><div class="card-title">📊 Recent Transactions</div>${appData.cashTransactions.slice(0,8).map(t=>`<div style="padding:8px 0;border-bottom:1px solid #2a261d;font-size:0.8rem">${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)}</div>`).join('') || '<div class="muted">No transactions yet. Add a deposit to start!</div>'}</div></div>`;
+            <div class="three-col">
+                <div class="card"><div class="card-title">👤 Shareholders</div>${appData.shareholders.map(s=>`<div style="display:flex;justify-content:space-between;padding:8px 0"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>
+                <div class="card"><div class="card-title">📊 Purchases by Rep</div>${Object.entries(repSummary).map(([rep, grams]) => `<div style="display:flex;justify-content:space-between;padding:5px 0"><span>${rep}</span><span>${grams.toFixed(2)} g</span></div>`).join('') || '<div class="muted">No purchases yet</div>'}</div>
+                <div class="card"><div class="card-title">📋 Survey by Customer</div>${(() => { const custMap = {}; appData.surveyRevenues.forEach(s => { custMap[s.customerName] = (custMap[s.customerName] || 0) + s.amountZMW; }); return Object.entries(custMap).map(([cust, amt]) => `<div style="display:flex;justify-content:space-between;padding:5px 0"><span>${cust}</span><span>${formatZMW(amt)}</span></div>`).join('') || '<div class="muted">No surveys yet</div>'; })()}</div>
+            </div>
+            <div class="card"><div class="card-title">🕐 Recent Transactions</div>${appData.cashTransactions.slice(0,8).map(t=>`<div style="padding:8px 0;border-bottom:1px solid #2a261d;font-size:0.8rem">${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)}</div>`).join('') || '<div class="muted">No transactions yet</div>'}</div>`;
         }
         else if (activeTab === 'purchase' && isPriv) {
             content = `<div class="card"><div class="card-title">🛒 Buy Gold (ZMW)</div>
@@ -443,18 +594,43 @@
                 <button class="btn-action" id="doDeposit">💳 Record Deposit</button>
                 <div class="muted" style="margin-top:12px;">💡 Tip: Add a deposit to fund company cash first!</div></div>`;
         }
+        else if (activeTab === 'users' && isPriv) {
+            const users = getAllUsers();
+            content = `<div class="card"><div class="card-title">👥 User Management</div>
+                <div style="margin-bottom:15px;"><button class="btn-sm" id="togglePasswords">${showPasswords ? '🙈 Hide' : '👁️ Show'} Passwords</button></div>
+                ${users.map(u => `<div class="user-row"><div><strong>${u.name}</strong> <span class="muted">(${u.role})</span> ${u.balanceZMW !== undefined ? `<span class="green">${formatZMW(u.balanceZMW)}</span>` : ''}</div><div>${showPasswords ? u.password : '••••••••'}</div><div><button class="btn-sm" data-change-pwd="${u.name}">Change</button>${u.role === 'shareholder' && currentUser.role === 'admin' ? `<button class="btn-sm btn-danger" data-del-user="${u.id}" style="margin-left:8px;">Delete</button>` : ''}</div></div>`).join('')}
+                ${currentUser.role === 'admin' ? `<div style="margin-top:20px; padding-top:15px; border-top:1px solid #333;"><h4>➕ Add Shareholder</h4><div class="form-group"><input id="newUserName" placeholder="Name" /></div><div class="form-group"><input id="newUserPass" placeholder="Password" /></div><button class="btn-action" id="addUserBtn">Add Shareholder</button></div>` : ''}
+            </div>`;
+        }
         else if (activeTab === 'reports' && isPriv) {
             const totalMashiin = appData.goldPurchases.reduce((s,p)=>s+(p.mashiinFee||0),0);
             const totalTransport = appData.goldPurchases.reduce((s,p)=>s+(p.transportFee||0),0);
-            const totalSalesProfit = appData.goldSales.reduce((s,p)=>s+(p.profitUSD||0),0);
             content = `<div class="card"><div class="card-title">📅 Reports & Analytics</div>
                 <div class="report-filters">
-                    <button class="filter-btn" id="refreshReport">🔄 Refresh Report</button>
+                    <button class="filter-btn" data-filter="today">📅 Today</button>
+                    <button class="filter-btn" data-filter="yesterday">📆 Yesterday</button>
+                    <button class="filter-btn" data-filter="thisMonth">📆 This Month</button>
+                    <button class="filter-btn" data-filter="lastMonth">📆 Last Month</button>
+                    <button class="filter-btn" data-filter="thisYear">📅 This Year</button>
+                    <button class="filter-btn" data-filter="all">📊 All Time</button>
+                </div>
+                <div class="type-filter-bar">
+                    <label>📌 Filter by Type:</label>
+                    <select id="reportTypeFilter">
+                        <option value="all">📊 All Transactions</option>
+                        <option value="PURCHASE">💎 Gold Purchases</option>
+                        <option value="SALE">💰 Gold Sales</option>
+                        <option value="SURVEY">📋 Survey Revenue</option>
+                        <option value="EXPENSE">📉 Expenses</option>
+                        <option value="DEPOSIT">💵 Deposits</option>
+                        <option value="WITHDRAWAL">🏧 Withdrawals</option>
+                        <option value="EXCHANGE">🔄 Exchange</option>
+                    </select>
+                    <button class="btn-sm" id="applyTypeFilter">Apply Filter</button>
                 </div>
                 <div style="background:#1a1a17; padding:12px; border-radius:16px; margin-bottom:15px; display:flex; gap:20px; flex-wrap:wrap;">
                     <div>⚙️ Total Mashiin: <strong style="color:#e9cf8b">${formatZMW(totalMashiin)}</strong></div>
                     <div>🚚 Total Transport: <strong style="color:#e9cf8b">${formatZMW(totalTransport)}</strong></div>
-                    <div>💰 Total Gold Profit: <strong style="color:#e9cf8b">${formatUSD(totalSalesProfit)}</strong></div>
                     <div>💱 Current Rate: <strong style="color:#e9cf8b">1 USD = ${appData.exchangeRate.toFixed(2)} ZMW</strong></div>
                 </div>
                 <div id="reportOutput"></div>
@@ -477,6 +653,7 @@
         <button class="btn-outline" id="logoutBtn">🚪 Sign Out</button></div></div>
         <div class="content-main">${content}</div>`;
         
+        // Navigation
         document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { activeTab = b.dataset.tab; renderApp(); }));
         document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; showLogin(); });
         document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
@@ -518,6 +695,27 @@
                 try { await addDeposit(document.getElementById('depType').value, document.getElementById('depSource').value, parseFloat(document.getElementById('depAmt').value), document.getElementById('depDesc')?.value || '', document.getElementById('depDate').value); } catch(e) { alert(e.message); }
             });
         }
+        // Users
+        if (activeTab === 'users' && isPriv) {
+            document.getElementById('togglePasswords')?.addEventListener('click', () => { showPasswords = !showPasswords; renderApp(); });
+            document.querySelectorAll('[data-change-pwd]').forEach(btn => btn.addEventListener('click', async () => {
+                const target = btn.dataset.changePwd;
+                const newPwd = prompt(`New password for ${target}:`);
+                if (newPwd) try { await changeUserPassword(target, newPwd, currentUser.role); alert("Password changed!"); renderApp(); } catch(e) { alert(e.message); }
+            }));
+            if (currentUser.role === 'admin') {
+                document.querySelectorAll('[data-del-user]').forEach(btn => btn.addEventListener('click', async () => {
+                    const id = parseInt(btn.dataset.delUser);
+                    if (confirm("Delete this shareholder? Balance must be zero.")) try { await deleteShareholder(id, currentUser.role); renderApp(); } catch(e) { alert(e.message); }
+                }));
+                document.getElementById('addUserBtn')?.addEventListener('click', async () => {
+                    const name = document.getElementById('newUserName').value.trim();
+                    const pwd = document.getElementById('newUserPass').value.trim();
+                    if (!name || !pwd) return alert("Enter name and password");
+                    try { await addShareholder(name, pwd); alert("Shareholder added!"); renderApp(); } catch(e) { alert(e.message); }
+                });
+            }
+        }
         // Withdrawals
         if (activeTab === 'withdrawals' && !isPriv) {
             document.getElementById('reqBtn')?.addEventListener('click', async () => {
@@ -525,28 +723,29 @@
             });
         }
         if (activeTab === 'withdrawals' && isPriv) {
-            document.querySelectorAll('[data-apr]').forEach(b => b.addEventListener('click', async () => { await approveWithdrawal(b.dataset.apr); }));
+            document.querySelectorAll('[data-apr]').forEach(b => b.addEventListener('click', async () => { await approveWithdrawal(parseInt(b.dataset.apr)); renderApp(); }));
         }
         // Reports
         if (activeTab === 'reports' && isPriv) {
-            function showReport() {
-                const totalIn = appData.cashTransactions.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
-                const totalOut = appData.cashTransactions.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
-                document.getElementById('reportOutput').innerHTML = `<div class="report-container">
-                    <div class="report-header"><h3>📊 Financial Report</h3><div>All Transactions</div></div>
-                    <div class="report-summary">
-                        <div class="summary-card"><div>💰 Total Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
-                        <div class="summary-card"><div>📉 Total Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
-                        <div class="summary-card"><div>📈 Net Profit</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
-                    </div>
-                    <div class="transaction-list"><div style="background:#efe5d5; padding:12px; font-weight:bold;">📋 TRANSACTION HISTORY</div>
-                    ${appData.cashTransactions.map(t => `<div class="transaction-item"><div>${new Date(t.date).toLocaleString()}</div><div><strong>${t.type}</strong></div><div>${t.description || '-'}</div><div class="${t.amountZMW>=0?'transaction-positive':'transaction-negative'}">${t.amountZMW>=0?'+':''}${formatZMW(t.amountZMW)}</div></div>`).join('')}
-                    ${appData.cashTransactions.length === 0 ? '<div style="text-align:center;padding:40px;">No transactions yet</div>' : ''}</div>
-                </div>`;
-            }
-            document.getElementById('refreshReport')?.addEventListener('click', () => showReport());
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.dataset.filter;
+                    const { start, end } = getDateRange(filter);
+                    currentReportStart = start;
+                    currentReportEnd = end;
+                    generateReport();
+                });
+            });
+            document.getElementById('applyTypeFilter')?.addEventListener('click', () => {
+                currentTypeFilter = document.getElementById('reportTypeFilter').value;
+                generateReport();
+            });
             document.getElementById('printReport')?.addEventListener('click', () => window.print());
-            showReport();
+            // Initialize with all time
+            currentReportStart = null;
+            currentReportEnd = null;
+            currentTypeFilter = "all";
+            generateReport();
         }
         
         // Cash balance click handlers
