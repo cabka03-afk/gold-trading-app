@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gold Trading Pro | Accounting + Loans + Reports</title>
+    <title>Gold Trading Pro | Complete Accounting + Deposits + Date Reports</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,6 @@
             color: #ece3cf;
         }
 
-        /* login */
         .login-screen {
             min-height: 100vh;
             display: flex;
@@ -81,7 +80,6 @@
             text-align: center;
         }
 
-        /* app layout */
         .app-layout {
             display: flex;
             min-height: 100vh;
@@ -161,7 +159,6 @@
             flex: 1;
         }
 
-        /* cards & stats */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -188,7 +185,7 @@
         }
 
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: #e9cf8b;
         }
@@ -322,6 +319,27 @@
             overflow-y: auto;
         }
 
+        .report-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            background: #25231c;
+            border: 1px solid #5f553b;
+            padding: 6px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        .filter-btn.active {
+            background: #e0b867;
+            color: #0c0b07;
+        }
+
         .mobile-header {
             display: none;
         }
@@ -359,96 +377,73 @@
 <div id="root"></div>
 
 <script>
-    // ------------------- ACCOUNTING DATA MODEL -------------------
+    // ------------------- DATA MODEL -------------------
     const defaultState = {
-        // Cash balances
         companyCashZMW: 50000.0,
         companyCashUSD: 0.0,
         exchangeRate: 26.5,
         
-        // Chart of Accounts - transactions log
-        cashTransactions: [],  // { id, date, type, amountZMW, amountUSD, description, runningBalanceZMW, runningBalanceUSD }
-        
-        // Gold inventory & sales
-        goldPurchases: [],
-        goldSales: [],
-        
-        // Expenses & Survey
-        expenses: [],
-        surveyRevenues: [],
-        
-        // Liabilities (Loans taken)
-        liabilities: [],   // { id, lender, amountZMW, remainingBalance, interestRate, dueDate, dateTaken, notes }
-        
-        // Debtors (people who owe company)
-        debtors: [],       // { id, customerName, amountZMW, remainingBalance, dueDate, notes }
-        
-        // Equity tracking
-        startingEquity: 50000.0,
-        retainedEarnings: 0.0,
-        
-        // Withdrawals
+        // All transaction logs with dates
+        goldPurchases: [],      // id, date, grams, ratePerGram, grossAmount, mashiinFee, transportFee, netPaid, salesRep, remainingGrams
+        goldSales: [],          // id, date, gramsSold, sellRateUSD, revenueUSD, costBasisUSD, profitUSD, conversionChoice, usdKept, zmwConverted
+        expenses: [],           // id, date, description, amountZMW
+        surveyRevenues: [],     // id, date, amountZMW, customerName
+        exchangeLogs: [],       // id, date, fromCurr, toCurr, amount, rate, result
+        deposits: [],           // id, date, type, source, amountZMW, description (type: shareholder, loan_payment, external)
         withdrawalRequests: [],
+        cashTransactions: [],   // unified ledger for dashboard
         
-        // Shareholders (ZMW balances only)
+        liabilities: [],
+        debtors: [],
+        
         shareholders: [
             { id: 1, name: "Yuusuf", password: "yuusuf123", balanceZMW: 0.0, role: "shareholder" },
             { id: 2, name: "Abdirisak", password: "abdirisak123", balanceZMW: 0.0, role: "shareholder" },
             { id: 3, name: "Ahmed", password: "ahmed123", balanceZMW: 0.0, role: "shareholder" }
         ],
         
-        // Admin & Manager
         adminUser: { name: "Admin", password: "Muhiim1998", role: "admin" },
         managerUser: { name: "Samatar", password: "samatar123", role: "manager" },
-        
         salesReps: ["Samatar", "Yuusuf", "Abdirisak", "Jamal"],
         defaultMashiin: 750,
-        defaultTransport: 150,
-        
-        exchangeLogs: []
+        defaultTransport: 150
     };
 
-    let state = JSON.parse(localStorage.getItem('gold_pro_acct')) || JSON.parse(JSON.stringify(defaultState));
+    let state = JSON.parse(localStorage.getItem('gold_pro_acct_v2')) || JSON.parse(JSON.stringify(defaultState));
     let currentUser = null;
     let activeTab = "dashboard";
     let modalData = null;
 
-    function persist() { localStorage.setItem('gold_pro_acct', JSON.stringify(state)); }
+    function persist() { localStorage.setItem('gold_pro_acct_v2', JSON.stringify(state)); }
 
     const formatZMW = (v) => 'K' + (parseFloat(v)||0).toFixed(2);
     const formatUSD = (v) => '$' + (parseFloat(v)||0).toFixed(2);
     const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
 
-    // log cash transaction
-    function logCashTransaction(type, amountZMW, amountUSD, desc) {
-        const runningZMW = state.companyCashZMW;
-        const runningUSD = state.companyCashUSD;
+    function addToCashTransactions(type, amountZMW, amountUSD, description, date) {
         state.cashTransactions.unshift({
-            id: Date.now(),
-            date: new Date().toISOString(),
-            type, amountZMW, amountUSD, description: desc,
-            runningBalanceZMW: runningZMW,
-            runningBalanceUSD: runningUSD
+            id: Date.now(), date: date || new Date().toISOString(), type, amountZMW, amountUSD, description,
+            runningBalanceZMW: state.companyCashZMW,
+            runningBalanceUSD: state.companyCashUSD
         });
         persist();
     }
 
-    // Purchase with Mashiin/Transport
-    function recordPurchase(grams, ratePerGram, mashiinAmt, transportAmt, salesRep) {
+    // ----- BUSINESS LOGIC WITH DATES -----
+    function recordPurchase(grams, ratePerGram, mashiinAmt, transportAmt, salesRep, transDate) {
         const gross = grams * ratePerGram;
         const netPaid = gross - (mashiinAmt + transportAmt);
         if (netPaid < 0) throw new Error("Deductions exceed value");
         state.goldPurchases.push({
-            id: Date.now(), date: new Date().toISOString(), grams, ratePerGram, grossAmount: gross,
+            id: Date.now(), date: transDate, grams, ratePerGram, grossAmount: gross,
             mashiinFee: mashiinAmt, transportFee: transportAmt, netPaid, salesRep, remainingGrams: grams
         });
         state.companyCashZMW -= netPaid;
-        logCashTransaction("GOLD_PURCHASE", -netPaid, 0, `Buy ${grams}g @ ${ratePerGram} ZMW/g, Mashiin:${mashiinAmt}, Transport:${transportAmt}, Rep:${salesRep}`);
+        addToCashTransactions("GOLD_PURCHASE", -netPaid, 0, `Buy ${grams}g @ ${ratePerGram} ZMW/g, Rep:${salesRep}`, transDate);
         persist();
     }
 
-    // Sale with profit distribution in ZMW
-    function recordSale(gramsSold, sellRateUSD, conversionChoice, customConvertUSD = 0) {
+    function recordSale(gramsSold, sellRateUSD, conversionChoice, customConvertUSD, transDate) {
         let remaining = gramsSold;
         let totalCostBasisZMW = 0;
         for (let p of state.goldPurchases) {
@@ -478,68 +473,67 @@
             state.companyCashZMW += zmwConverted;
             state.companyCashUSD += usdKept;
         }
-        state.goldSales.push({ id: Date.now(), date: new Date().toISOString(), gramsSold, sellRateUSD, revenueUSD, profitUSD, conversionChoice, usdKept, zmwConverted });
-        logCashTransaction("GOLD_SALE", zmwConverted, usdKept, `Sold ${gramsSold}g @ ${sellRateUSD} USD/g, profit ${profitUSD} USD`);
+        state.goldSales.push({ id: Date.now(), date: transDate, gramsSold, sellRateUSD, revenueUSD, profitUSD, conversionChoice, usdKept, zmwConverted });
+        addToCashTransactions("GOLD_SALE", zmwConverted, usdKept, `Sold ${gramsSold}g @ ${sellRateUSD} USD/g, profit ${profitUSD} USD`, transDate);
         persist();
     }
 
-    function addExpense(desc, amountZMW) {
+    function addExpense(desc, amountZMW, transDate) {
         const perShare = amountZMW / state.shareholders.length;
         state.shareholders.forEach(sh => sh.balanceZMW -= perShare);
-        state.expenses.push({ id: Date.now(), date: new Date().toISOString(), description: desc, amountZMW });
+        state.expenses.push({ id: Date.now(), date: transDate, description: desc, amountZMW });
         state.companyCashZMW -= amountZMW;
-        logCashTransaction("EXPENSE", -amountZMW, 0, desc);
+        addToCashTransactions("EXPENSE", -amountZMW, 0, desc, transDate);
         persist();
     }
 
-    function addSurveyRevenue(amountZMW, customerName) {
+    function addSurveyRevenue(amountZMW, customerName, transDate) {
         const perShare = amountZMW / state.shareholders.length;
         state.shareholders.forEach(sh => sh.balanceZMW += perShare);
-        state.surveyRevenues.push({ id: Date.now(), date: new Date().toISOString(), amountZMW, customerName });
+        state.surveyRevenues.push({ id: Date.now(), date: transDate, amountZMW, customerName });
         state.companyCashZMW += amountZMW;
-        logCashTransaction("SURVEY_REVENUE", amountZMW, 0, `Survey from ${customerName}`);
+        addToCashTransactions("SURVEY_REVENUE", amountZMW, 0, `Survey from ${customerName}`, transDate);
         persist();
     }
 
-    // Loan / Liability
-    function addLiability(lender, amountZMW, interestRate, dueDate, notes) {
-        state.liabilities.push({
-            id: Date.now(), date: new Date().toISOString(), lender, amountZMW, remainingBalance: amountZMW,
-            interestRate: interestRate || 0, dueDate, notes
-        });
-        state.companyCashZMW += amountZMW;
-        logCashTransaction("LOAN_RECEIVED", amountZMW, 0, `Loan from ${lender} (${formatZMW(amountZMW)})`);
+    // DEPOSIT: Shareholder (increases balance), Loan Payment (reduces liability), External
+    function addDeposit(type, source, amountZMW, description, transDate) {
+        if (type === "shareholder") {
+            const shareholder = state.shareholders.find(s => s.name === source);
+            if (!shareholder) throw new Error("Shareholder not found");
+            shareholder.balanceZMW += amountZMW;
+            state.companyCashZMW += amountZMW;
+            addToCashTransactions("DEPOSIT_SHAREHOLDER", amountZMW, 0, `Deposit from ${source}`, transDate);
+        } else if (type === "loan_payment") {
+            state.companyCashZMW += amountZMW;
+            addToCashTransactions("DEPOSIT_LOAN", amountZMW, 0, `Loan payment from ${source}`, transDate);
+        } else {
+            state.companyCashZMW += amountZMW;
+            addToCashTransactions("DEPOSIT_EXTERNAL", amountZMW, 0, `External deposit: ${description}`, transDate);
+        }
+        state.deposits.push({ id: Date.now(), date: transDate, type, source, amountZMW, description });
         persist();
     }
 
-    function repayLiability(liabilityId, repayAmount) {
-        const loan = state.liabilities.find(l => l.id === liabilityId);
-        if (!loan || repayAmount > loan.remainingBalance) throw new Error("Invalid repayment");
-        loan.remainingBalance -= repayAmount;
-        state.companyCashZMW -= repayAmount;
-        logCashTransaction("LOAN_REPAYMENT", -repayAmount, 0, `Repaid ${formatZMW(repayAmount)} to ${loan.lender}`);
+    function exchangeCurrency(fromCurr, amount, rate, transDate) {
+        if (fromCurr === "ZMW") {
+            if (state.companyCashZMW < amount) throw new Error("Insufficient ZMW");
+            const usdReceived = amount / rate;
+            state.companyCashZMW -= amount;
+            state.companyCashUSD += usdReceived;
+            addToCashTransactions("EXCHANGE", -amount, usdReceived, `ZMW → USD at rate ${rate}`, transDate);
+        } else {
+            if (state.companyCashUSD < amount) throw new Error("Insufficient USD");
+            const zmwReceived = amount * rate;
+            state.companyCashUSD -= amount;
+            state.companyCashZMW += zmwReceived;
+            addToCashTransactions("EXCHANGE", zmwReceived, -amount, `USD → ZMW at rate ${rate}`, transDate);
+        }
+        state.exchangeRate = rate;
         persist();
     }
 
-    // Debtor (customer owes)
-    function addDebtor(customerName, amountZMW, dueDate, notes) {
-        state.debtors.push({
-            id: Date.now(), date: new Date().toISOString(), customerName, amountZMW, remainingBalance: amountZMW, dueDate, notes
-        });
-        logCashTransaction("DEBTOR_CREATED", 0, 0, `Debt recorded: ${customerName} owes ${formatZMW(amountZMW)}`);
-        persist();
-    }
-
-    function receiveDebtPayment(debtorId, payAmount) {
-        const debtor = state.debtors.find(d => d.id === debtorId);
-        if (!debtor || payAmount > debtor.remainingBalance) throw new Error("Invalid payment");
-        debtor.remainingBalance -= payAmount;
-        state.companyCashZMW += payAmount;
-        logCashTransaction("DEBTOR_PAYMENT", payAmount, 0, `Received ${formatZMW(payAmount)} from ${debtor.customerName}`);
-        persist();
-    }
-
-    function requestWithdrawalZMW(shareholderId, amountZMW) {
+    function requestWithdrawal(shareholderId, amountZMW) {
         const sh = state.shareholders.find(s => s.id === shareholderId);
         if (!sh || sh.balanceZMW < amountZMW) throw new Error("Insufficient balance");
         state.withdrawalRequests.push({ id: Date.now(), date: new Date().toISOString(), shareholderId, shareholderName: sh.name, amountZMW, status: "pending" });
@@ -554,30 +548,35 @@
         shareholder.balanceZMW -= req.amountZMW;
         state.companyCashZMW -= req.amountZMW;
         req.status = "approved";
-        logCashTransaction("WITHDRAWAL", -req.amountZMW, 0, `Withdrawal by ${shareholder.name}`);
+        addToCashTransactions("WITHDRAWAL", -req.amountZMW, 0, `Withdrawal by ${shareholder.name}`, new Date().toISOString());
         persist();
         return true;
     }
 
-    function exchangeCurrency(fromCurr, amount, rate) {
-        if (fromCurr === "ZMW") {
-            if (state.companyCashZMW < amount) throw new Error("Insufficient ZMW");
-            const usdReceived = amount / rate;
-            state.companyCashZMW -= amount;
-            state.companyCashUSD += usdReceived;
-            logCashTransaction("EXCHANGE", -amount, usdReceived, `ZMW → USD at rate ${rate}`);
-        } else {
-            if (state.companyCashUSD < amount) throw new Error("Insufficient USD");
-            const zmwReceived = amount * rate;
-            state.companyCashUSD -= amount;
-            state.companyCashZMW += zmwReceived;
-            logCashTransaction("EXCHANGE", zmwReceived, -amount, `USD → ZMW at rate ${rate}`);
-        }
-        state.exchangeRate = rate;
-        persist();
+    function getLastTransactions(limit = 10) {
+        return state.cashTransactions.slice(0, limit);
     }
 
-    function getCashTransactionHistory() { return state.cashTransactions; }
+    function getPurchasesByRep() {
+        const repMap = {};
+        state.goldPurchases.forEach(p => {
+            if (!repMap[p.salesRep]) repMap[p.salesRep] = { count: 0, totalGrams: 0, totalValue: 0 };
+            repMap[p.salesRep].count++;
+            repMap[p.salesRep].totalGrams += p.grams;
+            repMap[p.salesRep].totalValue += p.netPaid;
+        });
+        return repMap;
+    }
+
+    function getSurveyByCustomer() {
+        const custMap = {};
+        state.surveyRevenues.forEach(s => {
+            if (!custMap[s.customerName]) custMap[s.customerName] = { count: 0, total: 0 };
+            custMap[s.customerName].count++;
+            custMap[s.customerName].total += s.amountZMW;
+        });
+        return custMap;
+    }
 
     // ---------- RENDER ----------
     function render() {
@@ -616,9 +615,9 @@
         const isPrivileged = (currentUser.role === 'admin' || currentUser.role === 'manager');
         const nav = [
             { id: "dashboard", label: "📊 Dashboard" }, { id: "purchase", label: "💎 Buy Gold" },
-            { id: "sales", label: "💰 Sell Gold" }, { id: "survey", label: "📋 Survey Revenue" },
-            { id: "loans", label: "🏦 Loans & Debts" }, { id: "reports", label: "📅 Monthly Reports" },
-            { id: "withdrawals", label: "🏧 Withdrawals" }
+            { id: "sales", label: "💰 Sell Gold" }, { id: "survey", label: "📋 Survey" },
+            { id: "deposits", label: "💵 Deposits" }, { id: "exchange", label: "🔄 Exchange" },
+            { id: "reports", label: "📅 Reports" }, { id: "withdrawals", label: "🏧 Withdrawals" }
         ];
         const navBtns = nav.map(t => `<button class="nav-btn ${activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">${t.label}</button>`).join('');
         let content = "";
@@ -626,7 +625,8 @@
         else if (activeTab === "purchase") content = purchaseHTML(isPrivileged);
         else if (activeTab === "sales") content = salesHTML(isPrivileged);
         else if (activeTab === "survey") content = surveyHTML(isPrivileged);
-        else if (activeTab === "loans") content = loansHTML(isPrivileged);
+        else if (activeTab === "deposits") content = depositsHTML(isPrivileged);
+        else if (activeTab === "exchange") content = exchangeHTML(isPrivileged);
         else if (activeTab === "reports") content = reportsHTML(isPrivileged);
         else if (activeTab === "withdrawals") content = withdrawalsHTML(isPrivileged);
         return `<div class="mobile-header"><button id="menuToggle" style="background:none;border:none;font-size:1.6rem;">☰</button><span>Gold Ledger</span><div></div></div>
@@ -637,74 +637,93 @@
     }
 
     function dashboardHTML(isPrivileged) {
-        const totalLiab = state.liabilities.reduce((s,l)=> s + l.remainingBalance,0);
-        const totalDebtors = state.debtors.reduce((s,d)=> s + d.remainingBalance,0);
+        const repData = getPurchasesByRep();
+        const surveyData = getSurveyByCustomer();
+        const lastTrans = getLastTransactions(10);
+        const totalGoldStock = state.goldPurchases.reduce((a,b)=>a+b.grams,0) - state.goldSales.reduce((a,b)=>a+b.gramsSold,0);
         return `<div class="stats-row">
             <div class="stat-card" id="clickZMW"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(state.companyCashZMW)}</div></div>
             <div class="stat-card" id="clickUSD"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(state.companyCashUSD)}</div></div>
-            <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${formatGrams(state.goldPurchases.reduce((a,b)=>a+b.grams,0) - state.goldSales.reduce((a,b)=>a+b.gramsSold,0))}</div></div>
-            <div class="stat-card"><div class="stat-label">⚖️ Net Equity</div><div class="stat-value">${formatZMW(state.companyCashZMW + (state.companyCashUSD*state.exchangeRate) - totalLiab)}</div></div>
+            <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${formatGrams(totalGoldStock)}</div></div>
+            <div class="stat-card"><div class="stat-label">⚖️ Net Equity</div><div class="stat-value">${formatZMW(state.companyCashZMW + (state.companyCashUSD*state.exchangeRate))}</div></div>
         </div>
         <div class="two-col">
-            <div class="card"><div class="card-title">🏛️ Liabilities (Loans)</div><div class="stat-value" style="font-size:1.2rem">${formatZMW(totalLiab)}</div><div>${state.liabilities.length} active loans</div></div>
-            <div class="card"><div class="card-title">👥 Debtors (Owe us)</div><div class="stat-value" style="font-size:1.2rem">${formatZMW(totalDebtors)}</div><div>${state.debtors.length} customers</div></div>
+            <div class="card"><div class="card-title">📊 Purchases by Sales Rep</div>${Object.entries(repData).map(([rep, d]) => `<div style="display:flex;justify-content:space-between"><span>${rep}</span><span>${d.count} buys | ${formatGrams(d.totalGrams)}</span></div>`).join('') || '<div class="muted">No purchases yet</div>'}</div>
+            <div class="card"><div class="card-title">📋 Survey Revenue by Customer</div>${Object.entries(surveyData).map(([cust, d]) => `<div style="display:flex;justify-content:space-between"><span>${cust}</span><span>${formatZMW(d.total)} (${d.count} surveys)</span></div>`).join('') || '<div class="muted">No surveys yet</div>'}</div>
         </div>
-        <div class="card"><div class="card-title">👤 Shareholders (ZMW)</div>${state.shareholders.map(s => `<div style="display:flex;justify-content:space-between"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>`;
+        <div class="card"><div class="card-title">🕐 Last Transactions</div>${lastTrans.map(t => `<div style="border-bottom:1px solid #2a261d;padding:8px 0">${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)}</div>`).join('')}</div>`;
     }
 
     function purchaseHTML(isPrivileged) {
-        if (!isPrivileged) return `<div class="card"><div class="muted">Only Admin/Manager can record purchases</div></div>`;
-        const repOpts = state.salesReps.map(r => `<option>${r}</option>`).join('');
-        return `<div class="card"><div class="card-title">🛒 Buy Gold (ZMW) + Mashiin/Transport</div>
-            <div class="form-group"><label>Grams</label><input id="grams" type="number" /></div>
-            <div class="form-group"><label>Rate (ZMW/gram)</label><input id="rate" type="number" /></div>
+        if (!isPrivileged) return `<div class="card"><div class="muted">Only Admin/Manager</div></div>`;
+        const today = new Date().toISOString().slice(0,10);
+        return `<div class="card"><div class="card-title">🛒 Buy Gold + Mashiin/Transport</div>
+            <div class="form-group"><label>Date</label><input type="date" id="purchaseDate" value="${today}" /></div>
+            <div class="form-group"><label>Grams</label><input id="grams" type="number" /></div><div class="form-group"><label>Rate (ZMW/g)</label><input id="rate" type="number" /></div>
             <div class="form-group"><label>Mashiin (ZMW)</label><input id="mashiin" value="${state.defaultMashiin}" /></div>
             <div class="form-group"><label>Transport (ZMW)</label><input id="transport" value="${state.defaultTransport}" /></div>
-            <div class="form-group"><label>Sales Rep</label><select id="rep">${repOpts}</select></div>
+            <div class="form-group"><label>Sales Rep</label><select id="rep">${state.salesReps.map(r=>`<option>${r}</option>`).join('')}</select></div>
             <button class="btn-action" id="doPurchase">Record Purchase</button></div>`;
     }
 
     function salesHTML(isPrivileged) {
         if (!isPrivileged) return `<div class="card"><div class="muted">Manager/Admin only</div></div>`;
+        const today = new Date().toISOString().slice(0,10);
         return `<div class="card"><div class="card-title">📈 Sell Gold (USD)</div>
+            <div class="form-group"><label>Date</label><input type="date" id="saleDate" value="${today}" /></div>
             <div class="form-group"><label>Grams</label><input id="sellGrams" type="number" /></div>
             <div class="form-group"><label>Sell Rate (USD/g)</label><input id="sellRate" type="number" /></div>
             <div class="form-group"><label>Conversion</label><select id="conv"><option value="convert_all">All to ZMW</option><option value="keep_all">Keep USD</option><option value="partial">Partial to ZMW</option></select></div>
             <div id="partialBox" style="display:none"><div class="form-group"><label>USD to convert</label><input id="partialUsd" type="number" /></div></div>
-            <button class="btn-action" id="doSale">Sell & Distribute Profit (ZMW)</button></div>`;
+            <button class="btn-action" id="doSale">Sell & Distribute Profit</button></div>`;
     }
 
     function surveyHTML(isPrivileged) {
         if (!isPrivileged) return `<div class="card"><div class="muted">Manager/Admin only</div></div>`;
-        return `<div class="card"><div class="card-title">📋 Survey Revenue (ZMW)</div>
-            <div class="form-group"><label>Customer Name</label><input id="custName" placeholder="Customer" /></div>
+        const today = new Date().toISOString().slice(0,10);
+        return `<div class="card"><div class="card-title">📋 Survey Revenue</div>
+            <div class="form-group"><label>Date</label><input type="date" id="surveyDate" value="${today}" /></div>
+            <div class="form-group"><label>Customer Name</label><input id="custName" /></div>
             <div class="form-group"><label>Amount (ZMW)</label><input id="survAmt" type="number" /></div>
-            <button class="btn-action" id="doSurvey">Add & Distribute to Shareholders</button></div>
-            <div class="card"><div class="card-title">📜 Past Survey Revenue</div>${state.surveyRevenues.map(s => `<div>${s.customerName} : ${formatZMW(s.amountZMW)} (${new Date(s.date).toLocaleDateString()})</div>`).join('') || '<div class="muted">None</div>'}</div>`;
+            <button class="btn-action" id="doSurvey">Add & Distribute</button></div>`;
     }
 
-    function loansHTML(isPrivileged) {
-        if (!isPrivileged) return `<div class="card"><div class="muted">Admin/Manager only</div></div>`;
-        return `<div class="two-col">
-            <div class="card"><div class="card-title">➕ New Liability (Loan Received)</div>
-                <div class="form-group"><label>Lender Name</label><input id="lender" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="loanAmt" type="number" /></div>
-                <div class="form-group"><label>Interest Rate (%)</label><input id="interest" value="0" /></div><div class="form-group"><label>Due Date</label><input id="dueDate" type="date" /></div>
-                <button class="btn-action" id="addLiability">Add Loan</button></div>
-            <div class="card"><div class="card-title">➕ New Debtor (Customer Owes)</div>
-                <div class="form-group"><label>Customer</label><input id="debtCust" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="debtAmt" type="number" /></div>
-                <div class="form-group"><label>Due Date</label><input id="debtDue" type="date" /></div>
-                <button class="btn-action" id="addDebtor">Add Debtor</button></div>
-        </div>
-        <div class="card"><div class="card-title">📋 Active Loans</div>${state.liabilities.map(l => `<div style="display:flex;justify-content:space-between">${l.lender}: ${formatZMW(l.remainingBalance)} / ${formatZMW(l.amountZMW)} <button class="btn-sm" data-repay="${l.id}">Repay</button></div>`).join('')}</div>
-        <div class="card"><div class="card-title">📋 Debtors</div>${state.debtors.map(d => `<div style="display:flex;justify-content:space-between">${d.customerName}: ${formatZMW(d.remainingBalance)} <button class="btn-sm" data-paydebt="${d.id}">Receive Payment</button></div>`).join('')}</div>`;
+    function depositsHTML(isPrivileged) {
+        if (!isPrivileged) return `<div class="card"><div class="muted">Manager/Admin only</div></div>`;
+        const today = new Date().toISOString().slice(0,10);
+        return `<div class="card"><div class="card-title">💵 Cash Deposits</div>
+            <div class="form-group"><label>Date</label><input type="date" id="depositDate" value="${today}" /></div>
+            <div class="form-group"><label>Type</label><select id="depositType"><option value="shareholder">Shareholder Deposit</option><option value="loan_payment">Loan Payment Received</option><option value="external">External Deposit</option></select></div>
+            <div class="form-group"><label>Source/Name</label><input id="depositSource" placeholder="Shareholder name or payer" /></div>
+            <div class="form-group"><label>Amount (ZMW)</label><input id="depositAmount" type="number" /></div>
+            <div class="form-group"><label>Description</label><input id="depositDesc" placeholder="Optional notes" /></div>
+            <button class="btn-action" id="doDeposit">Record Deposit</button></div>`;
+    }
+
+    function exchangeHTML(isPrivileged) {
+        if (!isPrivileged) return `<div class="card"><div class="muted">Manager/Admin only</div></div>`;
+        const today = new Date().toISOString().slice(0,10);
+        return `<div class="card"><div class="card-title">💱 Currency Exchange</div>
+            <div class="form-group"><label>Date</label><input type="date" id="exDate" value="${today}" /></div>
+            <div class="form-group"><label>Direction</label><select id="exDir"><option value="ZMW">ZMW → USD</option><option value="USD">USD → ZMW</option></select></div>
+            <div class="form-group"><label>Amount (source currency)</label><input id="exAmount" type="number" /></div>
+            <div class="form-group"><label>Rate (1 USD = X ZMW)</label><input id="exRate" value="${state.exchangeRate}" /></div>
+            <button class="btn-action" id="doExchange">Execute Exchange</button></div>`;
     }
 
     function reportsHTML(isPrivileged) {
-        const months = [...new Set(state.cashTransactions.map(t => new Date(t.date).toLocaleString('default', { year:'numeric', month:'long' })))];
-        return `<div class="card"><div class="card-title">📆 Monthly Report</div>
-            <select id="monthSelect">${months.map(m => `<option>${m}</option>`).join('')}</select>
-            <button class="btn-sm" id="generateReport" style="margin-top:10px">Generate & Print PDF</button>
-            <div id="reportPreview" style="margin-top:20px"></div></div>`;
+        return `<div class="card"><div class="card-title">📅 Reports with Date Filters</div>
+            <div class="report-filters">
+                <button class="filter-btn" data-filter="today">Today</button>
+                <button class="filter-btn" data-filter="yesterday">Yesterday</button>
+                <button class="filter-btn" data-filter="thisMonth">This Month</button>
+                <button class="filter-btn" data-filter="lastMonth">Last Month</button>
+                <button class="filter-btn" data-filter="custom">Custom Range</button>
+            </div>
+            <div id="customRange" style="display:none; gap:10px; margin-bottom:15px;"><input type="date" id="startDate" /><input type="date" id="endDate" /><button class="btn-sm" id="applyCustom">Apply</button></div>
+            <div id="reportOutput"></div>
+            <button class="btn-sm" id="printReport" style="margin-top:15px;">📄 Print Report</button>
+        </div>`;
     }
 
     function withdrawalsHTML(isPrivileged) {
@@ -712,7 +731,7 @@
         return `<div class="card"><div class="card-title">🏧 Withdrawals (ZMW)</div>
             ${!isPrivileged ? `<button class="btn-sm" id="requestWBtn">Request Withdrawal</button>` : ''}
             <table><thead><tr><th>User</th><th>Amount</th><th>Status</th>${isPrivileged ? '<th>Action</th>' : ''}</tr></thead>
-            <tbody>${reqs.map(r => `<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td class="${r.status}">${r.status}</td>${isPrivileged && r.status === 'pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></td>` : ''}</tr>`).join('')}</tbody></table></div>`;
+            <tbody>${reqs.map(r => `<tr><td>${r.shareholderName}</td><td>${formatZMW(r.amountZMW)}</td><td class="${r.status}">${r.status}</td>${isPrivileged && r.status === 'pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></td>` : ''}</tr>`).join('')}</tbody></tr></div>`;
     }
 
     function attachEvents() {
@@ -721,52 +740,69 @@
         const isPriv = currentUser.role === 'admin' || currentUser.role === 'manager';
         if (isPriv) {
             document.getElementById('doPurchase')?.addEventListener('click', () => {
-                const g=parseFloat(document.getElementById('grams').value), r=parseFloat(document.getElementById('rate').value);
-                const m=parseFloat(document.getElementById('mashiin').value)||0, t=parseFloat(document.getElementById('transport').value)||0, rep=document.getElementById('rep').value;
-                if(!g||!r) return alert("Invalid");
-                recordPurchase(g,r,m,t,rep); render();
+                const grams=parseFloat(document.getElementById('grams').value), rate=parseFloat(document.getElementById('rate').value);
+                const m=parseFloat(document.getElementById('mashiin').value)||0, t=parseFloat(document.getElementById('transport').value)||0, rep=document.getElementById('rep').value, date=document.getElementById('purchaseDate').value;
+                if(!grams||!rate) return alert("Invalid"); recordPurchase(grams,rate,m,t,rep,date); render();
             });
             document.getElementById('doSale')?.addEventListener('click', () => {
                 const g=parseFloat(document.getElementById('sellGrams').value), rate=parseFloat(document.getElementById('sellRate').value);
-                const conv=document.getElementById('conv').value, partial=parseFloat(document.getElementById('partialUsd').value)||0;
-                if(!g||!rate) return;
-                recordSale(g,rate,conv,partial); render();
+                const conv=document.getElementById('conv').value, partial=parseFloat(document.getElementById('partialUsd').value)||0, date=document.getElementById('saleDate').value;
+                if(!g||!rate) return; recordSale(g,rate,conv,partial,date); render();
             });
             document.getElementById('conv')?.addEventListener('change', e => document.getElementById('partialBox').style.display = e.target.value === 'partial' ? 'block' : 'none');
-            document.getElementById('doSurvey')?.addEventListener('click', () => { 
-                const cust=document.getElementById('custName').value, amt=parseFloat(document.getElementById('survAmt').value);
-                if(!cust||!amt) return; addSurveyRevenue(amt,cust); render();
+            document.getElementById('doSurvey')?.addEventListener('click', () => {
+                const cust=document.getElementById('custName').value, amt=parseFloat(document.getElementById('survAmt').value), date=document.getElementById('surveyDate').value;
+                if(!cust||!amt) return; addSurveyRevenue(amt,cust,date); render();
             });
-            document.getElementById('addLiability')?.addEventListener('click', () => {
-                const lender=document.getElementById('lender').value, amt=parseFloat(document.getElementById('loanAmt').value);
-                if(!lender||!amt) return; addLiability(lender,amt,0,document.getElementById('dueDate').value,""); render();
+            document.getElementById('doDeposit')?.addEventListener('click', () => {
+                const type=document.getElementById('depositType').value, source=document.getElementById('depositSource').value, amt=parseFloat(document.getElementById('depositAmount').value), desc=document.getElementById('depositDesc').value, date=document.getElementById('depositDate').value;
+                if(!source||!amt) return; addDeposit(type,source,amt,desc,date); render();
             });
-            document.getElementById('addDebtor')?.addEventListener('click', () => {
-                const cust=document.getElementById('debtCust').value, amt=parseFloat(document.getElementById('debtAmt').value);
-                if(!cust||!amt) return; addDebtor(cust,amt,document.getElementById('debtDue').value,""); render();
+            document.getElementById('doExchange')?.addEventListener('click', () => {
+                const dir=document.getElementById('exDir').value, amt=parseFloat(document.getElementById('exAmount').value), rate=parseFloat(document.getElementById('exRate').value), date=document.getElementById('exDate').value;
+                if(!amt||!rate) return; exchangeCurrency(dir,amt,rate,date); render();
             });
-            document.querySelectorAll('[data-repay]').forEach(btn => btn.addEventListener('click', (e) => {
-                const id=parseInt(btn.dataset.repay);
-                const amt=parseFloat(prompt("Repay amount (ZMW)"));
-                if(amt) repayLiability(id,amt); render();
-            }));
-            document.querySelectorAll('[data-paydebt]').forEach(btn => btn.addEventListener('click', (e) => {
-                const id=parseInt(btn.dataset.paydebt);
-                const amt=parseFloat(prompt("Receive payment (ZMW)"));
-                if(amt) receiveDebtPayment(id,amt); render();
-            }));
             document.querySelectorAll('[data-apr]').forEach(btn => btn.addEventListener('click', (e) => { approveWithdrawal(parseInt(btn.dataset.apr)); render(); }));
-            document.getElementById('generateReport')?.addEventListener('click', () => {
-                const month = document.getElementById('monthSelect').value;
-                const filtered = state.cashTransactions.filter(t => new Date(t.date).toLocaleString('default',{month:'long',year:'numeric'}) === month);
-                const html = `<h3>Report ${month}</h3>${filtered.map(t => `<div>${new Date(t.date).toLocaleDateString()} ${t.type}: ZMW ${t.amountZMW.toFixed(2)} | USD ${t.amountUSD.toFixed(2)} | ${t.description}</div>`).join('')}`;
-                const win = window.open(); win.document.write(`<html><head><title>Gold Report</title><style>body{font-family:monospace;padding:20px}</style></head><body>${html}</body></html>`); win.print();
+            
+            // Reports filtering
+            const filterBtns = document.querySelectorAll('[data-filter]');
+            const customDiv = document.getElementById('customRange');
+            filterBtns.forEach(btn => btn.addEventListener('click', () => {
+                const filter = btn.dataset.filter;
+                if (filter === 'custom') { customDiv.style.display = 'flex'; return; }
+                customDiv.style.display = 'none';
+                let start, end = new Date();
+                const today = new Date();
+                if (filter === 'today') { start = new Date(); start.setHours(0,0,0,0); end = new Date(); end.setHours(23,59,59,999); }
+                else if (filter === 'yesterday') { start = new Date(); start.setDate(today.getDate()-1); start.setHours(0,0,0,0); end = new Date(start); end.setHours(23,59,59,999); }
+                else if (filter === 'thisMonth') { start = new Date(today.getFullYear(), today.getMonth(), 1); end = new Date(today.getFullYear(), today.getMonth()+1, 0); }
+                else if (filter === 'lastMonth') { start = new Date(today.getFullYear(), today.getMonth()-1, 1); end = new Date(today.getFullYear(), today.getMonth(), 0); }
+                generateReport(start, end);
+            }));
+            document.getElementById('applyCustom')?.addEventListener('click', () => {
+                const start = new Date(document.getElementById('startDate').value); start.setHours(0,0,0,0);
+                const end = new Date(document.getElementById('endDate').value); end.setHours(23,59,59,999);
+                generateReport(start, end);
             });
+            document.getElementById('printReport')?.addEventListener('click', () => { window.print(); });
         }
-        if(currentUser.role === 'shareholder') document.getElementById('requestWBtn')?.addEventListener('click', () => { const amt=parseFloat(prompt("Amount ZMW")); if(amt) requestWithdrawalZMW(currentUser.shareholderId, amt); render(); });
-        document.getElementById('clickZMW')?.addEventListener('click', () => modalData = { title: "ZMW Cash History", items: state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} ${t.type}: ${formatZMW(t.amountZMW)} | ${t.description} | Balance: ${formatZMW(t.runningBalanceZMW)}`) });
-        document.getElementById('clickUSD')?.addEventListener('click', () => modalData = { title: "USD Cash History", items: state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} ${t.type}: ${formatUSD(t.amountUSD)} | ${t.description} | Balance: ${formatUSD(t.runningBalanceUSD)}`) });
+        if(currentUser.role === 'shareholder') document.getElementById('requestWBtn')?.addEventListener('click', () => { const amt=parseFloat(prompt("Amount ZMW")); if(amt) requestWithdrawal(currentUser.shareholderId, amt); render(); });
+        document.getElementById('clickZMW')?.addEventListener('click', () => modalData = { title: "ZMW Cash History", items: state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | Balance: ${formatZMW(t.runningBalanceZMW)}`) });
+        document.getElementById('clickUSD')?.addEventListener('click', () => modalData = { title: "USD Cash History", items: state.cashTransactions.map(t => `${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | Balance: ${formatUSD(t.runningBalanceUSD)}`) });
         document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
+    }
+
+    function generateReport(startDate, endDate) {
+        const filtered = state.cashTransactions.filter(t => {
+            const d = new Date(t.date);
+            return d >= startDate && d <= endDate;
+        });
+        const totalIn = filtered.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
+        const totalOut = filtered.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
+        const html = `<h3>Report: ${startDate.toLocaleDateString()} → ${endDate.toLocaleDateString()}</h3>
+            <p>💰 Total Inflows: ${formatZMW(totalIn)} | 📉 Total Outflows: ${formatZMW(totalOut)} | 📈 Net: ${formatZMW(totalIn - totalOut)}</p>
+            ${filtered.map(t => `<div style="border-bottom:1px solid #444;padding:5px">${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)}</div>`).join('')}`;
+        document.getElementById('reportOutput').innerHTML = html;
     }
 
     function renderModal() {
