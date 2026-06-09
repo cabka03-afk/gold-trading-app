@@ -711,7 +711,11 @@
             <button class="btn-action" id="doExchange">Execute Exchange</button></div>`;
     }
 
-    function reportsHTML(isPrivileged) {
+        function reportsHTML(isPrivileged) {
+        // Calculate Mashiin & Transport totals
+        const totalMashiin = state.goldPurchases.reduce((sum, p) => sum + (p.mashiinFee || 0), 0);
+        const totalTransport = state.goldPurchases.reduce((sum, p) => sum + (p.transportFee || 0), 0);
+        
         return `<div class="card"><div class="card-title">📅 Reports with Date Filters</div>
             <div class="report-filters">
                 <button class="filter-btn" data-filter="today">Today</button>
@@ -721,6 +725,29 @@
                 <button class="filter-btn" data-filter="custom">Custom Range</button>
             </div>
             <div id="customRange" style="display:none; gap:10px; margin-bottom:15px;"><input type="date" id="startDate" /><input type="date" id="endDate" /><button class="btn-sm" id="applyCustom">Apply</button></div>
+            
+            <div style="margin: 15px 0; padding: 12px; background: #1a1a17; border-radius: 16px;">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div><span class="muted">⚙️ Total Mashiin Collected:</span> <strong class="stat-value" style="font-size:1.2rem">${formatZMW(totalMashiin)}</strong></div>
+                    <div><span class="muted">🚚 Total Transport Collected:</span> <strong class="stat-value" style="font-size:1.2rem">${formatZMW(totalTransport)}</strong></div>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="font-size:0.75rem; margin-right:10px;">📌 Filter by Type:</label>
+                <select id="reportTypeFilter" style="width: auto; display: inline-block; padding: 6px 12px;">
+                    <option value="all">📊 All Transactions</option>
+                    <option value="GOLD_PURCHASE">💎 Gold Purchases</option>
+                    <option value="GOLD_SALE">💰 Gold Sales</option>
+                    <option value="SURVEY_REVENUE">📋 Survey Revenue</option>
+                    <option value="EXPENSE">📉 Expenses</option>
+                    <option value="DEPOSIT">💵 Deposits</option>
+                    <option value="WITHDRAWAL">🏧 Withdrawals</option>
+                    <option value="EXCHANGE">🔄 Exchange</option>
+                </select>
+                <button class="btn-sm" id="applyTypeFilter" style="margin-left: 10px;">Apply Type Filter</button>
+            </div>
+            
             <div id="reportOutput"></div>
             <button class="btn-sm" id="printReport" style="margin-top:15px;">📄 Print Report</button>
         </div>`;
@@ -764,9 +791,12 @@
             });
             document.querySelectorAll('[data-apr]').forEach(btn => btn.addEventListener('click', (e) => { approveWithdrawal(parseInt(btn.dataset.apr)); render(); }));
             
-            // Reports filtering
+                   // Reports filtering
             const filterBtns = document.querySelectorAll('[data-filter]');
             const customDiv = document.getElementById('customRange');
+            let currentStart = new Date();
+            let currentEnd = new Date();
+            
             filterBtns.forEach(btn => btn.addEventListener('click', () => {
                 const filter = btn.dataset.filter;
                 if (filter === 'custom') { customDiv.style.display = 'flex'; return; }
@@ -777,12 +807,27 @@
                 else if (filter === 'yesterday') { start = new Date(); start.setDate(today.getDate()-1); start.setHours(0,0,0,0); end = new Date(start); end.setHours(23,59,59,999); }
                 else if (filter === 'thisMonth') { start = new Date(today.getFullYear(), today.getMonth(), 1); end = new Date(today.getFullYear(), today.getMonth()+1, 0); }
                 else if (filter === 'lastMonth') { start = new Date(today.getFullYear(), today.getMonth()-1, 1); end = new Date(today.getFullYear(), today.getMonth(), 0); }
-                generateReport(start, end);
+                currentStart = start;
+                currentEnd = end;
+                const typeFilter = document.getElementById('reportTypeFilter')?.value || "all";
+                generateReport(start, end, typeFilter);
             }));
+            
             document.getElementById('applyCustom')?.addEventListener('click', () => {
                 const start = new Date(document.getElementById('startDate').value); start.setHours(0,0,0,0);
                 const end = new Date(document.getElementById('endDate').value); end.setHours(23,59,59,999);
-                generateReport(start, end);
+                currentStart = start;
+                currentEnd = end;
+                const typeFilter = document.getElementById('reportTypeFilter')?.value || "all";
+                generateReport(start, end, typeFilter);
+                customDiv.style.display = 'none';
+            });
+            
+            document.getElementById('applyTypeFilter')?.addEventListener('click', () => {
+                if (currentStart && currentEnd) {
+                    const typeFilter = document.getElementById('reportTypeFilter').value;
+                    generateReport(currentStart, currentEnd, typeFilter);
+                }
             });
             document.getElementById('printReport')?.addEventListener('click', () => { window.print(); });
         }
@@ -792,16 +837,60 @@
         document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
     }
 
-    function generateReport(startDate, endDate) {
-        const filtered = state.cashTransactions.filter(t => {
+    let currentStartDate = null;
+    let currentEndDate = null;
+    let currentTypeFilter = "all";
+    
+    function generateReport(startDate, endDate, typeFilter = currentTypeFilter) {
+        currentStartDate = startDate;
+        currentEndDate = endDate;
+        currentTypeFilter = typeFilter;
+        
+        let filtered = state.cashTransactions.filter(t => {
             const d = new Date(t.date);
             return d >= startDate && d <= endDate;
         });
+        
+        // Apply type filter
+        if (typeFilter !== "all") {
+            filtered = filtered.filter(t => t.type === typeFilter);
+        }
+        
         const totalIn = filtered.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
         const totalOut = filtered.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
-        const html = `<h3>Report: ${startDate.toLocaleDateString()} → ${endDate.toLocaleDateString()}</h3>
-            <p>💰 Total Inflows: ${formatZMW(totalIn)} | 📉 Total Outflows: ${formatZMW(totalOut)} | 📈 Net: ${formatZMW(totalIn - totalOut)}</p>
-            ${filtered.map(t => `<div style="border-bottom:1px solid #444;padding:5px">${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)}</div>`).join('')}`;
+        
+        // Calculate Mashiin & Transport for filtered period
+        const filteredPurchases = state.goldPurchases.filter(p => {
+            const d = new Date(p.date);
+            return d >= startDate && d <= endDate;
+        });
+        const periodMashiin = filteredPurchases.reduce((sum, p) => sum + (p.mashiinFee || 0), 0);
+        const periodTransport = filteredPurchases.reduce((sum, p) => sum + (p.transportFee || 0), 0);
+        
+        const typeLabel = typeFilter === "all" ? "All Transactions" : typeFilter.replace(/_/g, ' ');
+        
+        const html = `<h3>📊 Report: ${startDate.toLocaleDateString()} → ${endDate.toLocaleDateString()}</h3>
+            <p><strong>Filter Type:</strong> ${typeLabel}</p>
+            <div style="background: #1a1a17; padding: 12px; border-radius: 16px; margin: 12px 0;">
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div>💰 Total Inflows: <strong class="green">${formatZMW(totalIn)}</strong></div>
+                    <div>📉 Total Outflows: <strong class="red">${formatZMW(totalOut)}</strong></div>
+                    <div>📈 Net: <strong class="${(totalIn - totalOut) >= 0 ? 'green' : 'red'}">${formatZMW(totalIn - totalOut)}</strong></div>
+                </div>
+                ${(periodMashiin > 0 || periodTransport > 0) ? `<div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 1px solid #333;">
+                    <div>⚙️ Mashiin (this period): <strong>${formatZMW(periodMashiin)}</strong></div>
+                    <div>🚚 Transport (this period): <strong>${formatZMW(periodTransport)}</strong></div>
+                </div>` : ''}
+            </div>
+            <div style="max-height: 500px; overflow-y: auto;">
+            ${filtered.map(t => `<div style="border-bottom:1px solid #2a261d;padding:8px 0">
+                <span style="color:#a3946b; font-size:0.7rem;">${new Date(t.date).toLocaleString()}</span>
+                <span style="margin-left: 10px; font-weight:500;">${t.type.replace(/_/g, ' ')}</span>
+                <span style="margin-left: 10px;">${t.description}</span>
+                <span style="float: right; ${t.amountZMW >= 0 ? 'color:#8bcb8b' : 'color:#e69474'}">${t.amountZMW >= 0 ? '+' : ''}${formatZMW(t.amountZMW)}</span>
+            </div>`).join('')}
+            ${filtered.length === 0 ? '<div class="muted" style="text-align:center;padding:40px;">No transactions found for this period and type</div>' : ''}
+            </div>`;
         document.getElementById('reportOutput').innerHTML = html;
     }
 
