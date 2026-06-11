@@ -1,899 +1,1430 @@
+bash
+
+cat > /home/claude/goldtrack/goldtrack_v3.html << 'ENDOFFILE'
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Gold Trading Pro | COMPLETE with Theme Toggle</title>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0a0a07; font-family: 'Inter', system-ui, sans-serif; color: #ece3cf; transition: background 0.3s ease, color 0.3s ease; }
-        
-        /* ========== THEME TOGGLE BUTTON ========== */
-        .theme-toggle {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: #2a271f;
-            border: 1px solid #7a6b47;
-            border-radius: 40px;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            font-family: 'Inter', system-ui, sans-serif;
-        }
-        .theme-toggle:hover {
-            background: #c8a96e;
-            color: #0c0b07;
-        }
-        
-        /* ========== LIGHT THEME STYLES ========== */
-        body.light-theme {
-            background: #f5f0e8;
-            color: #1e1b15;
-        }
-        body.light-theme .login-card {
-            background: #ffffff;
-            border-color: rgba(139, 105, 20, 0.3);
-        }
-        body.light-theme .login-card h1 {
-            color: #8b6914;
-        }
-        body.light-theme .field input {
-            background: #ffffff;
-            border-color: #d4c5a8;
-            color: #1e1b15;
-        }
-        body.light-theme .sidebar {
-            background: #ffffff;
-            border-right-color: #e0d5c0;
-        }
-        body.light-theme .logo-area h2 {
-            color: #8b6914;
-        }
-        body.light-theme .nav-btn {
-            color: #5c4a2e;
-        }
-        body.light-theme .nav-btn.active, body.light-theme .nav-btn:hover {
-            background: #f0e8d8;
-            color: #8b6914;
-        }
-        body.light-theme .user-badge {
-            background: #f5efe3;
-        }
-        body.light-theme .btn-outline {
-            border-color: #d4c5a8;
-            color: #5c4a2e;
-        }
-        body.light-theme .btn-outline:hover {
-            background: #f0e8d8;
-        }
-        body.light-theme .stat-card, body.light-theme .card {
-            background: #ffffff;
-            border-color: #e2d5bd;
-        }
-        body.light-theme .stat-label {
-            color: #8b7a5c;
-        }
-        body.light-theme .stat-value {
-            color: #5c4a2e;
-        }
-        body.light-theme .card-title {
-            color: #5c4a2e;
-            border-left-color: #c8a96e;
-        }
-        body.light-theme .form-group label {
-            color: #8b7a5c;
-        }
-        body.light-theme input, body.light-theme select {
-            background: #ffffff;
-            border-color: #d4c5a8;
-            color: #1e1b15;
-        }
-        body.light-theme .muted {
-            color: #a09070;
-        }
-        body.light-theme .green {
-            color: #2b6e2f;
-        }
-        body.light-theme .red {
-            color: #c0392b;
-        }
-        body.light-theme .sync-status {
-            background: #ffffff;
-            color: #5c4a2e;
-            border: 1px solid #e2d5bd;
-        }
-        body.light-theme .modal-content {
-            background: #ffffff;
-            color: #1e1b15;
-        }
-        body.light-theme .user-row {
-            border-bottom-color: #e0d5c0;
-        }
-        body.light-theme .user-row:hover {
-            background: #f5efe3;
-        }
-        body.light-theme .transaction-list {
-            border-color: #e2d5bd;
-        }
-        body.light-theme .transaction-item {
-            background: #ffffff;
-        }
-        body.light-theme .transaction-item:hover {
-            background: #fef7e8;
-        }
-        body.light-theme .transaction-date {
-            color: #8b7a5c;
-        }
-        body.light-theme .transaction-desc {
-            color: #2c2c2c;
-        }
-        body.light-theme .btn-sm {
-            background: #f0e8d8;
-            color: #5c4a2e;
-            border-color: #d4c5a8;
-        }
-        body.light-theme .btn-sm:hover {
-            background: #e0d5c0;
-        }
-        body.light-theme .btn-action {
-            background: linear-gradient(100deg, #c8a96e, #e0b867);
-            color: #0c0a04;
-        }
-        body.light-theme .report-container {
-            background: #fef9ef;
-        }
-        body.light-theme .report-header {
-            background: linear-gradient(135deg, #1e5631, #3a7d2c);
-        }
-        body.light-theme .report-summary {
-            background: white;
-        }
-        body.light-theme .summary-card {
-            background: #faf7f0;
-        }
-        body.light-theme .mashiin-card {
-            background: #fff8e7;
-        }
-        body.light-theme .filter-btn {
-            background: white;
-            border-color: #d4c5a8;
-            color: #4a3e2c;
-        }
-        body.light-theme .filter-btn:hover {
-            background: #c8a96e;
-            color: white;
-        }
-        body.light-theme .type-filter-bar {
-            background: #f5efe3;
-        }
-        
-        .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(ellipse at 30% 40%, #131210, #020202); padding: 1.5rem; }
-        body.light-theme .login-screen { background: #e8e0d0; }
-        .login-card { background: #131210e6; backdrop-filter: blur(6px); border: 1px solid rgba(218, 185, 105, 0.4); border-radius: 2rem; padding: 2rem; width: 100%; max-width: 420px; }
-        body.light-theme .login-card { background: #ffffff; border-color: #c8a96e; }
-        .login-card h1 { font-size: 1.9rem; color: #e2bc6e; text-align: center; }
-        .field { margin-bottom: 1rem; }
-        .field label { font-size: 0.7rem; color: #cdbc8f; display: block; margin-bottom: 6px; }
-        body.light-theme .field label { color: #8b7a5c; }
-        .field input { width: 100%; background: #1f1e1a; border: 1px solid #3a3528; padding: 12px 18px; border-radius: 40px; color: #f7efdb; font-size: 1rem; }
-        .btn-gold { width: 100%; background: linear-gradient(135deg, #a8822c, #e0b867); border: none; padding: 13px; border-radius: 40px; font-weight: bold; color: #0c0b07; cursor: pointer; font-size: 1rem; }
-        .error-msg { color: #f5a67b; font-size: 0.8rem; margin-top: 12px; text-align: center; }
-        .sidebar { width: 280px; background: #0e0e0b; border-right: 1px solid #2a261d; position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; overflow-y: auto; transition: background 0.3s ease; }
-        .logo-area { padding: 24px 20px; border-bottom: 1px solid #2f2b20; }
-        .logo-area h2 { color: #e8c87a; font-size: 1.3rem; }
-        .nav-menu { flex: 1; padding: 20px 16px; display: flex; flex-direction: column; gap: 6px; }
-        .nav-btn { background: none; border: none; padding: 10px 16px; text-align: left; font-size: 0.85rem; color: #cbbf97; border-radius: 34px; cursor: pointer; transition: all 0.2s; }
-        .nav-btn.active, .nav-btn:hover { background: #25231c; color: #f5de9c; }
-        .user-section { padding: 20px; border-top: 1px solid #2b271f; }
-        .user-badge { background: #191814; border-radius: 28px; padding: 12px; margin-bottom: 14px; }
-        .btn-outline { width: 100%; background: none; border: 1px solid #5f553b; padding: 8px; border-radius: 40px; color: #dcceaa; cursor: pointer; transition: all 0.2s; }
-        .content-main { margin-left: 280px; padding: 28px 32px; flex: 1; }
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
-        .stat-card { background: #12120f; border: 1px solid #2b271f; border-radius: 28px; padding: 1.2rem; cursor: pointer; transition: 0.2s; }
-        .stat-card:hover { border-color: #e0b867; }
-        .stat-label { font-size: 0.7rem; color: #a3946b; }
-        .stat-value { font-size: 1.6rem; font-weight: 700; color: #e9cf8b; }
-        .card { background: #11110e; border: 1px solid #2b281f; border-radius: 26px; padding: 1.5rem; margin-bottom: 1.8rem; transition: background 0.3s ease; }
-        .card-title { font-size: 1.1rem; border-left: 3px solid #e0b867; padding-left: 12px; margin-bottom: 20px; }
-        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { font-size: 0.7rem; color: #c7b584; display: block; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; background: #1e1d18; border: 1px solid #3f392b; padding: 10px 14px; border-radius: 36px; color: #f2e7cf; transition: background 0.3s ease; }
-        .btn-action { background: linear-gradient(100deg, #9e7d30, #d6ae5a); border: none; padding: 12px; border-radius: 40px; font-weight: bold; color: #0c0a04; cursor: pointer; width: 100%; transition: all 0.2s; }
-        .btn-sm { background: #2a271f; border: 1px solid #7a6b47; padding: 6px 14px; border-radius: 30px; color: #f0daa0; cursor: pointer; font-size: 0.7rem; transition: all 0.2s; }
-        .btn-danger { background: #5a1e1e; border-color: #a54a4a; color: #ffb4b4; }
-        .btn-danger:hover { background: #7a2a2a; }
-        .green { color: #8bcb8b; }
-        .red { color: #e69474; }
-        .muted { color: #8e8160; }
-        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; display: flex; align-items: center; justify-content: center; }
-        .modal-content { background: #181714; border-radius: 28px; padding: 28px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; transition: background 0.3s ease; }
-        .user-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #2f2b20; transition: background 0.2s; }
-        .mobile-header { display: none; }
-        .loading { text-align: center; padding: 50px; color: #e2bc6e; font-size: 1.2rem; }
-        .sync-status { position: fixed; bottom: 10px; right: 10px; background: #1a1a17; padding: 4px 12px; border-radius: 20px; font-size: 0.65rem; z-index: 100; transition: background 0.3s ease; }
-        
-        /* BRIGHT REPORTS */
-        .report-container { background: #fef9ef; border-radius: 20px; padding: 20px; color: #1e1b15; margin-top: 15px; }
-        .report-header { background: linear-gradient(135deg, #1e5631, #3a7d2c); color: white; padding: 18px 22px; border-radius: 16px; margin-bottom: 20px; }
-        .report-header h3 { color: white; font-size: 1.3rem; margin-bottom: 6px; }
-        .report-summary { background: white; border-radius: 16px; padding: 15px; margin-bottom: 20px; display: flex; gap: 15px; flex-wrap: wrap; border: 1px solid #e2d5bd; }
-        .summary-card { flex: 1; background: #faf7f0; padding: 12px; border-radius: 12px; text-align: center; }
-        .summary-card .value.positive { color: #2b6e2f; font-size: 1.6rem; font-weight: bold; }
-        .summary-card .value.negative { color: #c0392b; font-size: 1.6rem; font-weight: bold; }
-        .transaction-list { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2d5bd; max-height: 500px; overflow-y: auto; }
-        .transaction-item { border-bottom: 1px solid #eee5d8; padding: 12px 15px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; background: white; transition: background 0.2s; }
-        .transaction-type { font-weight: 600; padding: 3px 10px; border-radius: 30px; font-size: 0.7rem; }
-        .transaction-type.PURCHASE { background: #fff3e0; color: #e65100; }
-        .transaction-type.SALE { background: #e8f5e9; color: #2e7d32; }
-        .transaction-type.SURVEY { background: #e3f2fd; color: #1565c0; }
-        .transaction-type.EXPENSE { background: #ffebee; color: #c62828; }
-        .transaction-type.DEPOSIT { background: #e0f2f1; color: #00695c; }
-        .transaction-type.WITHDRAWAL { background: #fce4ec; color: #ad1457; }
-        .transaction-type.EXCHANGE { background: #f3e5f5; color: #6a1b9a; }
-        .report-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; background: #f5efe3; padding: 12px; border-radius: 16px; }
-        .filter-btn { background: white; border: 1px solid #d4c5a8; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-size: 0.75rem; color: #4a3e2c; transition: all 0.2s; }
-        .filter-btn:hover { background: #c8a96e; color: white; }
-        .type-filter-bar { background: #f5efe3; padding: 12px; border-radius: 16px; margin-bottom: 15px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        
-        @media (max-width: 760px) { .sidebar { transform: translateX(-100%); transition: 0.2s; } .sidebar.open { transform: translateX(0); } .content-main { margin-left: 0; padding: 18px; } .stats-row { grid-template-columns: 1fr 1fr; } .two-col, .three-col { grid-template-columns: 1fr; } .mobile-header { display: flex; justify-content: space-between; padding: 14px 18px; background: #0e0e0b; position: sticky; top: 0; z-index: 15; } body.light-theme .mobile-header { background: #ffffff; border-bottom: 1px solid #e0d5c0; } }
-        @media print { .sidebar, .mobile-header, .report-filters, .type-filter-bar, .btn-sm, nav, .user-section, .sync-status, .theme-toggle { display: none !important; } .report-container { background: white !important; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoldTrack Pro v3</title>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#090906;--bg2:#0e0e0b;--bg3:#13130f;--bg4:#1a1914;--bg5:#222019;
+  --border:#2b271f;--border2:#3a3528;
+  --gold:#e0b867;--gold2:#c8963c;--gold3:#f5de9c;
+  --text:#ece3cf;--text2:#c7b584;--text3:#8e8160;--text4:#5a5238;
+  --green:#7ec87e;--green2:#2d5e2d;--red:#e08070;--red2:#5e2d2d;
+  --blue:#7eb8e0;--purple:#b87ee0;
+  --radius:24px;--radius-sm:14px;--radius-xs:8px;
+}
+body{background:var(--bg);font-family:'Inter',system-ui,sans-serif;color:var(--text);font-size:14px}
+/* LAYOUT */
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;bottom:0;display:flex;flex-direction:column;overflow-y:auto;z-index:50}
+.logo{padding:20px 18px;border-bottom:1px solid var(--border)}
+.logo h2{color:var(--gold);font-size:1.1rem;font-weight:700}
+.logo small{color:var(--text3);font-size:0.62rem}
+.nav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px}
+.nav-btn{background:none;border:none;padding:9px 14px;text-align:left;font-size:0.8rem;color:var(--text2);border-radius:var(--radius);cursor:pointer;transition:0.15s;display:flex;align-items:center;gap:8px}
+.nav-btn:hover{background:var(--bg4);color:var(--gold3)}
+.nav-btn.active{background:var(--bg5);color:var(--gold);font-weight:600}
+.nav-section{font-size:0.58rem;color:var(--text4);padding:10px 14px 4px;text-transform:uppercase;letter-spacing:0.08em}
+.user-area{padding:14px;border-top:1px solid var(--border)}
+.user-card{background:var(--bg3);border-radius:var(--radius-sm);padding:10px 12px;margin-bottom:10px}
+.user-card .uname{font-weight:600;font-size:0.85rem}
+.user-card .urole{font-size:0.62rem;color:var(--text3);margin-top:2px}
+.btn-logout{width:100%;background:none;border:1px solid var(--border2);padding:7px;border-radius:var(--radius);color:var(--text2);cursor:pointer;font-size:0.75rem}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+.main{margin-left:250px;flex:1;padding:24px 28px;max-width:1400px}
+.page-title{font-size:1.3rem;font-weight:700;color:var(--gold3);margin-bottom:20px}
+/* CARDS */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:18px}
+.card-title{font-size:0.85rem;font-weight:600;color:var(--gold);border-left:3px solid var(--gold2);padding-left:10px;margin-bottom:16px}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:0.2s}
+.stat:hover{border-color:var(--gold2);transform:translateY(-1px)}
+.stat-label{font-size:0.65rem;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em}
+.stat-value{font-size:1.4rem;font-weight:700;color:var(--gold3)}
+.stat-sub{font-size:0.62rem;color:var(--text4);margin-top:4px}
+/* FORMS */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg label{font-size:0.65rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.04em}
+input,select,textarea{background:var(--bg4);border:1px solid var(--border2);padding:9px 13px;border-radius:var(--radius);color:var(--text);font-size:0.85rem;outline:none;transition:border 0.15s;width:100%}
+input:focus,select:focus{border-color:var(--gold2)}
+.btn{border:none;padding:10px 18px;border-radius:var(--radius);cursor:pointer;font-size:0.8rem;font-weight:600;transition:0.15s}
+.btn-gold{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#0a0a06;width:100%;padding:12px}
+.btn-gold:hover{opacity:0.9}
+.btn-sm{background:var(--bg4);border:1px solid var(--border2);color:var(--text2);padding:5px 12px;border-radius:var(--radius);cursor:pointer;font-size:0.68rem}
+.btn-sm:hover{border-color:var(--gold2);color:var(--gold3)}
+.btn-danger{background:#3a1515;border:1px solid #7a3535;color:var(--red);padding:5px 10px;border-radius:var(--radius);cursor:pointer;font-size:0.65rem}
+.btn-danger:hover{background:#4a1f1f}
+.btn-green{background:#1e3a1e;border:1px solid #3a6a3a;color:var(--green);padding:5px 12px;border-radius:var(--radius);cursor:pointer;font-size:0.68rem}
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:0.78rem}
+.tbl th{text-align:left;padding:8px 10px;color:var(--text3);font-size:0.62rem;text-transform:uppercase;border-bottom:1px solid var(--border);font-weight:500}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.tbl tr:hover td{background:var(--bg4)}
+/* BADGES */
+.badge{padding:2px 10px;border-radius:20px;font-size:0.62rem;font-weight:600}
+.badge-gold{background:#3a2a0a;color:var(--gold)}
+.badge-green{background:#1a3a1a;color:var(--green)}
+.badge-red{background:#3a1a1a;color:var(--red)}
+.badge-blue{background:#1a2a3a;color:var(--blue)}
+.badge-purple{background:#2a1a3a;color:var(--purple)}
+.badge-gray{background:var(--bg4);color:var(--text3)}
+/* TX LOG */
+.tx-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:0.75rem;flex-wrap:wrap}
+.tx-row:last-child{border-bottom:none}
+.tx-desc{flex:1;min-width:120px;color:var(--text2)}
+/* COLORS */
+.green{color:var(--green)}
+.red{color:var(--red)}
+.gold{color:var(--gold)}
+.muted{color:var(--text3)}
+.blue{color:var(--blue)}
+/* ALERT */
+.alert{border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:14px;font-size:0.8rem}
+.alert-info{background:#1a2a1a;border:1px solid #3a5a3a;color:#a0d0a0}
+.alert-warn{background:#2a1e0a;border:1px solid var(--gold2);color:#f0cf8a}
+.alert-err{background:#2a0e0e;border:1px solid #c85050;color:#f08080}
+/* PREVIEW BOX */
+.preview{background:var(--bg4);border-radius:var(--radius-sm);padding:12px;margin:10px 0;font-size:0.78rem;color:var(--text2);border-left:3px solid var(--gold2)}
+.preview strong{color:var(--gold3)}
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:24px;max-width:700px;width:100%;max-height:85vh;overflow-y:auto}
+.modal-box h3{color:var(--gold);margin-bottom:16px}
+/* REPORT */
+.rpt-container{background:#fef9ef;border-radius:var(--radius);padding:20px;color:#1e1b15;margin-top:14px}
+.rpt-header{background:linear-gradient(135deg,#1e5631,#3a7d2c);color:white;padding:16px 20px;border-radius:var(--radius-sm);margin-bottom:16px}
+.rpt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.rpt-card{background:white;border-radius:var(--radius-sm);padding:14px;border:1px solid #e2d5bd;text-align:center}
+.rpt-card .lbl{font-size:0.65rem;color:#7a6a4a;margin-bottom:4px}
+.rpt-card .vp{font-size:1.3rem;font-weight:700;color:#2b6e2f}
+.rpt-card .vn{font-size:1.3rem;font-weight:700;color:#c0392b}
+.rpt-card .vn2{font-size:1.3rem;font-weight:700;color:#4a3e2c}
+.rpt-tx{background:white;border-radius:var(--radius-sm);overflow:hidden;border:1px solid #e2d5bd;max-height:420px;overflow-y:auto}
+.rpt-tx-row{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid #eee5d8;font-size:0.75rem;flex-wrap:wrap}
+.rpt-tx-row:hover{background:#fffbf3}
+.rpt-pos{color:#2e7d32;font-weight:600}
+.rpt-neg{color:#c62828;font-weight:600}
+.rpt-badge{padding:2px 8px;border-radius:20px;font-size:0.6rem;font-weight:700}
+.rb-PURCHASE{background:#fff3e0;color:#e65100}
+.rb-SALE{background:#e8f5e9;color:#1b5e20}
+.rb-EXPENSE{background:#fce4ec;color:#880e4f}
+.rb-SURVEY{background:#e3f2fd;color:#0d47a1}
+.rb-DEPOSIT{background:#f3e5f5;color:#4a148c}
+.rb-WITHDRAWAL{background:#fbe9e7;color:#bf360c}
+.rb-EXCHANGE{background:#e0f2f1;color:#004d40}
+.rb-ADJUST{background:#f5f5f5;color:#555}
+/* DOUBLE ENTRY */
+.de-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.72rem}
+.de-hdr{font-size:0.6rem;color:var(--text3);text-transform:uppercase;font-weight:600}
+/* TRIAL BALANCE */
+.tb-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);font-size:0.78rem}
+.tb-row.tb-total{background:var(--bg4);font-weight:700;border-radius:var(--radius-xs)}
+/* CHART */
+.chart-wrap{position:relative;height:220px;margin-top:10px}
+/* MOBILE */
+.mob-header{display:none}
+.sync{position:fixed;bottom:10px;right:10px;background:var(--bg3);border:1px solid var(--border);padding:4px 12px;border-radius:20px;font-size:0.6rem;z-index:100}
+.loading{text-align:center;padding:80px;color:var(--gold);font-size:1.1rem}
+/* LOCK BADGE */
+.lock-badge{background:#2a1a0a;border:1px solid var(--gold2);color:var(--gold);padding:3px 10px;border-radius:20px;font-size:0.62rem}
+/* AUDIT */
+.audit-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:0.72rem;flex-wrap:wrap}
+.audit-who{background:#1a2a3a;color:var(--blue);padding:2px 8px;border-radius:20px;font-size:0.62rem}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:0.2s}.sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:14px}.stats-grid{grid-template-columns:1fr 1fr}
+  .form-grid,.form-grid-3,.rpt-grid{grid-template-columns:1fr}
+  .mob-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40}
+}
+</style>
 </head>
 <body>
-<div id="root"><div class="loading">☁️ Loading cloud data...</div></div>
-<div id="syncStatus" class="sync-status">🔄 Connecting...</div>
-<button class="theme-toggle" id="themeToggleBtn">
-    <span id="themeIcon">🌙</span> <span id="themeText">Dark Mode</span>
-</button>
+<div id="root"><div class="loading">⚜️ Loading GoldTrack Pro...</div></div>
+<div id="sync" class="sync">🔄 Connecting...</div>
 
 <script>
-    // ========== THEME TOGGLE FUNCTION ==========
-    function toggleTheme() {
-        const body = document.body;
-        const themeIcon = document.getElementById('themeIcon');
-        const themeText = document.getElementById('themeText');
-        
-        if (body.classList.contains('light-theme')) {
-            body.classList.remove('light-theme');
-            localStorage.setItem('gold_theme', 'dark');
-            if (themeIcon) themeIcon.innerHTML = '🌙';
-            if (themeText) themeText.innerHTML = 'Dark Mode';
-        } else {
-            body.classList.add('light-theme');
-            localStorage.setItem('gold_theme', 'light');
-            if (themeIcon) themeIcon.innerHTML = '☀️';
-            if (themeText) themeText.innerHTML = 'Light Mode';
-        }
-    }
-    
-    function loadSavedTheme() {
-        const savedTheme = localStorage.getItem('gold_theme');
-        const themeIcon = document.getElementById('themeIcon');
-        const themeText = document.getElementById('themeText');
-        
-        if (savedTheme === 'light') {
-            document.body.classList.add('light-theme');
-            if (themeIcon) themeIcon.innerHTML = '☀️';
-            if (themeText) themeText.innerHTML = 'Light Mode';
-        } else {
-            document.body.classList.remove('light-theme');
-            if (themeIcon) themeIcon.innerHTML = '🌙';
-            if (themeText) themeText.innerHTML = 'Dark Mode';
-        }
-    }
-    
-    // Firebase Config
-    const firebaseConfig = {
-        apiKey: "AIzaSyB4uA5m3_1Ps-zaPLF6UWD5X4VOoHn0JxY",
-        authDomain: "gold-trading-app-203b8.firebaseapp.com",
-        projectId: "gold-trading-app-203b8",
-        storageBucket: "gold-trading-app-203b8.firebasestorage.app",
-        messagingSenderId: "240340562471",
-        appId: "1:240340562471:web:816f7e0026783deccb5402"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    
-    const settingsRef = db.collection('settings');
-    const purchasesRef = db.collection('goldPurchases');
-    const salesRef = db.collection('goldSales');
-    const expensesRef = db.collection('expenses');
-    const surveysRef = db.collection('surveyRevenues');
-    const depositsRef = db.collection('deposits');
-    const withdrawalsRef = db.collection('withdrawalRequests');
-    const cashTransactionsRef = db.collection('cashTransactions');
-    const shareholdersRef = db.collection('shareholders');
-    
-    let currentUser = null;
-    let activeTab = "dashboard";
-    let isLoading = true;
-    let showPasswords = false;
-    let appData = {
-        exchangeRate: 17.5,
-        goldPurchases: [],
-        goldSales: [],
-        expenses: [],
-        surveyRevenues: [],
-        withdrawalRequests: [],
-        cashTransactions: [],
-        shareholders: []
-    };
-    
-    let companyCashZMW = 0;
-    let companyCashUSD = 0;
-    
-    const formatZMW = (v) => 'K' + (parseFloat(v)||0).toFixed(2);
-    const formatUSD = (v) => '$' + (parseFloat(v)||0).toFixed(2);
-    const formatGrams = (g) => (parseFloat(g)||0).toFixed(2) + ' g';
-    
-    function recalculateLiveBalances() {
-        let zmwInflows = 0;
-        let zmwOutflows = 0;
-        let usdInflows = 0;
-        let usdOutflows = 0;
-        
-        appData.cashTransactions.forEach(t => {
-            const zAmt = parseFloat(t.amountZMW) || 0;
-            const uAmt = parseFloat(t.amountUSD) || 0;
-            if (zAmt > 0) zmwInflows += zAmt;
-            else if (zAmt < 0) zmwOutflows += Math.abs(zAmt);
-            if (uAmt > 0) usdInflows += uAmt;
-            else if (uAmt < 0) usdOutflows += Math.abs(uAmt);
-        });
-        companyCashZMW = zmwInflows - zmwOutflows;
-        companyCashUSD = usdInflows - usdOutflows;
-    }
-    
-    async function loadAllData() {
-        try {
-            const settingsDoc = await settingsRef.doc('main').get();
-            if (settingsDoc.exists) {
-                appData.exchangeRate = settingsDoc.data().exchangeRate || 17.5;
-            } else {
-                await settingsRef.doc('main').set({ exchangeRate: 17.5 });
-            }
-            
-            const shareholdersSnap = await shareholdersRef.get();
-            appData.shareholders = [];
-            if (shareholdersSnap.empty) {
-                const defaults = [
-                    { id: 1, name: "Yuusuf", password: "yuusuf123", balanceZMW: 0 },
-                    { id: 2, name: "Abdirisak", password: "abdirisak123", balanceZMW: 0 },
-                    { id: 3, name: "Ahmed", password: "ahmed123", balanceZMW: 0 }
-                ];
-                for (const sh of defaults) {
-                    await shareholdersRef.doc(sh.id.toString()).set(sh);
-                    appData.shareholders.push(sh);
-                }
-            } else {
-                shareholdersSnap.forEach(doc => appData.shareholders.push({ id: parseInt(doc.id), ...doc.data() }));
-            }
-            
-            const purchasesSnap = await purchasesRef.orderBy('date', 'desc').get();
-            appData.goldPurchases = purchasesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            
-            const salesSnap = await salesRef.orderBy('date', 'desc').get();
-            appData.goldSales = salesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            
-            const expensesSnap = await expensesRef.orderBy('date', 'desc').get();
-            appData.expenses = expensesSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            
-            const surveysSnap = await surveysRef.orderBy('date', 'desc').get();
-            appData.surveyRevenues = surveysSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            
-            const depositsSnap = await depositsRef.orderBy('date', 'desc').get();
-            appData.deposits = depositsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            
-            const withdrawalsSnap = await withdrawalsRef.orderBy('date', 'desc').get();
-            appData.withdrawalRequests = withdrawalsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            
-            const transactionsSnap = await cashTransactionsRef.orderBy('date', 'desc').limit(500).get();
-            appData.cashTransactions = transactionsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-            
-            recalculateLiveBalances();
-            
-            isLoading = false;
-            document.getElementById('syncStatus').innerHTML = '✅ Cloud Connected';
-            setTimeout(() => { const s = document.getElementById('syncStatus'); if(s) s.style.opacity = '0.6'; }, 2000);
-            
-            if (currentUser) { renderApp(); } else { showLogin(); }
-        } catch(e) {
-            console.error(e);
-            isLoading = false;
-            if (currentUser) { renderApp(); } else { showLogin(); }
-        }
-    }
-    
-    async function saveExchangeRate() {
-        await settingsRef.doc('main').set({ exchangeRate: appData.exchangeRate });
-    }
-    
-    async function addCashTransaction(type, amountZMW, amountUSD, description, date) {
-        const trans = { id: Date.now().toString(), date: date || new Date().toISOString(), type, amountZMW, amountUSD, description, runningBalanceZMW: companyCashZMW, runningBalanceUSD: companyCashUSD };
-        appData.cashTransactions.unshift(trans);
-        await cashTransactionsRef.doc(trans.id).set(trans);
-        recalculateLiveBalances();
-    }
-    
-    async function deleteTransaction(transId) {
-        if (!confirm("⚠️ Delete this transaction? Cannot be undone.")) return;
-        await cashTransactionsRef.doc(transId).delete();
-        appData.cashTransactions = appData.cashTransactions.filter(t => t.id !== transId);
-        recalculateLiveBalances();
-        renderApp();
-        alert("✅ Transaction deleted");
-    }
-    
-    async function addShareholder(name, password) {
-        if (!name || !password) throw new Error("Name and password required");
-        if (appData.shareholders.some(s => s.name === name)) throw new Error("Name exists");
-        const newId = Math.max(...appData.shareholders.map(s=>s.id), 0) + 1;
-        const newSh = { id: newId, name, password, balanceZMW: 0 };
-        await shareholdersRef.doc(newId.toString()).set(newSh);
-        appData.shareholders.push(newSh);
-        return true;
-    }
-    
-    async function deleteShareholder(id) {
-        const sh = appData.shareholders.find(s => s.id === id);
-        if (!sh) throw new Error("Not found");
-        if (sh.balanceZMW !== 0) throw new Error(`Balance must be zero: ${formatZMW(sh.balanceZMW)}`);
-        await shareholdersRef.doc(id.toString()).delete();
-        appData.shareholders = appData.shareholders.filter(s => s.id !== id);
-        return true;
-    }
-    
-    async function changeUserPassword(targetName, newPassword) {
-        const sh = appData.shareholders.find(s => s.name === targetName);
-        if (sh) {
-            sh.password = newPassword;
-            await shareholdersRef.doc(sh.id.toString()).update({ password: newPassword });
-            return true;
-        }
-        throw new Error("User not found");
-    }
-    
-    async function addDeposit(type, source, amount, desc, date) {
-        if (amount <= 0) throw new Error("Amount positive");
-        if (type === "shareholder") {
-            const sh = appData.shareholders.find(s => s.name === source);
-            if (!sh) throw new Error("Shareholder not found");
-            sh.balanceZMW += amount;
-            await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-            await addCashTransaction("DEPOSIT", amount, 0, `Deposit from shareholder ${source}`, date);
-        } else {
-            await addCashTransaction("DEPOSIT", amount, 0, `External: ${desc || source}`, date);
-        }
-        renderApp();
-    }
-    
-    async function exchangeCurrency(fromCurr, amount, rate, date) {
-        if (amount <= 0 || rate <= 0) throw new Error("Invalid");
-        if (fromCurr === "ZMW") {
-            const usdReceived = amount / rate;
-            await addCashTransaction("EXCHANGE", -amount, usdReceived, `ZMW → USD at ${rate}`, date);
-        } else {
-            const zmwReceived = amount * rate;
-            await addCashTransaction("EXCHANGE", zmwReceived, -amount, `USD → ZMW at ${rate}`, date);
-        }
-        appData.exchangeRate = rate;
-        await saveExchangeRate();
-        renderApp();
-    }
-    
-    async function recordPurchase(g, r, m, t, rep, date) {
-        const gross = g * r;
-        const net = gross - (m + t);
-        if (net < 0) throw new Error("Deductions exceed value");
-        const purchase = { id: Date.now().toString(), date, grams: g, ratePerGram: r, grossAmount: gross, mashiinFee: m, transportFee: t, netPaid: net, salesRep: rep, remainingGrams: g };
-        await purchasesRef.doc(purchase.id).set(purchase);
-        appData.goldPurchases.unshift(purchase);
-        await addCashTransaction("PURCHASE", -net, 0, `Buy ${g}g @ ${r} ZMW/g, Mashiin:${m}, Transport:${t}, Rep:${rep}`, date);
-        renderApp();
-    }
-    
-    async function recordSale(g, rate, convChoice, partialUsd, date) {
-        let remaining = g;
-        let costZMW = 0;
-        for (let p of appData.goldPurchases) {
-            if (remaining <= 0) break;
-            if (p.remainingGrams <= 0) continue;
-            const taken = Math.min(p.remainingGrams, remaining);
-            costZMW += (taken / p.grams) * p.netPaid;
-            p.remainingGrams -= taken;
-            await purchasesRef.doc(p.id).update({ remainingGrams: p.remainingGrams });
-            remaining -= taken;
-        }
-        if (remaining > 0) throw new Error("Insufficient inventory");
-        
-        const revenueUSD = g * rate;
-        const costUSD = costZMW / appData.exchangeRate;
-        const profitUSD = revenueUSD - costUSD;
-        const profitZMW = profitUSD * appData.exchangeRate;
-        const perShare = profitZMW / appData.shareholders.length;
-        for (const sh of appData.shareholders) {
-            sh.balanceZMW += perShare;
-            await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-        }
-        
-        let usdKept = 0, zmwConverted = 0;
-        if (convChoice === "keep_all") { usdKept = revenueUSD; }
-        else if (convChoice === "convert_all") { zmwConverted = revenueUSD * appData.exchangeRate; }
-        else if (convChoice === "partial" && partialUsd > 0) {
-            const convertUSD = Math.min(partialUsd, revenueUSD);
-            zmwConverted = convertUSD * appData.exchangeRate;
-            usdKept = revenueUSD - convertUSD;
-        }
-        
-        const sale = { id: Date.now().toString(), date, gramsSold: g, sellRateUSD: rate, revenueUSD, profitUSD };
-        await salesRef.doc(sale.id).set(sale);
-        appData.goldSales.unshift(sale);
-        await addCashTransaction("SALE", zmwConverted, usdKept, `Sold ${g}g @ ${rate} USD/g, Profit: ${profitUSD.toFixed(2)} USD`, date);
-        renderApp();
-    }
-    
-    async function addExpense(desc, amt, date) {
-        if (amt <= 0) throw new Error("Positive amount");
-        const perShare = amt / appData.shareholders.length;
-        for (const sh of appData.shareholders) {
-            sh.balanceZMW -= perShare;
-            await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-        }
-        await expensesRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, description: desc, amountZMW: amt });
-        await addCashTransaction("EXPENSE", -amt, 0, desc, date);
-        renderApp();
-    }
-    
-    async function addSurveyRevenue(amt, cust, date) {
-        const perShare = amt / appData.shareholders.length;
-        for (const sh of appData.shareholders) {
-            sh.balanceZMW += perShare;
-            await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-        }
-        await surveysRef.doc(Date.now().toString()).set({ id: Date.now().toString(), date, amountZMW: amt, customerName: cust });
-        await addCashTransaction("SURVEY", amt, 0, `Survey from ${cust}`, date);
-        renderApp();
-    }
-    
-    async function requestWithdrawal(id, amt) {
-        const sh = appData.shareholders.find(s => s.id === id);
-        if (!sh || sh.balanceZMW < amt) throw new Error("Insufficient balance");
-        const req = { id: Date.now().toString(), date: new Date().toISOString(), shareholderId: id, shareholderName: sh.name, amountZMW: amt, status: "pending" };
-        await withdrawalsRef.doc(req.id).set(req);
-        appData.withdrawalRequests.unshift(req);
-        renderApp();
-    }
-    
-    async function approveWithdrawal(reqId) {
-        const req = appData.withdrawalRequests.find(r => r.id === reqId);
-        if (!req || req.status !== "pending") return;
-        const sh = appData.shareholders.find(s => s.id === req.shareholderId);
-        if (!sh || sh.balanceZMW < req.amountZMW) return;
-        sh.balanceZMW -= req.amountZMW;
-        await shareholdersRef.doc(sh.id.toString()).update({ balanceZMW: sh.balanceZMW });
-        req.status = "approved";
-        await withdrawalsRef.doc(req.id).update({ status: "approved" });
-        await addCashTransaction("WITHDRAWAL", -req.amountZMW, 0, `Withdrawal by ${sh.name}`, new Date().toISOString());
-        renderApp();
-    }
-    
-    let currentReportStart = null;
-    let currentReportEnd = null;
-    let currentTypeFilter = "all";
-    
-    function getDateRange(filter) {
-        const today = new Date();
-        let start, end;
-        if (filter === 'today') { start = new Date(); start.setHours(0,0,0,0); end = new Date(); end.setHours(23,59,59,999); }
-        else if (filter === 'yesterday') { start = new Date(); start.setDate(today.getDate()-1); start.setHours(0,0,0,0); end = new Date(start); end.setHours(23,59,59,999); }
-        else if (filter === 'thisMonth') { start = new Date(today.getFullYear(), today.getMonth(), 1); end = new Date(today.getFullYear(), today.getMonth()+1, 0); end.setHours(23,59,59,999); }
-        else if (filter === 'lastMonth') { start = new Date(today.getFullYear(), today.getMonth()-1, 1); end = new Date(today.getFullYear(), today.getMonth(), 0); end.setHours(23,59,59,999); }
-        else if (filter === 'thisYear') { start = new Date(today.getFullYear(), 0, 1); end = new Date(today.getFullYear(), 11, 31); end.setHours(23,59,59,999); }
-        else { start = new Date(0); end = new Date(); }
-        return { start, end };
-    }
-    
-    function generateReport() {
-        let filtered = appData.cashTransactions.filter(t => {
-            if (!currentReportStart || !currentReportEnd) return true;
-            const d = new Date(t.date);
-            return d >= currentReportStart && d <= currentReportEnd;
-        });
-        if (currentTypeFilter !== "all") {
-            filtered = filtered.filter(t => t.type === currentTypeFilter);
-        }
-        
-        const totalIn = filtered.reduce((s,t)=> s + (t.amountZMW > 0 ? t.amountZMW : 0), 0);
-        const totalOut = filtered.reduce((s,t)=> s + (t.amountZMW < 0 ? -t.amountZMW : 0), 0);
-        
-        const totalMashiin = appData.goldPurchases.reduce((s,p)=> s + (p.mashiinFee||0), 0);
-        const totalTransport = appData.goldPurchases.reduce((s,p)=> s + (p.transportFee||0), 0);
-        
-        const repSummary = {};
-        appData.goldPurchases.forEach(p => {
-            if (!repSummary[p.salesRep]) repSummary[p.salesRep] = { count: 0, totalGrams: 0 };
-            repSummary[p.salesRep].count++;
-            repSummary[p.salesRep].totalGrams += p.grams;
-        });
-        
-        const customerSummary = {};
-        appData.surveyRevenues.forEach(s => {
-            if (!customerSummary[s.customerName]) customerSummary[s.customerName] = { count: 0, total: 0 };
-            customerSummary[s.customerName].count++;
-            customerSummary[s.customerName].total += s.amountZMW;
-        });
-        
-        document.getElementById('reportOutput').innerHTML = `<div class="report-container">
-            <div class="report-header"><h3>📊 Financial Report</h3></div>
-            <div class="report-summary">
-                <div class="summary-card"><div>💰 Total Inflows</div><div class="value positive">${formatZMW(totalIn)}</div></div>
-                <div class="summary-card"><div>📉 Total Outflows</div><div class="value negative">${formatZMW(totalOut)}</div></div>
-                <div class="summary-card"><div>📈 Net</div><div class="value ${(totalIn-totalOut)>=0?'positive':'negative'}">${formatZMW(totalIn-totalOut)}</div></div>
-            </div>
-            <div style="background:#fff8e7; padding:15px; border-radius:16px; margin-bottom:20px; display:flex; gap:20px;">
-                <div>⚙️ Total Mashiin: ${formatZMW(totalMashiin)}</div>
-                <div>🚚 Total Transport: ${formatZMW(totalTransport)}</div>
-                <div>💱 Rate: 1 USD = ${appData.exchangeRate.toFixed(2)} ZMW</div>
-            </div>
-            <div class="three-col" style="margin-bottom:20px;">
-                <div style="background:white; border-radius:16px; padding:15px;"><h4>👥 Sales Reps</h4>${Object.entries(repSummary).map(([r,d]) => `<div>${r}: ${d.count} buys, ${d.totalGrams.toFixed(2)}g</div>`).join('') || 'None'}</div>
-                <div style="background:white; border-radius:16px; padding:15px;"><h4>📋 Survey by Customer</h4>${Object.entries(customerSummary).map(([c,d]) => `<div>${c}: ${d.count} surveys, ${formatZMW(d.total)}</div>`).join('') || 'None'}</div>
-                <div style="background:white; border-radius:16px; padding:15px;"><h4>💰 Balances</h4><div>ZMW: ${formatZMW(companyCashZMW)}</div><div>USD: ${formatUSD(companyCashUSD)}</div></div>
-            </div>
-            <div class="transaction-list"><div style="background:#efe5d5; padding:12px;">📋 TRANSACTIONS</div>
-            ${filtered.map(t => `<div class="transaction-item"><div>${new Date(t.date).toLocaleString()}</div><div class="transaction-type ${t.type}">${t.type}</div><div>${t.description}</div><div class="${t.amountZMW>=0?'positive':'negative'}">${t.amountZMW>=0?'+':''}${formatZMW(t.amountZMW)}</div><button class="btn-sm btn-danger" onclick="deleteTransaction('${t.id}')">🗑️</button></div>`).join('')}
-            </div>
-        </div>`;
-    }
-    
-    function showLogin() {
-        document.getElementById('root').innerHTML = `<div class="login-screen"><div class="login-card">
-            <h1>🏦 Gold Trade Pro</h1>
-            <div class="field"><label>Username</label><input id="loginUser" placeholder="Username" /></div>
-            <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="Password" /></div>
-            <button class="btn-gold" id="loginBtn">🔓 Access System</button>
-            <div id="loginError" class="error-msg"></div>
-            <div class="muted" style="margin-top:15px; text-align:center;">Admin / Muhiim1998 | Samatar / samatar123 | Yuusuf / yuusuf123</div>
-        </div></div>`;
-        
-        document.getElementById('loginBtn')?.addEventListener('click', () => {
-            const user = document.getElementById('loginUser').value.trim();
-            const pwd = document.getElementById('loginPass').value;
-            if (user === "Admin" && pwd === "Muhiim1998") { currentUser = { name: "Admin", role: "admin" }; loadAllData(); return; }
-            if (user === "Samatar" && pwd === "samatar123") { currentUser = { name: "Samatar", role: "manager" }; loadAllData(); return; }
-            const sh = appData.shareholders.find(s => s.name === user && s.password === pwd);
-            if (sh) { currentUser = { name: sh.name, role: "shareholder", shareholderId: sh.id }; loadAllData(); return; }
-            document.getElementById('loginError').innerText = "❌ Invalid credentials";
-        });
-    }
-    
-    function renderApp() {
-        const root = document.getElementById('root');
-        const isPriv = currentUser?.role === 'admin' || currentUser?.role === 'manager';
-        const stock = appData.goldPurchases.reduce((a,b)=>a+(b.grams||0),0) - (appData.goldSales?.reduce((a,b)=>a+(b.gramsSold||0),0)||0);
-        
-        const repMap = {};
-        appData.goldPurchases.forEach(p => { if(p.salesRep) repMap[p.salesRep] = (repMap[p.salesRep]||0) + (p.grams||0); });
-        const custMap = {};
-        appData.surveyRevenues.forEach(s => { if(s.customerName) custMap[s.customerName] = (custMap[s.customerName]||0) + (s.amountZMW||0); });
-        
-        const nav = ["dashboard", "purchase", "sales", "exchange", "survey", "expenses", "deposits", "users", "reports", "withdrawals"].map(t => 
-            `<button class="nav-btn ${activeTab===t?'active':''}" data-tab="${t}">${t.charAt(0).toUpperCase()+t.slice(1)}</button>`
-        ).join('');
-        
-        const today = new Date().toISOString().slice(0,10);
-        let content = '';
-        
-        if (activeTab === 'dashboard') {
-            content = `<div class="stats-row">
-                <div class="stat-card" id="clickZMW"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${formatZMW(companyCashZMW)}</div></div>
-                <div class="stat-card" id="clickUSD"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${formatUSD(companyCashUSD)}</div></div>
-                <div class="stat-card"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${formatGrams(stock)}</div></div>
-                <div class="stat-card"><div class="stat-label">💱 Rate</div><div class="stat-value">1 USD = ${appData.exchangeRate.toFixed(2)}</div></div>
-            </div>
-            <div class="three-col">
-                <div class="card"><div class="card-title">👤 Shareholders</div>${appData.shareholders.map(s=>`<div style="display:flex;justify-content:space-between;padding:8px 0"><span>${s.name}</span><span class="green">${formatZMW(s.balanceZMW)}</span></div>`).join('')}</div>
-                <div class="card"><div class="card-title">📊 Purchases by Rep</div>${Object.entries(repMap).map(([r,g]) => `<div>${r}: ${formatGrams(g)}</div>`).join('') || 'No purchases'}</div>
-                <div class="card"><div class="card-title">📋 Survey by Customer</div>${Object.entries(custMap).map(([c,a]) => `<div>${c}: ${formatZMW(a)}</div>`).join('') || 'No surveys'}</div>
-            </div>
-            <div class="card"><div class="card-title">🕐 Recent Transactions</div>${appData.cashTransactions.slice(0,10).map(t=>`<div style="padding:8px 0;border-bottom:1px solid #2a261d;display:flex;justify-content:space-between;"><span>${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)}</span><button class="btn-sm btn-danger" onclick="deleteTransaction('${t.id}')">🗑️</button></div>`).join('') || 'No transactions'}</div>`;
-        }
-        else if (activeTab === 'purchase' && isPriv) {
-            content = `<div class="card"><div class="card-title">🛒 Buy Gold</div><div class="form-group"><label>Date</label><input type="date" id="pDate" value="${today}" /></div><div class="form-group"><label>Grams</label><input id="grams" type="number" /></div><div class="form-group"><label>Rate (ZMW/g)</label><input id="rate" type="number" /></div><div class="form-group"><label>Mashiin</label><input id="mashiin" value="750" /></div><div class="form-group"><label>Transport</label><input id="transport" value="150" /></div><div class="form-group"><label>Sales Rep</label><select id="rep">${["Samatar","Yuusuf","Abdirisak","Jamal"].map(r=>`<option>${r}</option>`).join('')}</select></div><button class="btn-action" id="doPurchase">Record</button></div>`;
-        }
-        else if (activeTab === 'sales' && isPriv) {
-            content = `<div class="card"><div class="card-title">💰 Sell Gold</div><div class="form-group"><label>Date</label><input type="date" id="saleDate" value="${today}" /></div><div class="form-group"><label>Grams</label><input id="sellGrams" type="number" /></div><div class="form-group"><label>Sell Rate (USD/g)</label><input id="sellRate" type="number" /></div><div class="form-group"><label>Conversion</label><select id="conv"><option value="convert_all">All to ZMW</option><option value="keep_all">Keep USD</option><option value="partial">Partial</option></select></div><div id="partialBox" style="display:none"><div class="form-group"><label>USD to Convert</label><input id="partialUsd" type="number" /></div></div><button class="btn-action" id="doSale">Sell</button></div>`;
-        }
-        else if (activeTab === 'exchange' && isPriv) {
-            content = `<div class="card"><div class="card-title">🔄 Exchange</div><div class="form-group"><label>Date</label><input type="date" id="exDate" value="${today}" /></div><div class="form-group"><label>Direction</label><select id="exDir"><option value="ZMW">ZMW → USD</option><option value="USD">USD → ZMW</option></select></div><div class="form-group"><label>Amount</label><input id="exAmount" type="number" /></div><div class="form-group"><label>Rate</label><input id="exRate" value="${appData.exchangeRate}" /></div><button class="btn-action" id="doExchange">Exchange</button></div>`;
-        }
-        else if (activeTab === 'survey' && isPriv) {
-            content = `<div class="card"><div class="card-title">📋 Survey Revenue</div><div class="form-group"><label>Date</label><input type="date" id="survDate" value="${today}" /></div><div class="form-group"><label>Customer</label><input id="custName" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="survAmt" type="number" /></div><button class="btn-action" id="doSurvey">Add</button></div>`;
-        }
-        else if (activeTab === 'expenses' && isPriv) {
-            content = `<div class="card"><div class="card-title">📉 Expenses</div><div class="form-group"><label>Date</label><input type="date" id="expDate" value="${today}" /></div><div class="form-group"><label>Description</label><input id="expDesc" /></div><div class="form-group"><label>Amount (ZMW)</label><input id="expAmt" type="number" /></div><button class="btn-action" id="doExpense">Record</button></div>`;
-        }
-        else if (activeTab === 'deposits' && isPriv) {
-            content = `<div class="card"><div class="card-title">💵 Deposits</div><div class="form-group"><label>Date</label><input type="date" id="depDate" value="${today}" /></div><div class="form-group"><label>Type</label><select id="depType"><option value="shareholder">Shareholder</option><option value="external">External</option></select></div><div class="form-group"><label>Source</label><select id="depSource">${appData.shareholders.map(s=>`<option>${s.name}</option>`).join('')}</select></div><div class="form-group"><label>Amount (ZMW)</label><input id="depAmt" type="number" /></div><button class="btn-action" id="doDeposit">Record</button></div>`;
-        }
-        else if (activeTab === 'users' && isPriv) {
-            content = `<div class="card"><div class="card-title">👥 Users</div><button class="btn-sm" id="togglePasswords">${showPasswords ? 'Hide' : 'Show'} Passwords</button>${appData.shareholders.map(s=>`<div class="user-row"><div>${s.name} (shareholder) ${formatZMW(s.balanceZMW)}</div><div>${showPasswords ? s.password : '••••'}</div><div><button class="btn-sm" data-change="${s.name}">Change</button><button class="btn-sm btn-danger" data-del="${s.id}">Delete</button></div></div>`).join('')}<div><h4>Add Shareholder</h4><input id="newName" /><input id="newPwd" /><button class="btn-action" id="addUserBtn">Add</button></div></div>`;
-        }
-        else if (activeTab === 'reports' && isPriv) {
-            content = `<div class="card"><div class="card-title">📅 Reports</div>
-                <div class="report-filters">
-                    <button class="filter-btn" data-filter="today">Today</button>
-                    <button class="filter-btn" data-filter="yesterday">Yesterday</button>
-                    <button class="filter-btn" data-filter="thisMonth">This Month</button>
-                    <button class="filter-btn" data-filter="lastMonth">Last Month</button>
-                    <button class="filter-btn" data-filter="thisYear">This Year</button>
-                    <button class="filter-btn" data-filter="all">All Time</button>
-                </div>
-                <div class="type-filter-bar">
-                    <select id="reportTypeFilter">
-                        <option value="all">All</option>
-                        <option value="PURCHASE">Purchases</option>
-                        <option value="SALE">Sales</option>
-                        <option value="SURVEY">Survey</option>
-                        <option value="EXPENSE">Expenses</option>
-                        <option value="DEPOSIT">Deposits</option>
-                        <option value="WITHDRAWAL">Withdrawals</option>
-                        <option value="EXCHANGE">Exchange</option>
-                    </select>
-                    <button class="btn-sm" id="applyTypeFilter">Apply</button>
-                </div>
-                <div id="reportOutput"></div>
-                <button class="btn-sm" id="printReport">Print</button>
-            </div>`;
-        }
-        else if (activeTab === 'withdrawals') {
-            const reqs = appData.withdrawalRequests.filter(r => isPriv || r.shareholderId === currentUser?.shareholderId);
-            content = `<div class="card"><div class="card-title">🏧 Withdrawals</div>${!isPriv ? `<button class="btn-sm" id="reqBtn">Request</button>` : ''}<table><thead><tr><th>User</th><th>Amount</th><th>Status</th>${isPriv?'<th></th>':''}</tr></thead><tbody>${reqs.map(r=>`<tr><td>${r.shareholderName}侧<td>${formatZMW(r.amountZMW)}侧<td>${r.status}侧${isPriv && r.status==='pending' ? `<td><button class="btn-sm" data-apr="${r.id}">Approve</button></table>` : '<td>—</td>'}</tr>`).join('')}</tbody></table></div>`;
-        }
-        
-        root.innerHTML = `<div class="mobile-header"><button id="menuToggle">☰</button><span>GOLD PRO</span></div>
-        <div class="sidebar" id="sidebar"><div class="logo-area"><h2>⚜️ GOLD PRO</h2></div><div class="nav-menu">${nav}</div>
-        <div class="user-section"><div class="user-badge"><div>👤 ${currentUser?.name}</div><div>${currentUser?.role}</div></div>
-        <button class="btn-outline" id="logoutBtn">Sign Out</button></div></div>
-        <div class="content-main">${content}</div>`;
-        
-        document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { activeTab = b.dataset.tab; renderApp(); }));
-        document.getElementById('logoutBtn')?.addEventListener('click', () => { currentUser = null; showLogin(); });
-        document.getElementById('menuToggle')?.addEventListener('click', () => document.getElementById('sidebar')?.classList.toggle('open'));
-        
-        if (activeTab === 'purchase' && isPriv) {
-            document.getElementById('doPurchase')?.addEventListener('click', async () => {
-                try { await recordPurchase(parseFloat(document.getElementById('grams').value), parseFloat(document.getElementById('rate').value), parseFloat(document.getElementById('mashiin').value)||0, parseFloat(document.getElementById('transport').value)||0, document.getElementById('rep').value, document.getElementById('pDate').value); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'sales' && isPriv) {
-            document.getElementById('conv')?.addEventListener('change', e => document.getElementById('partialBox').style.display = e.target.value === 'partial' ? 'block' : 'none');
-            document.getElementById('doSale')?.addEventListener('click', async () => {
-                try { await recordSale(parseFloat(document.getElementById('sellGrams').value), parseFloat(document.getElementById('sellRate').value), document.getElementById('conv').value, parseFloat(document.getElementById('partialUsd').value)||0, document.getElementById('saleDate').value); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'exchange' && isPriv) {
-            document.getElementById('doExchange')?.addEventListener('click', async () => {
-                try { await exchangeCurrency(document.getElementById('exDir').value, parseFloat(document.getElementById('exAmount').value), parseFloat(document.getElementById('exRate').value), document.getElementById('exDate').value); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'survey' && isPriv) {
-            document.getElementById('doSurvey')?.addEventListener('click', async () => {
-                try { await addSurveyRevenue(parseFloat(document.getElementById('survAmt').value), document.getElementById('custName').value, document.getElementById('survDate').value); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'expenses' && isPriv) {
-            document.getElementById('doExpense')?.addEventListener('click', async () => {
-                try { await addExpense(document.getElementById('expDesc').value, parseFloat(document.getElementById('expAmt').value), document.getElementById('expDate').value); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'deposits' && isPriv) {
-            document.getElementById('doDeposit')?.addEventListener('click', async () => {
-                try { await addDeposit(document.getElementById('depType').value, document.getElementById('depSource').value, parseFloat(document.getElementById('depAmt').value), document.getElementById('depDesc')?.value || '', document.getElementById('depDate').value); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'users' && isPriv) {
-            document.getElementById('togglePasswords')?.addEventListener('click', () => { showPasswords = !showPasswords; renderApp(); });
-            document.querySelectorAll('[data-change]').forEach(btn => btn.addEventListener('click', async () => {
-                const target = btn.dataset.change;
-                const newPwd = prompt(`New password for ${target}:`);
-                if (newPwd) try { await changeUserPassword(target, newPwd); alert("Changed!"); renderApp(); } catch(e) { alert(e.message); }
-            }));
-            document.querySelectorAll('[data-del]').forEach(btn => btn.addEventListener('click', async () => {
-                const id = parseInt(btn.dataset.del);
-                if (confirm("Delete?")) try { await deleteShareholder(id); renderApp(); } catch(e) { alert(e.message); }
-            }));
-            document.getElementById('addUserBtn')?.addEventListener('click', async () => {
-                const name = document.getElementById('newName').value.trim();
-                const pwd = document.getElementById('newPwd').value.trim();
-                if (!name || !pwd) return alert("Enter name and password");
-                try { await addShareholder(name, pwd); alert("Added!"); renderApp(); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'withdrawals' && !isPriv) {
-            document.getElementById('reqBtn')?.addEventListener('click', async () => {
-                const amt = parseFloat(prompt("Amount ZMW:")); if(amt) try { await requestWithdrawal(currentUser.shareholderId, amt); renderApp(); } catch(e) { alert(e.message); }
-            });
-        }
-        if (activeTab === 'withdrawals' && isPriv) {
-            document.querySelectorAll('[data-apr]').forEach(b => b.addEventListener('click', async () => { await approveWithdrawal(parseInt(b.dataset.apr)); renderApp(); }));
-        }
-        if (activeTab === 'reports' && isPriv) {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const { start, end } = getDateRange(btn.dataset.filter);
-                    currentReportStart = start;
-                    currentReportEnd = end;
-                    generateReport();
-                });
-            });
-            document.getElementById('applyTypeFilter')?.addEventListener('click', () => {
-                currentTypeFilter = document.getElementById('reportTypeFilter').value;
-                generateReport();
-            });
-            document.getElementById('printReport')?.addEventListener('click', () => window.print());
-            currentReportStart = null;
-            currentReportEnd = null;
-            currentTypeFilter = "all";
-            generateReport();
-        }
-        
-        document.getElementById('clickZMW')?.addEventListener('click', () => {
-            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>💰 ZMW History</h3>${appData.cashTransactions.map(t=>`<div>${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatZMW(t.amountZMW)} | Balance: ${formatZMW(t.runningBalanceZMW)}</div>`).join('')}<button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
-            document.body.appendChild(div);
-        });
-        document.getElementById('clickUSD')?.addEventListener('click', () => {
-            const div = document.createElement('div'); div.className = 'modal'; div.innerHTML = `<div class="modal-content"><h3>💵 USD History</h3>${appData.cashTransactions.map(t=>`<div>${new Date(t.date).toLocaleString()} | ${t.type} | ${t.description} | ${formatUSD(t.amountUSD)} | Balance: ${formatUSD(t.runningBalanceUSD)}</div>`).join('')}<button class="btn-sm" onclick="this.closest('.modal').remove()">Close</button></div>`;
-            document.body.appendChild(div);
-        });
-    }
-    
-    window.deleteTransaction = deleteTransaction;
-    
-    document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
-    loadSavedTheme();
-    loadAllData();
-   recalculateLiveBalances();
-    async function fixYuusufBalance() {
-    const yuusuf = appData.shareholders.find(s => s.name === "Yuusuf");
-    if (!yuusuf) return;
-    
-    // Calculate correct balance from transactions
-    let yuusufDeposits = 0;
-    let yuusufWithdrawals = 0;
-    
-    appData.cashTransactions.forEach(t => {
-        if (t.description && t.description.includes("Yuusuf")) {
-            if (t.type === "DEPOSIT" && t.description.includes("Deposit from Yuusuf")) {
-                yuusufDeposits += t.amountZMW;
-            }
-            if (t.type === "WITHDRAWAL" && t.description.includes("Yuusuf")) {
-                yuusufWithdrawals += Math.abs(t.amountZMW);
-            }
-        }
-    });
-    
-    const calculatedBalance = yuusufDeposits - yuusufWithdrawals;
-    
-    if (yuusuf.balanceZMW !== calculatedBalance) {
-        yuusuf.balanceZMW = calculatedBalance;
-        await shareholdersRef.doc(yuusuf.id.toString()).update({ balanceZMW: calculatedBalance });
-        console.log("✅ Fixed Yuusuf balance to:", formatZMW(calculatedBalance));
-        return true;
-    }
-    return false;
+// ═══════════════════════════════════════════════
+// FIREBASE
+// ═══════════════════════════════════════════════
+const FC = {
+  apiKey:"AIzaSyB4uA5m3_1Ps-zaPLF6UWD5X4VOoHn0JxY",
+  authDomain:"gold-trading-app-203b8.firebaseapp.com",
+  projectId:"gold-trading-app-203b8",
+  storageBucket:"gold-trading-app-203b8.firebasestorage.app",
+  messagingSenderId:"240340562471",
+  appId:"1:240340562471:web:816f7e0026783deccb5402"
+};
+firebase.initializeApp(FC);
+const db = firebase.firestore();
+const C = {
+  settings:    db.collection('settings'),
+  purchases:   db.collection('goldPurchases'),
+  sales:       db.collection('goldSales'),
+  expenses:    db.collection('expenses'),
+  surveys:     db.collection('surveyRevenues'),
+  deposits:    db.collection('deposits'),
+  withdrawals: db.collection('withdrawalRequests'),
+  cashTx:      db.collection('cashTransactions'),
+  ledger:      db.collection('ledgerEntries'),   // double-entry
+  audit:       db.collection('auditLog'),         // audit trail
+  periods:     db.collection('periods'),          // locked periods
+  shareholders:db.collection('shareholders'),
+};
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let CU = null; // current user
+let TAB = 'dashboard';
+let SHOW_PWD = false;
+let RPT = { dateFilter:'all', start:null, end:null, typeFilter:'all' };
+
+let D = {
+  cashZMW:0, cashUSD:0, rate:26.5,
+  purchases:[], sales:[], expenses:[], surveys:[],
+  deposits:[], withdrawals:[], cashTx:[], ledger:[],
+  audit:[], periods:[], shareholders:[]
+};
+
+// ═══════════════════════════════════════════════
+// FORMATTERS
+// ═══════════════════════════════════════════════
+const fZ = v => 'K' + (+v||0).toFixed(2);
+const fU = v => '$' + (+v||0).toFixed(2);
+const fG = v => (+v||0).toFixed(4) + 'g';
+const fD = s => s ? new Date(s).toLocaleDateString() : '-';
+const fDT = s => s ? new Date(s).toLocaleString() : '-';
+const today = () => new Date().toISOString().slice(0,10);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+
+// ═══════════════════════════════════════════════
+// LOAD
+// ═══════════════════════════════════════════════
+async function loadAll() {
+  try {
+    const sd = await C.settings.doc('main').get();
+    if (sd.exists) { const d=sd.data(); D.cashZMW=d.cashZMW||0; D.cashUSD=d.cashUSD||0; D.rate=d.rate||26.5; }
+    else await C.settings.doc('main').set({cashZMW:0,cashUSD:0,rate:26.5});
+
+    const shSnap = await C.shareholders.get();
+    D.shareholders = [];
+    if (shSnap.empty) {
+      const defs = [{id:1,name:"Yuusuf",password:"yuusuf123",balZMW:0},{id:2,name:"Abdirisak",password:"abdirisak123",balZMW:0},{id:3,name:"Ahmed",password:"ahmed123",balZMW:0}];
+      for (const s of defs) { await C.shareholders.doc(s.id.toString()).set(s); D.shareholders.push(s); }
+    } else { shSnap.forEach(d=>D.shareholders.push({id:parseInt(d.id),...d.data()})); }
+
+    const [pS,sS,eS,svS,dpS,wS,txS,lS,aS,prS] = await Promise.all([
+      C.purchases.orderBy('date','asc').get(),
+      C.sales.orderBy('date','desc').get(),
+      C.expenses.orderBy('date','desc').get(),
+      C.surveys.orderBy('date','desc').get(),
+      C.deposits.orderBy('date','desc').get(),
+      C.withdrawals.orderBy('date','desc').get(),
+      C.cashTx.orderBy('date','desc').limit(500).get(),
+      C.ledger.orderBy('date','desc').limit(500).get(),
+      C.audit.orderBy('date','desc').limit(200).get(),
+      C.periods.orderBy('year','desc').get()
+    ]);
+    D.purchases  = pS.docs.map(d=>({id:d.id,...d.data()}));
+    D.sales      = sS.docs.map(d=>({id:d.id,...d.data()}));
+    D.expenses   = eS.docs.map(d=>({id:d.id,...d.data()}));
+    D.surveys    = svS.docs.map(d=>({id:d.id,...d.data()}));
+    D.deposits   = dpS.docs.map(d=>({id:d.id,...d.data()}));
+    D.withdrawals= wS.docs.map(d=>({id:d.id,...d.data()}));
+    D.cashTx     = txS.docs.map(d=>({id:d.id,...d.data()}));
+    D.ledger     = lS.docs.map(d=>({id:d.id,...d.data()}));
+    D.audit      = aS.docs.map(d=>({id:d.id,...d.data()}));
+    D.periods    = prS.docs.map(d=>({id:d.id,...d.data()}));
+
+    setSynced('✅ Cloud Connected');
+    if (CU) renderApp(); else showLogin();
+  } catch(e) {
+    console.error(e);
+    setSynced('⚠️ Offline');
+    if (CU) renderApp(); else showLogin();
+  }
 }
+
+function setSynced(msg) {
+  const el=document.getElementById('sync');
+  if(el){el.innerHTML=msg;setTimeout(()=>el.style.opacity='0.4',3000);}
+}
+async function saveSettings() {
+  await C.settings.doc('main').set({cashZMW:D.cashZMW,cashUSD:D.cashUSD,rate:D.rate});
+}
+
+// ═══════════════════════════════════════════════
+// PERIOD LOCK CHECK
+// ═══════════════════════════════════════════════
+function isPeriodLocked(dateStr) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  return D.periods.some(p => p.locked && p.year===d.getFullYear() && p.month===(d.getMonth()+1));
+}
+function checkLocked(dateStr) {
+  if (isPeriodLocked(dateStr)) throw new Error(`⛔ Period ${new Date(dateStr).toLocaleDateString('en',{month:'long',year:'numeric'})} is locked. Cannot modify.`);
+}
+
+// ═══════════════════════════════════════════════
+// AUDIT LOG
+// ═══════════════════════════════════════════════
+async function logAudit(action, detail, refId='') {
+  const entry = {id:uid(), date:new Date().toISOString(), user:CU?.name||'?', role:CU?.role||'?', action, detail, refId};
+  D.audit.unshift(entry);
+  await C.audit.doc(entry.id).set(entry);
+  if (D.audit.length>200) { const old=D.audit.pop(); C.audit.doc(old.id).delete(); }
+}
+
+// ═══════════════════════════════════════════════
+// DOUBLE-ENTRY LEDGER
+// ═══════════════════════════════════════════════
+async function postLedger(refId, date, type, entries) {
+  // entries = [{account, side:'dr'|'cr', amtZMW, amtUSD, note}]
+  const totalDr = entries.filter(e=>e.side==='dr').reduce((s,e)=>s+(e.amtZMW||0),0);
+  const totalCr = entries.filter(e=>e.side==='cr').reduce((s,e)=>s+(e.amtZMW||0),0);
+  if (Math.abs(totalDr-totalCr)>0.01) console.warn('⚠️ Ledger imbalance!', totalDr, totalCr);
+  for (const e of entries) {
+    const row = {id:uid(), refId, date, type, account:e.account, side:e.side, amtZMW:e.amtZMW||0, amtUSD:e.amtUSD||0, note:e.note||''};
+    D.ledger.unshift(row);
+    await C.ledger.doc(row.id).set(row);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// CASH TX LOG (with correct running balance)
+// ═══════════════════════════════════════════════
+async function logCashTx(type, amtZMW, amtUSD, desc, date) {
+  const tx = {
+    id:uid(), date:date||new Date().toISOString(), type,
+    amountZMW:amtZMW||0, amountUSD:amtUSD||0, description:desc,
+    runningZMW:D.cashZMW, runningUSD:D.cashUSD,  // saved AFTER balance updated
+    postedBy:CU?.name||'?'
+  };
+  D.cashTx.unshift(tx);
+  await C.cashTx.doc(tx.id).set(tx);
+  if(D.cashTx.length>500){const old=D.cashTx.pop();C.cashTx.doc(old.id).delete();}
+}
+
+// ═══════════════════════════════════════════════
+// INVENTORY
+// ═══════════════════════════════════════════════
+const getStock = () => D.purchases.reduce((s,p)=>s+(p.remainingGrams??p.grams??0),0);
+const getBatches = () => D.purchases.filter(p=>(p.remainingGrams??0)>0.00001);
+
+// ═══════════════════════════════════════════════
+// PURCHASE
+// ═══════════════════════════════════════════════
+async function doPurchase(grams, rate, mashiin, transport, rep, date) {
+  if (!grams||grams<=0) throw new Error('Grams must be positive');
+  if (!rate||rate<=0)   throw new Error('Rate must be positive');
+  checkLocked(date);
+  const gross = grams*rate;
+  const net   = gross - mashiin - transport;
+  if (net<0) throw new Error('Deductions exceed gold value');
+  if (D.cashZMW < net) throw new Error(`Insufficient ZMW. Need ${fZ(net)}, have ${fZ(D.cashZMW)}`);
+
+  const p = {id:uid(), date, grams, ratePerGram:rate, grossAmount:gross, mashiinFee:mashiin, transportFee:transport, netPaid:net, salesRep:rep, remainingGrams:grams, rateAtPurchase:D.rate};
+  await C.purchases.doc(p.id).set(p);
+  D.purchases.push(p); D.purchases.sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+  D.cashZMW -= net;
+  await saveSettings();
+  await logCashTx('PURCHASE',-net,0,`Buy ${fG(grams)} @${fZ(rate)}/g | Mashiin:${fZ(mashiin)} Transport:${fZ(transport)} | Rep:${rep}`,date);
+  await postLedger(p.id,date,'PURCHASE',[
+    {account:'Gold Inventory',  side:'dr',amtZMW:gross, note:`${fG(grams)} @${fZ(rate)}`},
+    {account:'Cash ZMW',        side:'cr',amtZMW:net,   note:'Net paid'},
+    {account:'Mashiin Expense', side:'dr',amtZMW:mashiin,note:'Mashiin fee'},
+    {account:'Transport Expense',side:'dr',amtZMW:transport,note:'Transport fee'},
+    // balance the expenses against cash
+    {account:'Cash ZMW',        side:'cr',amtZMW:mashiin+transport,note:'Fee payments'},
+  ]);
+  await logAudit('PURCHASE',`${fG(grams)} @ ${fZ(rate)}/g, net ${fZ(net)}, rep ${rep}`,p.id);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// SALE (FIFO + full profit calc)
+// ═══════════════════════════════════════════════
+async function doSale(grams, sellRateUSD, convChoice, partialUSD, date) {
+  if (!grams||grams<=0) throw new Error('Grams must be positive');
+  if (!sellRateUSD||sellRateUSD<=0) throw new Error('Sell rate must be positive');
+  checkLocked(date);
+  const stock = getStock();
+  if (stock < grams-0.00001) throw new Error(`Insufficient gold. Have ${fG(stock)}, need ${fG(grams)}`);
+
+  // FIFO cost basis
+  let remaining = grams, costZMW = 0;
+  const updates = [];
+  for (const batch of getBatches()) {
+    if (remaining<=0.00001) break;
+    const take = Math.min(batch.remainingGrams, remaining);
+    costZMW += (take/batch.grams)*batch.netPaid;
+    updates.push({id:batch.id, newRem: batch.remainingGrams-take});
+    remaining -= take;
+  }
+  if (remaining>0.00001) throw new Error('Gold allocation error — check inventory');
+
+  // Apply FIFO updates
+  for (const u of updates) {
+    const b = D.purchases.find(p=>p.id===u.id);
+    if (b) b.remainingGrams = u.newRem;
+    await C.purchases.doc(u.id).update({remainingGrams:u.newRem});
+  }
+
+  const revenueUSD  = grams * sellRateUSD;
+  const costUSD     = costZMW / D.rate;
+  const profitUSD   = revenueUSD - costUSD;
+  const profitZMW   = profitUSD * D.rate;
+  const nSH         = D.shareholders.length;
+  const perShare    = nSH>0 ? profitZMW/nSH : 0;
+
+  for (const sh of D.shareholders) {
+    sh.balZMW = (sh.balZMW||0) + perShare;
+    await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW});
+  }
+
+  let zmwAdded=0, usdKept=0;
+  if (convChoice==='convert_all')      { zmwAdded=revenueUSD*D.rate; D.cashZMW+=zmwAdded; }
+  else if (convChoice==='keep_all')    { usdKept=revenueUSD; D.cashUSD+=usdKept; }
+  else if (convChoice==='partial') {
+    const conv=Math.min(Math.max(partialUSD||0,0),revenueUSD);
+    zmwAdded=conv*D.rate; usdKept=revenueUSD-conv;
+    D.cashZMW+=zmwAdded; D.cashUSD+=usdKept;
+  }
+  await saveSettings();
+
+  const sr = {id:uid(),date,gramsSold:grams,sellRateUSD,revenueUSD,costZMW,costUSD,profitUSD,profitZMW,perShare,rateUsed:D.rate};
+  await C.sales.doc(sr.id).set(sr); D.sales.unshift(sr);
+
+  await logCashTx('SALE',zmwAdded,usdKept,`Sold ${fG(grams)} @${fU(sellRateUSD)}/g | Profit:${fU(profitUSD)} | Each SH:${fZ(perShare)}`,date);
+  await postLedger(sr.id,date,'SALE',[
+    {account:'Cash USD',          side:'dr',amtZMW:zmwAdded, amtUSD:usdKept, note:'Revenue received'},
+    {account:'Gold Inventory',    side:'cr',amtZMW:costZMW,  note:'Cost of goods sold'},
+    {account:'Profit & Loss',     side:'cr',amtZMW:profitZMW,note:'Gross profit'},
+    {account:'Shareholder Equity',side:'dr',amtZMW:profitZMW,note:'Profit distributed'},
+  ]);
+  await logAudit('SALE',`${fG(grams)} @${fU(sellRateUSD)}, profit ${fU(profitUSD)}, per SH ${fZ(perShare)}`,sr.id);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// EXPENSE
+// ═══════════════════════════════════════════════
+async function doExpense(desc, category, amt, date) {
+  if (!desc) throw new Error('Description required');
+  if (amt<=0) throw new Error('Amount must be positive');
+  if (D.cashZMW<amt) throw new Error(`Insufficient ZMW. Need ${fZ(amt)}, have ${fZ(D.cashZMW)}`);
+  checkLocked(date);
+  const nSH=D.shareholders.length, perShare=nSH>0?amt/nSH:0;
+  for (const sh of D.shareholders) { sh.balZMW=(sh.balZMW||0)-perShare; await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW}); }
+  const ex={id:uid(),date,description:desc,category:category||'General',amountZMW:amt};
+  await C.expenses.doc(ex.id).set(ex); D.expenses.unshift(ex);
+  D.cashZMW-=amt; await saveSettings();
+  await logCashTx('EXPENSE',-amt,0,`[${category}] ${desc}`,date);
+  await postLedger(ex.id,date,'EXPENSE',[
+    {account:`Expense - ${category}`,side:'dr',amtZMW:amt,note:desc},
+    {account:'Cash ZMW',             side:'cr',amtZMW:amt,note:'Payment'},
+  ]);
+  await logAudit('EXPENSE',`${fZ(amt)} - ${desc} [${category}]`,ex.id);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// SURVEY REVENUE
+// ═══════════════════════════════════════════════
+async function doSurvey(amt, customer, date) {
+  if (amt<=0) throw new Error('Amount must be positive');
+  if (!customer) throw new Error('Customer name required');
+  checkLocked(date);
+  const nSH=D.shareholders.length, perShare=nSH>0?amt/nSH:0;
+  for (const sh of D.shareholders) { sh.balZMW=(sh.balZMW||0)+perShare; await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW}); }
+  const sv={id:uid(),date,amountZMW:amt,customerName:customer};
+  await C.surveys.doc(sv.id).set(sv); D.surveys.unshift(sv);
+  D.cashZMW+=amt; await saveSettings();
+  await logCashTx('SURVEY',amt,0,`Survey: ${customer}`,date);
+  await postLedger(sv.id,date,'SURVEY',[
+    {account:'Cash ZMW',        side:'dr',amtZMW:amt,note:customer},
+    {account:'Survey Revenue',  side:'cr',amtZMW:amt,note:customer},
+  ]);
+  await logAudit('SURVEY',`${fZ(amt)} from ${customer}`,sv.id);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// DEPOSIT
+// ═══════════════════════════════════════════════
+async function doDeposit(type, source, amt, note, date) {
+  if (amt<=0) throw new Error('Amount must be positive');
+  checkLocked(date);
+  if (type==='shareholder') {
+    const sh=D.shareholders.find(s=>s.name===source);
+    if (!sh) throw new Error('Shareholder not found');
+    sh.balZMW=(sh.balZMW||0)+amt;
+    await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW});
+    await postLedger(uid(),date,'DEPOSIT',[
+      {account:'Cash ZMW',          side:'dr',amtZMW:amt,note:`Deposit by ${source}`},
+      {account:'Shareholder Equity',side:'cr',amtZMW:amt,note:source},
+    ]);
+  } else {
+    await postLedger(uid(),date,'DEPOSIT',[
+      {account:'Cash ZMW',    side:'dr',amtZMW:amt,note:`External: ${note||source}`},
+      {account:'Other Income',side:'cr',amtZMW:amt,note:note||source},
+    ]);
+  }
+  D.cashZMW+=amt; await saveSettings();
+  await logCashTx('DEPOSIT',amt,0,`${type==='shareholder'?`Deposit: ${source}`:`External: ${note||source}`}`,date);
+  await logAudit('DEPOSIT',`${fZ(amt)} ${type==='shareholder'?`from ${source}`:`external: ${note}`}`);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// EXCHANGE
+// ═══════════════════════════════════════════════
+async function doExchange(fromCurr, amt, rate, date) {
+  if (amt<=0||rate<=0) throw new Error('Invalid amount or rate');
+  checkLocked(date);
+  let dZ=0,dU=0;
+  if (fromCurr==='ZMW') {
+    if (D.cashZMW<amt) throw new Error(`Insufficient ZMW. Have ${fZ(D.cashZMW)}`);
+    dU=amt/rate; dZ=-amt; D.cashZMW-=amt; D.cashUSD+=dU;
+    await postLedger(uid(),date,'EXCHANGE',[
+      {account:'Cash USD',side:'dr',amtZMW:0,amtUSD:dU,note:`Received @${rate}`},
+      {account:'Cash ZMW',side:'cr',amtZMW:amt,note:`Given @${rate}`},
+    ]);
+  } else {
+    if (D.cashUSD<amt) throw new Error(`Insufficient USD. Have ${fU(D.cashUSD)}`);
+    dZ=amt*rate; dU=-amt; D.cashUSD-=amt; D.cashZMW+=dZ;
+    await postLedger(uid(),date,'EXCHANGE',[
+      {account:'Cash ZMW',side:'dr',amtZMW:dZ,note:`Received @${rate}`},
+      {account:'Cash USD',side:'cr',amtZMW:0,amtUSD:amt,note:`Given @${rate}`},
+    ]);
+  }
+  D.rate=rate; await saveSettings();
+  await logCashTx('EXCHANGE',dZ,dU,fromCurr==='ZMW'?`ZMW→USD: ${fZ(amt)} @ ${rate} = ${fU(dU)}`:`USD→ZMW: ${fU(amt)} @ ${rate} = ${fZ(dZ)}`,date);
+  await logAudit('EXCHANGE',`${fromCurr==='ZMW'?`${fZ(amt)}→${fU(dU)}`:`${fU(amt)}→${fZ(dZ)}`} @rate ${rate}`);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// WITHDRAWAL
+// ═══════════════════════════════════════════════
+async function reqWithdrawal(shId, amt) {
+  const sh=D.shareholders.find(s=>s.id===shId);
+  if (!sh) throw new Error('Shareholder not found');
+  if ((sh.balZMW||0)<amt) throw new Error(`Insufficient balance. Have ${fZ(sh.balZMW)}`);
+  const r={id:uid(),date:new Date().toISOString(),shareholderId:shId,shareholderName:sh.name,amountZMW:amt,status:'pending'};
+  await C.withdrawals.doc(r.id).set(r); D.withdrawals.unshift(r);
+  await logAudit('WITHDRAWAL_REQUEST',`${sh.name} requested ${fZ(amt)}`,r.id);
+  renderApp();
+}
+async function approveWithdrawal(reqId) {
+  const r=D.withdrawals.find(x=>x.id===reqId);
+  if (!r||r.status!=='pending') return alert('Not found or already processed');
+  const sh=D.shareholders.find(s=>s.id===r.shareholderId);
+  if (!sh) return alert('Shareholder not found');
+  if ((sh.balZMW||0)<r.amountZMW) return alert(`SH balance (${fZ(sh.balZMW)}) < withdrawal (${fZ(r.amountZMW)})`);
+  if (D.cashZMW<r.amountZMW) return alert(`Company cash (${fZ(D.cashZMW)}) < withdrawal (${fZ(r.amountZMW)})`);
+  sh.balZMW-=r.amountZMW; await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW});
+  D.cashZMW-=r.amountZMW; await saveSettings();
+  r.status='approved'; await C.withdrawals.doc(r.id).update({status:'approved'});
+  await logCashTx('WITHDRAWAL',-r.amountZMW,0,`Withdrawal: ${sh.name}`,new Date().toISOString());
+  await postLedger(r.id,new Date().toISOString(),'WITHDRAWAL',[
+    {account:'Shareholder Equity',side:'dr',amtZMW:r.amountZMW,note:sh.name},
+    {account:'Cash ZMW',          side:'cr',amtZMW:r.amountZMW,note:`Paid to ${sh.name}`},
+  ]);
+  await logAudit('WITHDRAWAL_APPROVED',`${sh.name} withdrew ${fZ(r.amountZMW)}`,r.id);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// DELETE TRANSACTION — FULL REVERSAL
+// ═══════════════════════════════════════════════
+async function deleteTx(txId) {
+  if (!confirm('⚠️ Delete this transaction?\n\nThis will:\n• Reverse cash balances\n• Reverse shareholder balances\n• Restore gold inventory (if a sale)\n• Log deletion in audit trail\n\nThis cannot be undone.')) return;
+  const tx = D.cashTx.find(t=>t.id===txId);
+  if (!tx) return alert('Transaction not found');
+  if (isPeriodLocked(tx.date)) return alert('⛔ Period is locked. Cannot delete.');
+
+  try {
+    // 1. Reverse cash
+    D.cashZMW -= (tx.amountZMW||0);
+    D.cashUSD  -= (tx.amountUSD||0);
+
+    // 2. Type-specific reversals
+    const nSH = D.shareholders.length;
+
+    if (tx.type==='SALE') {
+      // Find the sale record by matching description/date proximity
+      const sale = D.sales.find(s=>Math.abs(new Date(s.date)-new Date(tx.date))<5000);
+      if (sale) {
+        // Reverse shareholder profit
+        const perShare = sale.perShare||0;
+        for (const sh of D.shareholders) { sh.balZMW=(sh.balZMW||0)-perShare; await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW}); }
+        // Restore gold batches (FIFO reverse — restore to batches that were depleted most recently)
+        // We re-add grams to the last consumed batches
+        let toRestore = sale.gramsSold||0;
+        for (let i=D.purchases.length-1;i>=0&&toRestore>0.00001;i--) {
+          const b=D.purchases[i];
+          const maxRestore = b.grams-(b.remainingGrams??0);
+          if (maxRestore<0.00001) continue;
+          const restore = Math.min(maxRestore, toRestore);
+          b.remainingGrams=(b.remainingGrams??0)+restore;
+          await C.purchases.doc(b.id).update({remainingGrams:b.remainingGrams});
+          toRestore-=restore;
+        }
+        // Remove sale record
+        D.sales = D.sales.filter(s=>s.id!==sale.id);
+        await C.sales.doc(sale.id).delete();
+      }
+    }
+    else if (tx.type==='EXPENSE') {
+      const ex = D.expenses.find(e=>Math.abs(new Date(e.date)-new Date(tx.date))<5000 && Math.abs(e.amountZMW-(-(tx.amountZMW||0)))<0.01);
+      const amt = ex ? ex.amountZMW : Math.abs(tx.amountZMW||0);
+      const perShare = nSH>0 ? amt/nSH : 0;
+      for (const sh of D.shareholders) { sh.balZMW=(sh.balZMW||0)+perShare; await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW}); }
+      if (ex) { D.expenses=D.expenses.filter(e=>e.id!==ex.id); await C.expenses.doc(ex.id).delete(); }
+    }
+    else if (tx.type==='SURVEY') {
+      const sv = D.surveys.find(s=>Math.abs(new Date(s.date)-new Date(tx.date))<5000);
+      const amt = sv ? sv.amountZMW : (tx.amountZMW||0);
+      const perShare = nSH>0 ? amt/nSH : 0;
+      for (const sh of D.shareholders) { sh.balZMW=(sh.balZMW||0)-perShare; await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW}); }
+      if (sv) { D.surveys=D.surveys.filter(s=>s.id!==sv.id); await C.surveys.doc(sv.id).delete(); }
+    }
+    else if (tx.type==='DEPOSIT') {
+      // Try to reverse shareholder deposit
+      const shName = (tx.description||'').replace('Deposit: ','').replace('Deposit by ','');
+      const sh = D.shareholders.find(s=>s.name===shName);
+      if (sh) { sh.balZMW=(sh.balZMW||0)-(tx.amountZMW||0); await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW}); }
+    }
+    else if (tx.type==='PURCHASE') {
+      const p = D.purchases.find(pu=>Math.abs(new Date(pu.date)-new Date(tx.date))<5000);
+      if (p) {
+        D.purchases=D.purchases.filter(pu=>pu.id!==p.id);
+        await C.purchases.doc(p.id).delete();
+      }
+    }
+    else if (tx.type==='WITHDRAWAL') {
+      const shName=(tx.description||'').replace('Withdrawal: ','');
+      const sh=D.shareholders.find(s=>s.name===shName);
+      if (sh) { sh.balZMW=(sh.balZMW||0)+Math.abs(tx.amountZMW||0); await C.shareholders.doc(sh.id.toString()).update({balZMW:sh.balZMW}); }
+    }
+
+    // 3. Save cash
+    await saveSettings();
+
+    // 4. Remove tx
+    D.cashTx=D.cashTx.filter(t=>t.id!==txId);
+    await C.cashTx.doc(txId).delete();
+
+    // 5. Audit
+    await logAudit('DELETE_TX',`Deleted ${tx.type}: ${tx.description} | ${fZ(tx.amountZMW)} | ${fDT(tx.date)}`,txId);
+
+    renderApp();
+    alert('✅ Transaction deleted and fully reversed.');
+  } catch(e) {
+    alert('❌ Error during delete: '+e.message);
+  }
+}
+
+// ═══════════════════════════════════════════════
+// USER MANAGEMENT
+// ═══════════════════════════════════════════════
+function getAllUsers() {
+  return [
+    {id:'admin',  name:'Admin',   role:'admin',   password:'Muhiim1998'},
+    {id:'manager',name:'Samatar', role:'manager', password:'samatar123'},
+    ...D.shareholders.map(sh=>({id:sh.id,name:sh.name,role:'shareholder',password:sh.password,balZMW:sh.balZMW}))
+  ];
+}
+async function changePwd(name, pwd) {
+  if (name==='Admin'||name==='Samatar') return alert('Cannot change built-in user passwords here.');
+  const sh=D.shareholders.find(s=>s.name===name);
+  if (!sh) throw new Error('User not found');
+  sh.password=pwd;
+  await C.shareholders.doc(sh.id.toString()).update({password:pwd});
+  await logAudit('PASSWORD_CHANGE',`Password changed for ${name}`);
+}
+async function addShareholder(name, pwd) {
+  if (!name||!pwd) throw new Error('Name and password required');
+  if (D.shareholders.some(s=>s.name.toLowerCase()===name.toLowerCase())) throw new Error('Name already exists');
+  const id=Math.max(...D.shareholders.map(s=>s.id),0)+1;
+  const sh={id,name,password:pwd,balZMW:0};
+  await C.shareholders.doc(id.toString()).set(sh); D.shareholders.push(sh);
+  await logAudit('ADD_USER',`Added shareholder ${name}`);
+}
+async function delShareholder(id) {
+  const sh=D.shareholders.find(s=>s.id===id);
+  if (!sh) throw new Error('Not found');
+  if (Math.abs(sh.balZMW||0)>0.01) throw new Error(`Cannot delete ${sh.name} — balance ${fZ(sh.balZMW)}`);
+  await C.shareholders.doc(id.toString()).delete();
+  D.shareholders=D.shareholders.filter(s=>s.id!==id);
+  await logAudit('DELETE_USER',`Deleted shareholder ${sh.name}`);
+}
+
+// ═══════════════════════════════════════════════
+// PERIOD MANAGEMENT
+// ═══════════════════════════════════════════════
+async function togglePeriodLock(year, month, lock) {
+  const existing=D.periods.find(p=>p.year===year&&p.month===month);
+  if (existing) {
+    existing.locked=lock; await C.periods.doc(existing.id).update({locked:lock});
+  } else {
+    const p={id:uid(),year,month,locked:lock,lockedBy:CU?.name,lockedAt:new Date().toISOString()};
+    D.periods.push(p); await C.periods.doc(p.id).set(p);
+  }
+  await logAudit(lock?'PERIOD_LOCK':'PERIOD_UNLOCK',`${lock?'Locked':'Unlocked'} ${month}/${year}`);
+  renderApp();
+}
+
+// ═══════════════════════════════════════════════
+// RECONCILIATION — replay all txs from zero
+// ═══════════════════════════════════════════════
+function reconcile() {
+  const sorted=[...D.cashTx].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  let zmw=0, usd=0;
+  for (const tx of sorted) { zmw+=(tx.amountZMW||0); usd+=(tx.amountUSD||0); }
+  return { replayedZMW:zmw, replayedUSD:usd, actualZMW:D.cashZMW, actualUSD:D.cashUSD,
+    zmwOK:Math.abs(zmw-D.cashZMW)<0.01, usdOK:Math.abs(usd-D.cashUSD)<0.01 };
+}
+
+// ═══════════════════════════════════════════════
+// TRIAL BALANCE
+// ═══════════════════════════════════════════════
+function getTrialBalance() {
+  const accounts={};
+  for (const e of D.ledger) {
+    if (!accounts[e.account]) accounts[e.account]={dr:0,cr:0};
+    if (e.side==='dr') accounts[e.account].dr+=(e.amtZMW||0);
+    else accounts[e.account].cr+=(e.amtZMW||0);
+  }
+  return accounts;
+}
+
+// ═══════════════════════════════════════════════
+// REPORT
+// ═══════════════════════════════════════════════
+function getDateRange(f) {
+  const n=new Date(); let s,e;
+  if (f==='today')     { s=new Date(); s.setHours(0,0,0,0); e=new Date(); e.setHours(23,59,59,999); }
+  else if (f==='yesterday'){ s=new Date(); s.setDate(n.getDate()-1); s.setHours(0,0,0,0); e=new Date(s); e.setHours(23,59,59,999); }
+  else if (f==='thisMonth'){ s=new Date(n.getFullYear(),n.getMonth(),1); e=new Date(n.getFullYear(),n.getMonth()+1,0,23,59,59); }
+  else if (f==='lastMonth'){ s=new Date(n.getFullYear(),n.getMonth()-1,1); e=new Date(n.getFullYear(),n.getMonth(),0,23,59,59); }
+  else if (f==='thisYear') { s=new Date(n.getFullYear(),0,1); e=new Date(n.getFullYear(),11,31,23,59,59); }
+  else { s=new Date(0); e=new Date(9999,0,1); }
+  return {s,e};
+}
+function generateReport() {
+  const {s,e}=RPT.start?{s:RPT.start,e:RPT.end}:getDateRange('all');
+  let txs=D.cashTx.filter(t=>{
+    const d=new Date(t.date);
+    if (d<s||d>e) return false;
+    if (RPT.typeFilter!=='all'&&t.type!==RPT.typeFilter) return false;
+    return true;
+  });
+
+  const inZMW  = txs.reduce((a,t)=>a+(t.amountZMW>0?t.amountZMW:0),0);
+  const outZMW = txs.reduce((a,t)=>a+(t.amountZMW<0?-t.amountZMW:0),0);
+  const inUSD  = txs.reduce((a,t)=>a+(t.amountUSD>0?t.amountUSD:0),0);
+  const outUSD = txs.reduce((a,t)=>a+(t.amountUSD<0?-t.amountUSD:0),0);
+  const netZMW = inZMW-outZMW;
+  const totalProfitUSD=D.sales.reduce((a,s)=>a+(s.profitUSD||0),0);
+  const totalMashiin=D.purchases.reduce((a,p)=>a+(p.mashiinFee||0),0);
+  const totalTransport=D.purchases.reduce((a,p)=>a+(p.transportFee||0),0);
+  const repSum={};D.purchases.forEach(p=>{if(!repSum[p.salesRep])repSum[p.salesRep]={count:0,g:0};repSum[p.salesRep].count++;repSum[p.salesRep].g+=p.grams;});
+  const custSum={};D.surveys.forEach(s=>{if(!custSum[s.customerName])custSum[s.customerName]={c:0,t:0};custSum[s.customerName].c++;custSum[s.customerName].t+=s.amountZMW;});
+
+  const expByCat={};D.expenses.forEach(e=>{expByCat[e.category||'General']=(expByCat[e.category||'General']||0)+e.amountZMW;});
+  const rec=reconcile();
+
+  document.getElementById('reportOutput').innerHTML=`
+  <div class="rpt-container">
+    <div class="rpt-header">
+      <h3>📊 Financial Report</h3>
+      <div style="font-size:0.75rem;opacity:0.85;margin-top:4px">
+        ${RPT.dateFilter!=='all'?`${s.toLocaleDateString()} – ${e.toLocaleDateString()}`:'All Time'} | 
+        Type: ${RPT.typeFilter==='all'?'All':RPT.typeFilter} | 
+        Rate: 1 USD = ${D.rate.toFixed(2)} ZMW
+      </div>
+    </div>
+
+    <div class="rpt-grid">
+      <div class="rpt-card"><div class="lbl">💰 ZMW Inflows</div><div class="vp">${fZ(inZMW)}</div></div>
+      <div class="rpt-card"><div class="lbl">📉 ZMW Outflows</div><div class="vn">${fZ(outZMW)}</div></div>
+      <div class="rpt-card"><div class="lbl">📈 ZMW Net</div><div class="${netZMW>=0?'vp':'vn'}">${fZ(netZMW)}</div></div>
+      <div class="rpt-card"><div class="lbl">💵 USD In</div><div class="vp">${fU(inUSD)}</div></div>
+      <div class="rpt-card"><div class="lbl">💵 USD Out</div><div class="vn">${fU(outUSD)}</div></div>
+      <div class="rpt-card"><div class="lbl">⚡ Gold Profit</div><div class="${totalProfitUSD>=0?'vp':'vn'}">${fU(totalProfitUSD)}</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div style="background:white;border-radius:12px;padding:14px;border:1px solid #e2d5bd;">
+        <h4 style="margin-bottom:10px;font-size:0.82rem">📦 Gold Summary</h4>
+        <div>Purchased: ${fG(D.purchases.reduce((a,p)=>a+(p.grams||0),0))}</div>
+        <div>Sold: ${fG(D.sales.reduce((a,s)=>a+(s.gramsSold||0),0))}</div>
+        <div style="font-weight:700;color:#2b6e2f">In stock: ${fG(getStock())}</div>
+        <div>Mashiin: ${fZ(totalMashiin)}</div>
+        <div>Transport: ${fZ(totalTransport)}</div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:14px;border:1px solid #e2d5bd;">
+        <h4 style="margin-bottom:10px;font-size:0.82rem">📊 Expenses by Category</h4>
+        ${Object.entries(expByCat).map(([c,a])=>`<div>${c}: <strong>${fZ(a)}</strong></div>`).join('')||'<div style="color:#aaa">None</div>'}
+      </div>
+      <div style="background:white;border-radius:12px;padding:14px;border:1px solid #e2d5bd;">
+        <h4 style="margin-bottom:10px;font-size:0.82rem">👤 Shareholders</h4>
+        ${D.shareholders.map(sh=>`<div style="display:flex;justify-content:space-between"><span>${sh.name}</span><strong style="color:${(sh.balZMW||0)>=0?'#2b6e2f':'#c62828'}">${fZ(sh.balZMW||0)}</strong></div>`).join('')}
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div style="background:white;border-radius:12px;padding:14px;border:1px solid #e2d5bd;">
+        <h4 style="margin-bottom:10px;font-size:0.82rem">👥 Sales Reps</h4>
+        ${Object.entries(repSum).map(([r,d])=>`<div>${r}: ${d.count} buys, ${fG(d.g)}</div>`).join('')||'<div style="color:#aaa">None</div>'}
+      </div>
+      <div style="background:white;border-radius:12px;padding:14px;border:1px solid #e2d5bd;">
+        <h4 style="margin-bottom:10px;font-size:0.82rem">📋 Survey Customers</h4>
+        ${Object.entries(custSum).map(([c,d])=>`<div>${c}: ${d.c}x, ${fZ(d.t)}</div>`).join('')||'<div style="color:#aaa">None</div>'}
+      </div>
+    </div>
+
+    <div style="background:${rec.zmwOK&&rec.usdOK?'#f0fdf0':'#fff0f0'};border-radius:12px;padding:14px;border:1px solid ${rec.zmwOK&&rec.usdOK?'#c0e8c0':'#f0c0c0'};margin-bottom:16px;">
+      <h4 style="margin-bottom:8px;font-size:0.82rem">🔍 Reconciliation Check</h4>
+      <div>ZMW Replayed: ${fZ(rec.replayedZMW)} | Actual: ${fZ(rec.actualZMW)} ${rec.zmwOK?'✅':'⚠️ MISMATCH'}</div>
+      <div>USD Replayed: ${fU(rec.replayedUSD)} | Actual: ${fU(rec.actualUSD)} ${rec.usdOK?'✅':'⚠️ MISMATCH'}</div>
+    </div>
+
+    <div class="rpt-tx">
+      <div style="background:#efe5d5;padding:10px 14px;font-weight:600;font-size:0.78rem;position:sticky;top:0">
+        📋 TRANSACTIONS (${txs.length})
+      </div>
+      ${txs.map(t=>`
+      <div class="rpt-tx-row">
+        <span style="color:#7a6a4a;min-width:110px">${fDT(t.date)}</span>
+        <span class="rpt-badge rb-${t.type}">${t.type}</span>
+        <span style="flex:1">${t.description}</span>
+        <span class="${t.amountZMW>=0?'rpt-pos':'rpt-neg'}">${t.amountZMW>=0?'+':''}${fZ(t.amountZMW)}</span>
+        ${t.amountUSD?`<span class="${t.amountUSD>=0?'rpt-pos':'rpt-neg'}">${t.amountUSD>=0?'+':''}${fU(t.amountUSD)}</span>`:''}
+        <span style="color:#aaa;font-size:0.62rem">${t.postedBy||''}</span>
+        <button class="btn-sm" style="background:#fce4e4;border-color:#f0c0c0;color:#c62828;font-size:0.6rem" onclick="deleteTx('${t.id}')">🗑️</button>
+      </div>`).join('')}
+      ${txs.length===0?'<div style="text-align:center;padding:40px;color:#aaa">No transactions for this period</div>':''}
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════════════
+function showLogin() {
+  document.getElementById('root').innerHTML=`
+  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 40%,#131210,#020202);padding:1.5rem">
+    <div style="background:#131210;border:1px solid rgba(218,185,105,0.35);border-radius:2rem;padding:2rem;width:100%;max-width:400px">
+      <h1 style="font-size:1.7rem;color:var(--gold);text-align:center;margin-bottom:1.5rem">⚜️ GoldTrack Pro</h1>
+      <div class="fg" style="margin-bottom:14px"><label>Username</label><input id="lu" placeholder="Enter username" /></div>
+      <div class="fg" style="margin-bottom:14px"><label>Password</label><input id="lp" type="password" placeholder="Enter password" /></div>
+      <button class="btn btn-gold" id="lbtn">🔓 Sign In</button>
+      <div id="lerr" style="color:var(--red);font-size:0.78rem;margin-top:12px;text-align:center"></div>
+    </div>
+  </div>`;
+  const doLogin=()=>{
+    const u=document.getElementById('lu').value.trim(), p=document.getElementById('lp').value;
+    if (u==='Admin'&&p==='Muhiim1998')  { CU={name:'Admin',  role:'admin'};   loadAll(); return; }
+    if (u==='Samatar'&&p==='samatar123'){ CU={name:'Samatar',role:'manager'}; loadAll(); return; }
+    const sh=D.shareholders.find(s=>s.name===u&&s.password===p);
+    if (sh) { CU={name:sh.name,role:'shareholder',shId:sh.id}; loadAll(); return; }
+    document.getElementById('lerr').innerText='❌ Invalid username or password';
+  };
+  document.getElementById('lbtn')?.addEventListener('click',doLogin);
+  document.getElementById('lp')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+}
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+function renderApp() {
+  const root=document.getElementById('root');
+  const isPriv=CU?.role==='admin'||CU?.role==='manager';
+  const isAdmin=CU?.role==='admin';
+  const stock=getStock();
+  const rec=reconcile();
+
+  const allTabs=[
+    {id:'dashboard',icon:'🏠',label:'Dashboard'},
+    {id:'purchase', icon:'🛒',label:'Buy Gold',    priv:true},
+    {id:'sales',    icon:'💰',label:'Sell Gold',   priv:true},
+    {id:'exchange', icon:'🔄',label:'Exchange',    priv:true},
+    {id:'survey',   icon:'📋',label:'Survey',      priv:true},
+    {id:'expenses', icon:'📉',label:'Expenses',    priv:true},
+    {id:'deposits', icon:'💵',label:'Deposits',    priv:true},
+    {id:'users',    icon:'👥',label:'Users',       priv:true},
+    {id:'reports',  icon:'📊',label:'Reports',     priv:true},
+    {id:'ledger',   icon:'📒',label:'Ledger',      priv:true},
+    {id:'periods',  icon:'🔒',label:'Periods',     admin:true},
+    {id:'audit',    icon:'🕵️',label:'Audit Log',   priv:true},
+    {id:'withdrawals',icon:'🏧',label:'Withdrawals'},
+  ];
+
+  const nav=allTabs
+    .filter(t=>(!t.priv&&!t.admin)||(t.priv&&isPriv)||(t.admin&&isAdmin))
+    .map(t=>`<button class="nav-btn ${TAB===t.id?'active':''}" data-tab="${t.id}">${t.icon} ${t.label}</button>`)
+    .join('');
+
+  let content='';
+
+  // ── DASHBOARD ──
+  if (TAB==='dashboard') {
+    const repSum={};D.purchases.forEach(p=>{repSum[p.salesRep]=(repSum[p.salesRep]||0)+p.grams;});
+    const custSum={};D.surveys.forEach(s=>{custSum[s.customerName]=(custSum[s.customerName]||0)+s.amountZMW;});
+    const totalProfit=D.sales.reduce((a,s)=>a+(s.profitUSD||0),0);
+    const totalSurvey=D.surveys.reduce((a,s)=>a+(s.amountZMW||0),0);
+    const recAlert=(!rec.zmwOK||!rec.usdOK)?`<div class="alert alert-warn">⚠️ Reconciliation mismatch detected. Go to Reports for details.</div>`:'';
+
+    // Monthly chart data (last 6 months)
+    const months=[];
+    for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);months.push({label:d.toLocaleDateString('en',{month:'short'}),y:d.getFullYear(),m:d.getMonth()});}
+    const chartIn=months.map(m=>D.cashTx.filter(t=>{const d=new Date(t.date);return d.getFullYear()===m.y&&d.getMonth()===m.m&&t.amountZMW>0;}).reduce((a,t)=>a+t.amountZMW,0));
+    const chartOut=months.map(m=>D.cashTx.filter(t=>{const d=new Date(t.date);return d.getFullYear()===m.y&&d.getMonth()===m.m&&t.amountZMW<0;}).reduce((a,t)=>a+Math.abs(t.amountZMW),0));
+
+    content=`
+    ${recAlert}
+    <div class="stats-grid">
+      <div class="stat" id="clickZMW"><div class="stat-label">💰 ZMW Cash</div><div class="stat-value">${fZ(D.cashZMW)}</div><div class="stat-sub">Tap for history</div></div>
+      <div class="stat" id="clickUSD"><div class="stat-label">💵 USD Cash</div><div class="stat-value">${fU(D.cashUSD)}</div><div class="stat-sub">Tap for history</div></div>
+      <div class="stat"><div class="stat-label">📦 Gold Stock</div><div class="stat-value">${stock.toFixed(4)}g</div><div class="stat-sub">${D.purchases.filter(p=>(p.remainingGrams||0)>0).length} batch(es)</div></div>
+      <div class="stat"><div class="stat-label">💱 Exchange Rate</div><div class="stat-value">${D.rate.toFixed(2)}</div><div class="stat-sub">1 USD in ZMW</div></div>
+      <div class="stat"><div class="stat-label">⚡ Total Gold Profit</div><div class="stat-value ${totalProfit>=0?'green':'red'}">${fU(totalProfit)}</div><div class="stat-sub">All time</div></div>
+      <div class="stat"><div class="stat-label">📋 Survey Revenue</div><div class="stat-value">${fZ(totalSurvey)}</div><div class="stat-sub">All time</div></div>
+      <div class="stat"><div class="stat-label">👥 Shareholders</div><div class="stat-value">${D.shareholders.length}</div><div class="stat-sub">Active</div></div>
+      <div class="stat ${!rec.zmwOK||!rec.usdOK?'stat-warn':''}"><div class="stat-label">🔍 Books</div><div class="stat-value" style="font-size:1rem">${rec.zmwOK&&rec.usdOK?'✅ Balanced':'⚠️ Check'}</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+      <div class="card">
+        <div class="card-title">📈 Cash Flow — Last 6 Months</div>
+        <div class="chart-wrap"><canvas id="cfChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">👤 Shareholders</div>
+        ${D.shareholders.map(s=>`
+        <div class="sh-row" style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)">
+          <span style="font-weight:600">${s.name}</span>
+          <span style="font-size:1rem;font-weight:700" class="${(s.balZMW||0)>=0?'green':'red'}">${fZ(s.balZMW||0)}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+      <div class="card">
+        <div class="card-title">📦 Gold Batches (Active)</div>
+        ${D.purchases.filter(p=>(p.remainingGrams||0)>0.0001).slice(-8).reverse().map(p=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.75rem">
+          <span class="muted">${fD(p.date)}</span>
+          <span>${p.salesRep}</span>
+          <span class="badge badge-green">${fG(p.remainingGrams)} left</span>
+        </div>`).join('')||'<div class="muted">No gold in stock</div>'}
+      </div>
+      <div class="card">
+        <div class="card-title">📊 Sales Reps</div>
+        ${Object.entries(repSum).map(([r,g])=>`
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.78rem">
+          <span>${r}</span><span class="muted">${fG(g)}</span>
+        </div>`).join('')||'<div class="muted">No data</div>'}
+      </div>
+      <div class="card">
+        <div class="card-title">📋 Survey Customers</div>
+        ${Object.entries(custSum).map(([c,a])=>`
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.78rem">
+          <span>${c}</span><span class="green">${fZ(a)}</span>
+        </div>`).join('')||'<div class="muted">No data</div>'}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🕐 Recent Transactions</div>
+      ${D.cashTx.slice(0,10).map(t=>`
+      <div class="tx-row">
+        <span class="muted" style="min-width:110px;font-size:0.68rem">${fDT(t.date)}</span>
+        <span class="badge badge-${t.type==='SALE'?'green':t.type==='PURCHASE'?'gold':t.type==='EXPENSE'?'red':'blue'}">${t.type}</span>
+        <span class="tx-desc">${t.description}</span>
+        <span class="${t.amountZMW>=0?'green':'red'}">${t.amountZMW>=0?'+':''}${fZ(t.amountZMW)}</span>
+        ${t.amountUSD?`<span class="${t.amountUSD>=0?'green':'red'}">${t.amountUSD>=0?'+':''}${fU(t.amountUSD)}</span>`:''}
+        <button class="btn-danger" onclick="deleteTx('${t.id}')">🗑️</button>
+      </div>`).join('')||'<div class="muted">No transactions</div>'}
+    </div>
+    <script>
+    setTimeout(()=>{
+      const ctx=document.getElementById('cfChart');
+      if(!ctx)return;
+      new Chart(ctx,{type:'bar',data:{
+        labels:${JSON.stringify(months.map(m=>m.label))},
+        datasets:[
+          {label:'Inflows (ZMW)',data:${JSON.stringify(chartIn)},backgroundColor:'rgba(126,200,126,0.6)',borderColor:'#7ec87e',borderWidth:1},
+          {label:'Outflows (ZMW)',data:${JSON.stringify(chartOut)},backgroundColor:'rgba(224,128,112,0.6)',borderColor:'#e08070',borderWidth:1}
+        ]
+      },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#c7b584',font:{size:11}}}},scales:{x:{ticks:{color:'#8e8160'}},y:{ticks:{color:'#8e8160'}}}}});
+    },100);
+    <\/script>`;
+  }
+
+  // ── PURCHASE ──
+  else if (TAB==='purchase'&&isPriv) {
+    content=`<div class="card"><div class="card-title">🛒 Buy Gold</div>
+      <div class="form-grid">
+        <div class="fg"><label>Date</label><input type="date" id="pDate" value="${today()}"/></div>
+        <div class="fg"><label>Sales Rep</label><select id="pRep">${['Samatar','Yuusuf','Abdirisak','Jamal'].map(r=>`<option>${r}</option>`).join('')}</select></div>
+        <div class="fg"><label>Grams</label><input type="number" id="pGrams" step="0.0001" placeholder="e.g. 10.5"/></div>
+        <div class="fg"><label>Rate (ZMW/gram)</label><input type="number" id="pRate" step="0.01" placeholder="e.g. 850"/></div>
+        <div class="fg"><label>Mashiin Fee (ZMW)</label><input type="number" id="pMash" value="750"/></div>
+        <div class="fg"><label>Transport Fee (ZMW)</label><input type="number" id="pTrans" value="150"/></div>
+      </div>
+      <div class="preview" id="pPrev">Fill in the form to see calculation preview</div>
+      <button class="btn btn-gold" id="doPurch">✅ Record Purchase</button>
+    </div>
+    <div class="card"><div class="card-title">📦 Recent Purchases</div>
+      <table class="tbl"><thead><tr><th>Date</th><th>Rep</th><th>Grams</th><th>Rate</th><th>Net Paid</th><th>Remaining</th><th>Status</th></tr></thead>
+      <tbody>${D.purchases.slice().reverse().slice(0,10).map(p=>`
+      <tr><td>${fD(p.date)}</td><td>${p.salesRep}</td><td>${fG(p.grams)}</td><td>${fZ(p.ratePerGram)}/g</td><td>${fZ(p.netPaid)}</td>
+      <td class="${(p.remainingGrams||0)>0?'green':'muted'}">${fG(p.remainingGrams||0)}</td>
+      <td><span class="badge ${(p.remainingGrams||0)>0?'badge-green':'badge-gray'}">${(p.remainingGrams||0)>0?'Active':'Depleted'}</span></td></tr>`).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  // ── SALES ──
+  else if (TAB==='sales'&&isPriv) {
+    content=`<div class="card"><div class="card-title">💰 Sell Gold</div>
+      <div class="alert alert-info">📦 Current stock: <strong>${fG(stock)}</strong> across ${D.purchases.filter(p=>(p.remainingGrams||0)>0).length} batch(es)</div>
+      <div class="form-grid">
+        <div class="fg"><label>Date</label><input type="date" id="sDate" value="${today()}"/></div>
+        <div class="fg"><label>Grams to Sell</label><input type="number" id="sGrams" step="0.0001" placeholder="e.g. 5.0"/></div>
+        <div class="fg"><label>Sell Rate (USD/gram)</label><input type="number" id="sRate" step="0.01" placeholder="e.g. 62"/></div>
+        <div class="fg"><label>Cash Handling</label><select id="sConv">
+          <option value="convert_all">Convert all revenue to ZMW</option>
+          <option value="keep_all">Keep all as USD</option>
+          <option value="partial">Partial conversion</option>
+        </select></div>
+      </div>
+      <div id="sPartBox" style="display:none" class="fg"><label>USD to Convert</label><input type="number" id="sPartUSD" step="0.01"/></div>
+      <div class="preview" id="sPrev">Fill in the form to see profit preview</div>
+      <button class="btn btn-gold" id="doSale">✅ Record Sale</button>
+    </div>
+    <div class="card"><div class="card-title">📋 Recent Sales</div>
+      <table class="tbl"><thead><tr><th>Date</th><th>Grams</th><th>Rate</th><th>Revenue</th><th>Cost</th><th>Profit USD</th><th>Per SH</th></tr></thead>
+      <tbody>${D.sales.slice(0,10).map(s=>`
+      <tr><td>${fD(s.date)}</td><td>${fG(s.gramsSold)}</td><td>${fU(s.sellRateUSD)}/g</td>
+      <td>${fU(s.revenueUSD)}</td><td class="red">${fZ(s.costZMW||0)}</td>
+      <td class="${(s.profitUSD||0)>=0?'green':'red'}">${fU(s.profitUSD||0)}</td>
+      <td class="gold">${fZ(s.perShare||0)}</td></tr>`).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  // ── EXCHANGE ──
+  else if (TAB==='exchange'&&isPriv) {
+    content=`<div class="card"><div class="card-title">🔄 Currency Exchange</div>
+      <div class="alert alert-info">ZMW: <strong>${fZ(D.cashZMW)}</strong> | USD: <strong>${fU(D.cashUSD)}</strong></div>
+      <div class="form-grid">
+        <div class="fg"><label>Date</label><input type="date" id="exDate" value="${today()}"/></div>
+        <div class="fg"><label>Direction</label><select id="exDir"><option value="ZMW">ZMW → USD</option><option value="USD">USD → ZMW</option></select></div>
+        <div class="fg"><label>Amount</label><input type="number" id="exAmt" step="0.01"/></div>
+        <div class="fg"><label>Rate (1 USD = ? ZMW)</label><input type="number" id="exRate" value="${D.rate}" step="0.01"/></div>
+      </div>
+      <div class="preview" id="exPrev">Fill in the form to see exchange preview</div>
+      <button class="btn btn-gold" id="doExch">✅ Execute Exchange</button>
+    </div>`;
+  }
+
+  // ── SURVEY ──
+  else if (TAB==='survey'&&isPriv) {
+    const totalSurvey=D.surveys.reduce((a,s)=>a+(s.amountZMW||0),0);
+    content=`<div class="card"><div class="card-title">📋 Survey Revenue</div>
+      <div class="form-grid">
+        <div class="fg"><label>Date</label><input type="date" id="svDate" value="${today()}"/></div>
+        <div class="fg"><label>Customer Name</label><input id="svCust" placeholder="Customer or company"/></div>
+        <div class="fg"><label>Amount (ZMW)</label><input type="number" id="svAmt" step="0.01"/></div>
+      </div>
+      <button class="btn btn-gold" id="doSurv">✅ Record Revenue</button>
+    </div>
+    <div class="card"><div class="card-title">📋 Survey History — Total: <span class="green">${fZ(totalSurvey)}</span></div>
+      <table class="tbl"><thead><tr><th>Date</th><th>Customer</th><th>Amount</th></tr></thead>
+      <tbody>${D.surveys.slice(0,15).map(s=>`<tr><td>${fD(s.date)}</td><td>${s.customerName}</td><td class="green">${fZ(s.amountZMW)}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+  }
+
+  // ── EXPENSES ──
+  else if (TAB==='expenses'&&isPriv) {
+    const cats=['Fuel','Salary','Rent','Equipment','Office','Transport','Other'];
+    const byCat={};D.expenses.forEach(e=>{byCat[e.category||'Other']=(byCat[e.category||'Other']||0)+e.amountZMW;});
+    content=`<div class="card"><div class="card-title">📉 Record Expense</div>
+      <div class="form-grid">
+        <div class="fg"><label>Date</label><input type="date" id="epDate" value="${today()}"/></div>
+        <div class="fg"><label>Category</label><select id="epCat">${cats.map(c=>`<option>${c}</option>`).join('')}</select></div>
+        <div class="fg"><label>Description</label><input id="epDesc" placeholder="What was the expense?"/></div>
+        <div class="fg"><label>Amount (ZMW)</label><input type="number" id="epAmt" step="0.01"/></div>
+      </div>
+      <button class="btn btn-gold" id="doExp">✅ Record Expense</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px">
+      <div class="card"><div class="card-title">📊 By Category</div>
+        ${Object.entries(byCat).map(([c,a])=>`
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:0.78rem">
+          <span>${c}</span><span class="red">${fZ(a)}</span>
+        </div>`).join('')||'<div class="muted">No expenses</div>'}
+      </div>
+      <div class="card"><div class="card-title">📋 Expense History</div>
+        <table class="tbl"><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th></tr></thead>
+        <tbody>${D.expenses.slice(0,15).map(e=>`
+        <tr><td>${fD(e.date)}</td><td><span class="badge badge-red">${e.category||'Other'}</span></td>
+        <td>${e.description}</td><td class="red">${fZ(e.amountZMW)}</td></tr>`).join('')}
+        </tbody></table>
+      </div>
+    </div>`;
+  }
+
+  // ── DEPOSITS ──
+  else if (TAB==='deposits'&&isPriv) {
+    content=`<div class="card"><div class="card-title">💵 Record Deposit</div>
+      <div class="form-grid">
+        <div class="fg"><label>Date</label><input type="date" id="dpDate" value="${today()}"/></div>
+        <div class="fg"><label>Type</label><select id="dpType"><option value="shareholder">Shareholder</option><option value="external">External</option></select></div>
+        <div class="fg"><label>Source</label><select id="dpSrc">${D.shareholders.map(s=>`<option>${s.name}</option>`).join('')}</select></div>
+        <div class="fg"><label>Amount (ZMW)</label><input type="number" id="dpAmt" step="0.01"/></div>
+        <div class="fg"><label>Note</label><input id="dpNote" placeholder="Optional note"/></div>
+      </div>
+      <button class="btn btn-gold" id="doDepo">✅ Record Deposit</button>
+    </div>`;
+  }
+
+  // ── USERS ──
+  else if (TAB==='users'&&isPriv) {
+    const users=getAllUsers();
+    content=`<div class="card"><div class="card-title">👥 User Management</div>
+      <div style="margin-bottom:14px"><button class="btn-sm" id="togglePwd">${SHOW_PWD?'🙈 Hide':'👁️ Show'} Passwords</button></div>
+      <table class="tbl"><thead><tr><th>Name</th><th>Role</th><th>Balance</th><th>Password</th><th>Actions</th></tr></thead>
+      <tbody>${users.map(u=>`
+      <tr><td style="font-weight:600">${u.name}</td>
+      <td><span class="badge ${u.role==='admin'?'badge-purple':u.role==='manager'?'badge-blue':'badge-gold'}">${u.role}</span></td>
+      <td class="${(u.balZMW||0)>=0?'green':'red'}">${u.balZMW!==undefined?fZ(u.balZMW):'-'}</td>
+      <td style="font-family:monospace">${SHOW_PWD?u.password:'••••••'}</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn-sm" data-cpwd="${u.name}">🔑 Change</button>
+        ${u.role==='shareholder'&&isAdmin?`<button class="btn-danger" data-delu="${u.id}">🗑️</button>`:''}
+      </td></tr>`).join('')}
+      </tbody></table>
+      ${isAdmin?`
+      <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px">
+        <div class="card-title">➕ Add Shareholder</div>
+        <div class="form-grid">
+          <div class="fg"><label>Name</label><input id="nuName" placeholder="Full name"/></div>
+          <div class="fg"><label>Password</label><input id="nuPwd" placeholder="Password"/></div>
+        </div>
+        <button class="btn btn-gold" id="addUsr">Add Shareholder</button>
+      </div>`:''}
+    </div>`;
+  }
+
+  // ── REPORTS ──
+  else if (TAB==='reports'&&isPriv) {
+    content=`<div class="card"><div class="card-title">📊 Reports & Analytics</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        ${['today','yesterday','thisMonth','lastMonth','thisYear','all'].map(f=>`
+        <button class="filter-btn btn-sm ${RPT.dateFilter===f?'active':''}" data-filter="${f}" style="${RPT.dateFilter===f?'background:var(--gold2);color:#000;border-color:var(--gold2)':''}">${
+          {today:'Today',yesterday:'Yesterday',thisMonth:'This Month',lastMonth:'Last Month',thisYear:'This Year',all:'All Time'}[f]
+        }</button>`).join('')}
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px">
+        <select id="rptType" style="max-width:180px">
+          <option value="all">All Types</option>
+          <option value="PURCHASE">Purchases</option><option value="SALE">Sales</option>
+          <option value="SURVEY">Survey</option><option value="EXPENSE">Expenses</option>
+          <option value="DEPOSIT">Deposits</option><option value="WITHDRAWAL">Withdrawals</option>
+          <option value="EXCHANGE">Exchange</option>
+        </select>
+        <button class="btn-sm" id="applyRptType">Apply</button>
+        <button class="btn-sm" id="printRpt">🖨️ Print</button>
+      </div>
+      <div id="reportOutput"></div>
+    </div>`;
+  }
+
+  // ── LEDGER (Double Entry) ──
+  else if (TAB==='ledger'&&isPriv) {
+    const tb=getTrialBalance();
+    const totalDr=Object.values(tb).reduce((a,v)=>a+v.dr,0);
+    const totalCr=Object.values(tb).reduce((a,v)=>a+v.cr,0);
+    content=`
+    <div class="card"><div class="card-title">📒 Trial Balance</div>
+      <div class="alert ${Math.abs(totalDr-totalCr)<0.01?'alert-info':'alert-err'}">
+        ${Math.abs(totalDr-totalCr)<0.01?'✅ Books are balanced — Total Debits = Total Credits':'⚠️ Imbalance detected!'}
+        Total Debits: ${fZ(totalDr)} | Total Credits: ${fZ(totalCr)}
+      </div>
+      <table class="tbl"><thead><tr><th>Account</th><th>Debit (ZMW)</th><th>Credit (ZMW)</th><th>Balance</th></tr></thead>
+      <tbody>${Object.entries(tb).map(([acct,v])=>`
+      <tr><td style="font-weight:500">${acct}</td>
+      <td class="green">${fZ(v.dr)}</td>
+      <td class="red">${fZ(v.cr)}</td>
+      <td class="${(v.dr-v.cr)>=0?'green':'red'}">${fZ(v.dr-v.cr)}</td></tr>`).join('')}
+      <tr style="font-weight:700;background:var(--bg4)">
+        <td>TOTALS</td><td class="green">${fZ(totalDr)}</td><td class="red">${fZ(totalCr)}</td>
+        <td class="${Math.abs(totalDr-totalCr)<0.01?'green':'red'}">${fZ(totalDr-totalCr)}</td>
+      </tr>
+      </tbody></table>
+    </div>
+    <div class="card"><div class="card-title">📒 Journal Entries (Recent)</div>
+      <table class="tbl"><thead><tr><th>Date</th><th>Type</th><th>Account</th><th>Dr/Cr</th><th>ZMW</th><th>Note</th></tr></thead>
+      <tbody>${D.ledger.slice(0,30).map(e=>`
+      <tr><td>${fD(e.date)}</td>
+      <td><span class="rpt-badge rb-${e.type}">${e.type}</span></td>
+      <td style="font-weight:500">${e.account}</td>
+      <td><span class="badge ${e.side==='dr'?'badge-green':'badge-red'}">${e.side.toUpperCase()}</span></td>
+      <td class="${e.side==='dr'?'green':'red'}">${fZ(e.amtZMW)}</td>
+      <td class="muted">${e.note}</td></tr>`).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  // ── PERIODS (Admin only) ──
+  else if (TAB==='periods'&&isAdmin) {
+    const now=new Date();
+    const months=[];
+    for(let i=0;i<12;i++){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({y:d.getFullYear(),m:d.getMonth()+1,label:d.toLocaleDateString('en',{month:'long',year:'numeric'})});}
+    content=`<div class="card"><div class="card-title">🔒 Period Management</div>
+      <div class="alert alert-warn">⚠️ Locking a period prevents any transactions from being added, edited, or deleted in that month. Only Admin can lock/unlock.</div>
+      <table class="tbl"><thead><tr><th>Period</th><th>Status</th><th>Locked By</th><th>Action</th></tr></thead>
+      <tbody>${months.map(mo=>{
+        const p=D.periods.find(x=>x.year===mo.y&&x.month===mo.m);
+        const locked=p?.locked||false;
+        return `<tr>
+          <td style="font-weight:500">${mo.label}</td>
+          <td><span class="badge ${locked?'badge-red':'badge-green'}">${locked?'🔒 Locked':'🔓 Open'}</span></td>
+          <td class="muted">${locked?(p?.lockedBy||'-'):'-'}</td>
+          <td><button class="btn-sm ${locked?'btn-danger':''}" data-lock="${mo.y}-${mo.m}-${locked?'0':'1'}">${locked?'Unlock':'Lock'}</button></td>
+        </tr>`;}).join('')}
+      </tbody></table>
+    </div>`;
+  }
+
+  // ── AUDIT LOG ──
+  else if (TAB==='audit'&&isPriv) {
+    content=`<div class="card"><div class="card-title">🕵️ Audit Log</div>
+      <div class="alert alert-info">Every action is recorded here — who did it, when, and what changed.</div>
+      ${D.audit.map(a=>`
+      <div class="audit-row">
+        <span class="muted" style="min-width:120px;font-size:0.68rem">${fDT(a.date)}</span>
+        <span class="audit-who">${a.user}</span>
+        <span class="badge ${a.role==='admin'?'badge-purple':a.role==='manager'?'badge-blue':'badge-gold'}">${a.role}</span>
+        <span class="badge badge-gray">${a.action}</span>
+        <span class="tx-desc">${a.detail}</span>
+      </div>`).join('')||'<div class="muted">No audit entries yet</div>'}
+    </div>`;
+  }
+
+  // ── WITHDRAWALS ──
+  else if (TAB==='withdrawals') {
+    const reqs=D.withdrawals.filter(r=>isPriv||r.shareholderId===CU?.shId);
+    const myBal=!isPriv?D.shareholders.find(s=>s.id===CU?.shId)?.balZMW||0:null;
+    content=`<div class="card"><div class="card-title">🏧 Withdrawals</div>
+      ${!isPriv?`
+      <div class="alert alert-info">Your balance: <strong>${fZ(myBal)}</strong></div>
+      <div class="form-grid">
+        <div class="fg"><label>Amount (ZMW)</label><input type="number" id="wdAmt" step="0.01" max="${myBal}" placeholder="Amount to withdraw"/></div>
+      </div>
+      <button class="btn btn-gold" id="reqWd">Request Withdrawal</button>`:''}
+      <table class="tbl" style="margin-top:${!isPriv?'20px':'0'}">
+        <thead><tr><th>User</th><th>Amount</th><th>Status</th><th>Date</th>${isPriv?'<th>Action</th>':''}</tr></thead>
+        <tbody>${reqs.map(r=>`
+        <tr><td style="font-weight:500">${r.shareholderName}</td>
+        <td class="gold">${fZ(r.amountZMW)}</td>
+        <td><span class="badge ${r.status==='approved'?'badge-green':'badge-gold'}">${r.status}</span></td>
+        <td class="muted">${fD(r.date)}</td>
+        ${isPriv?`<td>${r.status==='pending'?`<button class="btn-green" data-approve="${r.id}">✅ Approve</button>`:'—'}</td>`:''}</tr>`).join('')}
+        ${reqs.length===0?`<tr><td colspan="${isPriv?5:4}" style="text-align:center;padding:30px;color:var(--text4)">No withdrawal requests</td></tr>`:''}
+        </tbody>
+      </table>
+    </div>`;
+  }
+
+  // ── BUILD PAGE ──
+  root.innerHTML=`
+  <div class="mob-header">
+    <button id="menuToggle" style="background:none;border:none;color:var(--gold);font-size:1.3rem">☰</button>
+    <span style="color:var(--gold);font-weight:700">⚜️ GoldTrack</span>
+    <span style="font-size:0.68rem;color:var(--text3)">${CU?.name}</span>
+  </div>
+  <div class="app">
+    <div class="sidebar" id="sidebar">
+      <div class="logo"><h2>⚜️ GoldTrack Pro</h2><small>v3.0 — Professional Edition</small></div>
+      <div class="nav">${nav}</div>
+      <div class="user-area">
+        <div class="user-card"><div class="uname">${CU?.name}</div><div class="urole">${CU?.role}</div></div>
+        <button class="btn-logout" id="logoutBtn">Sign Out</button>
+      </div>
+    </div>
+    <div class="main">
+      <div class="page-title">${allTabs.find(t=>t.id===TAB)?.icon||''} ${(allTabs.find(t=>t.id===TAB)?.label||TAB).toUpperCase()}</div>
+      ${content}
+    </div>
+  </div>`;
+
+  // GLOBAL EVENTS
+  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{TAB=b.dataset.tab;renderApp();}));
+  document.getElementById('logoutBtn')?.addEventListener('click',()=>{CU=null;showLogin();});
+  document.getElementById('menuToggle')?.addEventListener('click',()=>document.getElementById('sidebar')?.classList.toggle('open'));
+  document.getElementById('clickZMW')?.addEventListener('click',()=>showCashModal('ZMW'));
+  document.getElementById('clickUSD')?.addEventListener('click',()=>showCashModal('USD'));
+
+  // PURCHASE
+  if (TAB==='purchase'&&isPriv) {
+    const upd=()=>{
+      const g=+document.getElementById('pGrams')?.value||0, r=+document.getElementById('pRate')?.value||0;
+      const m=+document.getElementById('pMash')?.value||0, t=+document.getElementById('pTrans')?.value||0;
+      const net=g*r-m-t;
+      document.getElementById('pPrev').innerHTML=`Gross: <strong>${fZ(g*r)}</strong> | Deductions: <strong>${fZ(m+t)}</strong> | Net to Pay: <strong>${fZ(net)}</strong> | Cash after: <strong>${fZ(D.cashZMW-net)}</strong>`;
+    };
+    ['pGrams','pRate','pMash','pTrans'].forEach(id=>document.getElementById(id)?.addEventListener('input',upd));
+    document.getElementById('doPurch')?.addEventListener('click',async()=>{
+      try { await doPurchase(+document.getElementById('pGrams').value,+document.getElementById('pRate').value,+document.getElementById('pMash').value||0,+document.getElementById('pTrans').value||0,document.getElementById('pRep').value,document.getElementById('pDate').value); }
+      catch(e){alert('❌ '+e.message);}
+    });
+  }
+
+  // SALES
+  if (TAB==='sales'&&isPriv) {
+    const upd=()=>{
+      const g=+document.getElementById('sGrams')?.value||0, r=+document.getElementById('sRate')?.value||0;
+      const revU=g*r, revZ=revU*D.rate;
+      document.getElementById('sPrev').innerHTML=`Revenue: <strong>${fU(revU)}</strong> ≈ <strong>${fZ(revZ)}</strong> | Stock after: <strong>${fG(stock-g)}</strong>`;
+    };
+    ['sGrams','sRate'].forEach(id=>document.getElementById(id)?.addEventListener('input',upd));
+    document.getElementById('sConv')?.addEventListener('change',e=>{document.getElementById('sPartBox').style.display=e.target.value==='partial'?'block':'none';});
+    document.getElementById('doSale')?.addEventListener('click',async()=>{
+      try { await doSale(+document.getElementById('sGrams').value,+document.getElementById('sRate').value,document.getElementById('sConv').value,+document.getElementById('sPartUSD')?.value||0,document.getElementById('sDate').value); }
+      catch(e){alert('❌ '+e.message);}
+    });
+  }
+
+  // EXCHANGE
+  if (TAB==='exchange'&&isPriv) {
+    const upd=()=>{
+      const dir=document.getElementById('exDir')?.value, amt=+document.getElementById('exAmt')?.value||0, rate=+document.getElementById('exRate')?.value||0;
+      if (!amt||!rate) return;
+      document.getElementById('exPrev').innerHTML=dir==='ZMW'?`Give <strong>${fZ(amt)}</strong> → Receive <strong>${fU(amt/rate)}</strong>`:`Give <strong>${fU(amt)}</strong> → Receive <strong>${fZ(amt*rate)}</strong>`;
+    };
+    ['exDir','exAmt','exRate'].forEach(id=>{document.getElementById(id)?.addEventListener('input',upd);document.getElementById(id)?.addEventListener('change',upd);});
+    document.getElementById('doExch')?.addEventListener('click',async()=>{
+      try { await doExchange(document.getElementById('exDir').value,+document.getElementById('exAmt').value,+document.getElementById('exRate').value,document.getElementById('exDate').value); }
+      catch(e){alert('❌ '+e.message);}
+    });
+  }
+
+  // SURVEY
+  if (TAB==='survey'&&isPriv) {
+    document.getElementById('doSurv')?.addEventListener('click',async()=>{
+      try { await doSurvey(+document.getElementById('svAmt').value,document.getElementById('svCust').value,document.getElementById('svDate').value); }
+      catch(e){alert('❌ '+e.message);}
+    });
+  }
+
+  // EXPENSES
+  if (TAB==='expenses'&&isPriv) {
+    document.getElementById('doExp')?.addEventListener('click',async()=>{
+      try { await doExpense(document.getElementById('epDesc').value,document.getElementById('epCat').value,+document.getElementById('epAmt').value,document.getElementById('epDate').value); }
+      catch(e){alert('❌ '+e.message);}
+    });
+  }
+
+  // DEPOSITS
+  if (TAB==='deposits'&&isPriv) {
+    document.getElementById('doDepo')?.addEventListener('click',async()=>{
+      try { await doDeposit(document.getElementById('dpType').value,document.getElementById('dpSrc').value,+document.getElementById('dpAmt').value,document.getElementById('dpNote')?.value||'',document.getElementById('dpDate').value); }
+      catch(e){alert('❌ '+e.message);}
+    });
+  }
+
+  // USERS
+  if (TAB==='users'&&isPriv) {
+    document.getElementById('togglePwd')?.addEventListener('click',()=>{SHOW_PWD=!SHOW_PWD;renderApp();});
+    document.querySelectorAll('[data-cpwd]').forEach(b=>b.addEventListener('click',async()=>{
+      const pwd=prompt(`New password for ${b.dataset.cpwd}:`);
+      if(pwd)try{await changePwd(b.dataset.cpwd,pwd);alert('✅ Changed');renderApp();}catch(e){alert(e.message);}
+    }));
+    if(isAdmin){
+      document.querySelectorAll('[data-delu]').forEach(b=>b.addEventListener('click',async()=>{
+        if(confirm('Delete shareholder?'))try{await delShareholder(parseInt(b.dataset.delu));renderApp();}catch(e){alert(e.message);}
+      }));
+      document.getElementById('addUsr')?.addEventListener('click',async()=>{
+        try{await addShareholder(document.getElementById('nuName').value.trim(),document.getElementById('nuPwd').value.trim());alert('✅ Added');renderApp();}catch(e){alert(e.message);}
+      });
+    }
+  }
+
+  // REPORTS
+  if (TAB==='reports'&&isPriv) {
+    document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{
+      RPT.dateFilter=b.dataset.filter;
+      const {s,e}=getDateRange(b.dataset.filter);RPT.start=s;RPT.end=e;
+      generateReport();
+    }));
+    document.getElementById('applyRptType')?.addEventListener('click',()=>{RPT.typeFilter=document.getElementById('rptType').value;generateReport();});
+    document.getElementById('printRpt')?.addEventListener('click',()=>window.print());
+    generateReport();
+  }
+
+  // PERIODS
+  if (TAB==='periods'&&isAdmin) {
+    document.querySelectorAll('[data-lock]').forEach(b=>b.addEventListener('click',async()=>{
+      const [y,m,l]=b.dataset.lock.split('-');
+      await togglePeriodLock(parseInt(y),parseInt(m),l==='1');
+    }));
+  }
+
+  // WITHDRAWALS
+  if (TAB==='withdrawals') {
+    document.getElementById('reqWd')?.addEventListener('click',async()=>{
+      const amt=+document.getElementById('wdAmt').value;
+      if(!amt||amt<=0)return alert('Enter a valid amount');
+      try{await reqWithdrawal(CU.shId,amt);}catch(e){alert('❌ '+e.message);}
+    });
+    document.querySelectorAll('[data-approve]').forEach(b=>b.addEventListener('click',async()=>{await approveWithdrawal(b.dataset.approve);}));
+  }
+}
+
+// ═══════════════════════════════════════════════
+// CASH HISTORY MODAL
+// ═══════════════════════════════════════════════
+function showCashModal(curr) {
+  const div=document.createElement('div');div.className='modal';
+  div.innerHTML=`<div class="modal-box">
+    <h3>${curr==='ZMW'?'💰 ZMW Cash History':'💵 USD Cash History'}</h3>
+    <div style="color:var(--text3);font-size:0.78rem;margin-bottom:14px">Current: ${curr==='ZMW'?fZ(D.cashZMW):fU(D.cashUSD)}</div>
+    ${D.cashTx.map(t=>`
+    <div class="tx-row">
+      <span class="muted" style="min-width:110px;font-size:0.68rem">${fDT(t.date)}</span>
+      <span class="badge badge-gold" style="font-size:0.6rem">${t.type}</span>
+      <span class="tx-desc">${t.description}</span>
+      ${curr==='ZMW'
+        ?`<span class="${t.amountZMW>=0?'green':'red'}">${t.amountZMW>=0?'+':''}${fZ(t.amountZMW)}</span>
+           <span class="muted">→ ${fZ(t.runningZMW||0)}</span>`
+        :`<span class="${t.amountUSD>=0?'green':'red'}">${t.amountUSD>=0?'+':''}${fU(t.amountUSD)}</span>
+           <span class="muted">→ ${fU(t.runningUSD||0)}</span>`}
+    </div>`).join('')}
+    <button class="btn-sm" style="margin-top:16px;width:100%" onclick="this.closest('.modal').remove()">Close</button>
+  </div>`;
+  document.body.appendChild(div);
+  div.addEventListener('click',e=>{if(e.target===div)div.remove();});
+}
+
+window.deleteTx=deleteTx;
+loadAll();
 </script>
 </body>
 </html>
