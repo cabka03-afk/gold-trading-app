@@ -340,17 +340,18 @@ async function doPurchase(grams, rate, mashiin, transport, rep, date) {
 
   D.cashZMW -= net;
   await saveSettings();
-  await logCashTx('PURCHASE',-net,0,`Buy ${fG(grams)} @${fZ(rate)}/g | Mashiin:${fZ(mashiin)} Transport:${fZ(transport)} | Rep:${rep}`,date);
-  await postLedger(p.id,date,'PURCHASE',[
-    {account:'Gold Inventory',  side:'dr',amtZMW:gross, note:`${fG(grams)} @${fZ(rate)}`},
-    {account:'Cash ZMW',        side:'cr',amtZMW:net,   note:'Net paid'},
-    {account:'Mashiin Expense', side:'dr',amtZMW:mashiin,note:'Mashiin fee'},
-    {account:'Transport Expense',side:'dr',amtZMW:transport,note:'Transport fee'},
-    // balance the expenses against cash
-    {account:'Cash ZMW',        side:'cr',amtZMW:mashiin+transport,note:'Fee payments'},
-  ]);
-  await logAudit('PURCHASE',`${fG(grams)} @ ${fZ(rate)}/g, net ${fZ(net)}, rep ${rep}`,p.id);
-  renderApp();
+ await logCashTx("PURCHASE", -netPaid, 0,
+    `Buy ${fmtG(grams)} @ ${fmtZMW(ratePerGram)}/g | Mashiin:${fmtZMW(mashiinFee)} Transport:${fmtZMW(transportFee)} | Rep:${salesRep}`,
+    date);
+
+// CORRECT DOUBLE ENTRY — net paid only, fees are cost reducers not expenses
+await postLedger(purchase.id, date, "PURCHASE", [
+    { account: "Gold Inventory", side: "dr", amtZMW: netPaid,
+      note: `${fmtG(grams)} @${fmtZMW(ratePerGram)}/g | Mashiin:${fmtZMW(mashiinFee)} Transport:${fmtZMW(transportFee)} already deducted` },
+    { account: "Cash ZMW",       side: "cr", amtZMW: netPaid,
+      note: "Net cash paid" }
+]);
+renderApp();
 }
 
 // ═══════════════════════════════════════════════
